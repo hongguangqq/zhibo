@@ -16,6 +16,7 @@ import android.widget.Toast;
 import com.jyt.baseapp.R;
 import com.jyt.baseapp.adapter.FactoryPageAdapter;
 import com.jyt.baseapp.adapter.FragmentViewPagerAdapter;
+import com.jyt.baseapp.api.BeanCallback;
 import com.jyt.baseapp.api.Const;
 import com.jyt.baseapp.helper.IntentRequestCode;
 import com.jyt.baseapp.model.PersonModel;
@@ -28,7 +29,6 @@ import com.jyt.baseapp.view.fragment.FragmentTab4;
 import com.jyt.baseapp.view.widget.CircleImageView;
 import com.jyt.baseapp.view.widget.NoScrollViewPager;
 import com.xiaomi.mipush.sdk.MiPushClient;
-import com.zhy.http.okhttp.callback.StringCallback;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -38,7 +38,6 @@ import java.util.List;
 
 import butterknife.BindView;
 import io.rong.imlib.RongIMClient;
-import okhttp3.Call;
 
 public class ContentActivity extends BaseMCVActivity implements View.OnClickListener {
 
@@ -107,14 +106,9 @@ public class ContentActivity extends BaseMCVActivity implements View.OnClickList
         initSetting();
         initListener();
         MiPushClient.setAlias(this, Const.getUserID(),null);
-        mPersonModel.GetRongID(new StringCallback() {
+        mPersonModel.GetRongID(new BeanCallback<String>() {
             @Override
-            public void onError(Call call, Exception e, int id) {
-
-            }
-
-            @Override
-            public void onResponse(String response, int id) {
+            public void response(boolean success, String response, int id) {
                 try {
 
                     JSONObject job = new JSONObject(response);

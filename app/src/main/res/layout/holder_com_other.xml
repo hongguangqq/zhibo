@@ -4,23 +4,70 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
     <com.jyt.baseapp.view.widget.CircleImageView
-        android:id="@+id/iv_me_hpic"
+        android:id="@+id/iv_other_hpic"
         android:layout_width="40dp"
         android:layout_height="40dp"
+        android:layout_alignParentLeft="true"
         android:layout_marginLeft="12dp"
         app:border_color="@color/white"
         android:src="@mipmap/timg"/>
-    <TextView
-        android:id="@+id/tv_me_text"
-        android:layout_width="207dp"
+    <ImageView
+        android:id="@+id/iv_san"
+        android:layout_toRightOf="@id/iv_other_hpic"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_toRightOf="@id/iv_me_hpic"
+        android:layout_marginRight="-2dp"
         android:layout_marginLeft="5dp"
-        android:paddingLeft="18dp"
+        android:layout_marginTop="5dp"
+        android:src="@mipmap/icon_lsan"/>
+    <TextView
+        android:id="@+id/tv_other_text"
+        android:visibility="gone"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toRightOf="@id/iv_san"
+        android:paddingLeft="8dp"
         android:paddingRight="8dp"
         android:paddingTop="13dp"
         android:paddingBottom="13dp"
-        android:text="你好哦在吗？内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容。"
+        android:maxWidth="207dp"
+        android:text=""
         android:textSize="12dp"
-        android:textColor="@color/black"/>
+        android:textColor="@color/black"
+        android:background="@drawable/com_other"/>
+    <LinearLayout
+        android:id="@+id/ll_other_voice"
+        android:visibility="gone"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toRightOf="@id/iv_san">
+        <ImageView
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:paddingLeft="8dp"
+            android:paddingRight="8dp"
+            android:paddingTop="13dp"
+            android:paddingBottom="13dp"
+            android:src="@mipmap/icon_voice_play"
+            android:background="@drawable/com_other"/>
+        <TextView
+            android:id="@+id/tv_other_second"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_marginLeft="6dp"
+            android:text="3"
+            android:textSize="12dp"
+            android:textColor="@color/white"/>
+    </LinearLayout>
+
+    <ImageView
+        android:id="@+id/iv_other_img"
+        android:visibility="gone"
+        android:layout_width="100dp"
+        android:layout_height="150dp"
+        android:layout_marginLeft="5dp"
+        android:layout_toRightOf="@id/iv_san"
+        android:scaleType="centerCrop"/>
+
 </RelativeLayout>

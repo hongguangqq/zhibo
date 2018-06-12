@@ -360,6 +360,11 @@ public class PersonActivity extends BaseMCVActivity {
 
     }
 
+    @OnClick(R.id.ll_person1)
+    public void OpenCommunicationActivity(){
+        IntentHelper.OpenCommunicationActivity(mUser.getId(),this);
+    }
+
     @OnClick(R.id.iv_person_more)
     public void Duang(){
         mDialog.show();

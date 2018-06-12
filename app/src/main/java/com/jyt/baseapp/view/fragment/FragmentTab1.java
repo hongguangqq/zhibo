@@ -255,6 +255,8 @@ public class FragmentTab1 extends BaseFragment {
         if (Const.getGender()==1){
             //男用户隐藏在线状态
             mSvState.setVisibility(View.GONE);
+            mTvStateOn.setVisibility(View.GONE);
+            mTvStateOff.setVisibility(View.GONE);
         }
         //在线状态切换
         mSvState.onChangeListener(new SwitchView.OnChangeListener() {

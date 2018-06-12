@@ -126,7 +126,11 @@ public class Const {
     }
 
     public static String getUserHeadImg(){
-        return BaseUtil.getSpString(UserHeadImg);
+        String img = BaseUtil.getSpString(UserHeadImg);
+        if (img==null){
+            img = "";
+        }
+        return img;
     }
 
 

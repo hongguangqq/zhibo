@@ -55,7 +55,6 @@
             android:layout_marginRight="15dp">
             <ImageView
                 android:id="@+id/iv_com_add"
-                android:visibility="gone"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="4dp"
@@ -64,11 +63,12 @@
                 android:id="@+id/tv_com_submit"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:visibility="gone"
                 android:text="发送"
                 android:textSize="12dp"
                 android:textColor="@color/white"
-                android:paddingTop="8dp"
-                android:paddingBottom="8dp"
+                android:paddingTop="11dp"
+                android:paddingBottom="10dp"
                 android:paddingLeft="10dp"
                 android:paddingRight="10dp"
                 android:background="@drawable/corner_gay8"/>

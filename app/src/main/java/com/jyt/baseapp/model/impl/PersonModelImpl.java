@@ -1,6 +1,7 @@
 package com.jyt.baseapp.model.impl;
 
 import android.content.Context;
+import android.util.Log;
 
 import com.jyt.baseapp.api.Const;
 import com.jyt.baseapp.api.Path;
@@ -232,6 +233,9 @@ public class PersonModelImpl implements PersonModel {
         } catch (NoSuchAlgorithmException e) {
             e.printStackTrace();
         }
+        Log.e("@#","1--"+nonce);
+        Log.e("@#","2--"+Timestamp);
+        Log.e("@#","3--"+Signature);
 
         OkHttpUtils.post()
                 .url(Path.RongYunPath)

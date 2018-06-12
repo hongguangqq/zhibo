@@ -1,12 +1,15 @@
 package com.jyt.baseapp.view.activity;
 
 import android.Manifest;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.media.MediaPlayer;
 import android.media.MediaRecorder;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.LinearLayoutManager;
@@ -29,10 +32,16 @@ import com.jyt.baseapp.helper.IntentHelper;
 import com.jyt.baseapp.itemDecoration.SpacesItemDecoration;
 import com.jyt.baseapp.util.BaseUtil;
 import com.jyt.baseapp.view.dialog.RecordDialog;
+import com.jyt.baseapp.view.viewholder.ComMeViewHolder;
+import com.jyt.baseapp.view.viewholder.ComOtherViewHolder;
+import com.linchaolong.android.imagepicker.ImagePicker;
 
 import java.io.File;
 import java.io.IOException;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -44,7 +53,9 @@ import io.rong.imlib.IRongCallback;
 import io.rong.imlib.RongIMClient;
 import io.rong.imlib.model.Conversation;
 import io.rong.imlib.model.Message;
+import io.rong.message.ImageMessage;
 import io.rong.message.TextMessage;
+import io.rong.message.VoiceMessage;
 
 import static com.jyt.baseapp.api.Const.PERMISSIONS_REQUEST_FOR_AUDIO;
 
@@ -87,6 +98,49 @@ public class CommunicationActivity extends BaseMCVActivity {
                 //录音成功
                 case Const.RECORD_SUCCESS:
                     Log.e("@#","录音成功");
+                    int second = msg.arg1;
+                    VoiceMessage voiceMessage = VoiceMessage.obtain(Uri.fromFile(mAudioFile),second);
+                    RongIMClient.getInstance().sendMessage(Conversation.ConversationType.PRIVATE, comid, voiceMessage, null, null, new IRongCallback.ISendMessageCallback() {
+                        @Override
+                        public void onAttached(Message message) {
+
+                        }
+
+                        @Override
+                        public void onSuccess(Message message) {
+                            Log.e("@#","onSuccess");
+                            mMessageList.add(message);
+                            mComAdapter.notifyData(mMessageList);
+                        }
+
+                        @Override
+                        public void onError(Message message, RongIMClient.ErrorCode errorCode) {
+
+                        }
+                    });
+//                    RongIMClient.getInstance().sendMessage(Conversation.ConversationType.PRIVATE, comid, voiceMessage, null, null, new RongIMClient.SendMediaMessageCallback() {
+//                        @Override
+//                        public void onAttached(Message message) {
+//                            Log.e("@#","onAttached:");
+//                        }
+//
+//                        @Override
+//                        public void onError(Message message, RongIMClient.ErrorCode errorCode) {
+//                            Log.e("@#","onError="+errorCode.getMessage());
+//                        }
+//
+//                        @Override
+//                        public void onSuccess(Message message) {
+//                            Log.e("@#","onSuccess");
+//                            mMessageList.add(message);
+//                            mComAdapter.notifyData(mMessageList);
+//                        }
+//
+//                        @Override
+//                        public void onProgress(Message message, int i) {
+//
+//                        }
+//                    });
                     mRecordDialog.dismiss();
                     break;
                 //录音失败
@@ -106,8 +160,7 @@ public class CommunicationActivity extends BaseMCVActivity {
 
                     break;
                 case Const.RECORD_CANCEL:
-                    Log.e("@#","录音取消");
-                    mRecordDialog.dismiss();
+//                    Log.e("@#","录音取消");
                     break;
 
             }
@@ -118,6 +171,8 @@ public class CommunicationActivity extends BaseMCVActivity {
     private String comid;
     private ComAdapter mComAdapter;
     private List<Message> mMessageList;
+    private ImagePicker mImagePicker;
+    private File mImgFile;
 
 
     @Override
@@ -148,6 +203,8 @@ public class CommunicationActivity extends BaseMCVActivity {
         mComAdapter = new ComAdapter();
         mRecordDialog = new RecordDialog(this);
         mExecutorService = Executors.newSingleThreadExecutor();
+        mImagePicker = new ImagePicker();
+
 
 
     }
@@ -155,6 +212,7 @@ public class CommunicationActivity extends BaseMCVActivity {
     private void initSetting(){
         mComAdapter.setDataList(mMessageList);
         mRvContent.setAdapter(mComAdapter);
+        mImagePicker.setCropImage(false);
         mRvContent.setLayoutManager(new LinearLayoutManager(getContext(),LinearLayoutManager.VERTICAL,false));
         mRvContent.addItemDecoration(new SpacesItemDecoration(0, BaseUtil.dip2px(25)));
         mEtInput.addTextChangedListener(new TextWatcher() {
@@ -184,8 +242,12 @@ public class CommunicationActivity extends BaseMCVActivity {
             @Override
             public void onSuccess(List<Message> messages) {
                 mMessageList = messages;
+                if (messages==null){
+                    mMessageList = new ArrayList<Message>();
+                }
+                Collections.reverse(mMessageList);
                 mComAdapter.notifyData(mMessageList);
-//                mRvContent.scrollToPosition(mMessageList.size()-1);
+                mRvContent.scrollToPosition(mMessageList.size()-1);
             }
 
             @Override
@@ -193,6 +255,40 @@ public class CommunicationActivity extends BaseMCVActivity {
 
             }
         });
+
+        RongIMClient.getInstance().setOnReceiveMessageListener(new RongIMClient.OnReceiveMessageListener() {
+            @Override
+            public boolean onReceived(final Message message, int i) {
+                mHandler.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        mMessageList.add(message);
+                        mComAdapter.notifyData(mMessageList);
+                        mRvContent.scrollToPosition(mMessageList.size()-1);
+                    }
+                });
+                return false;
+            }
+        });
+
+        mComAdapter.setOnMeVoicePlayListener(new ComMeViewHolder.OnVoicePlayListener() {
+            @Override
+            public void PlayVoice(Uri uri) {
+                isPlayAudio = true;
+                String path = BaseUtil.getRealFilePath(CommunicationActivity.this,uri);
+                startPlay(path);
+            }
+        });
+
+        mComAdapter.setOnOtherVoicePlayListener(new ComOtherViewHolder.OnVoicePlayListener() {
+            @Override
+            public void PlayVoice(Uri uri) {
+                isPlayAudio = true;
+                String path = BaseUtil.getRealFilePath(CommunicationActivity.this,uri);
+                startPlay(path);
+            }
+        });
+
 
     }
 
@@ -210,7 +306,9 @@ public class CommunicationActivity extends BaseMCVActivity {
 
                 @Override
                 public void onSuccess(Message message) {
-                    Log.e("@#","success");
+                    mMessageList.add(message);
+                    mComAdapter.notifyData(mMessageList);
+                    mEtInput.setText("");
                 }
 
                 @Override
@@ -219,6 +317,44 @@ public class CommunicationActivity extends BaseMCVActivity {
                 }
             });
         }
+    }
+
+    @OnClick(R.id.iv_com_add)
+    public void sendImg(){
+        mImagePicker.startChooser(this, new ImagePicker.Callback() {
+            @Override
+            public void onPickImage(Uri imageUri) {
+                try {
+                    mImgFile = new File(new URI(imageUri.toString()));
+                    ImageMessage imageMessage = ImageMessage.obtain(Uri.parse("file://" + mImgFile),Uri.parse("file://" + mImgFile));
+                    RongIMClient.getInstance().sendImageMessage(Conversation.ConversationType.PRIVATE, comid, imageMessage, null, null, new RongIMClient.SendImageMessageCallback() {
+                        @Override
+                        public void onAttached(Message message) {
+
+                        }
+
+                        @Override
+                        public void onError(Message message, RongIMClient.ErrorCode errorCode) {
+
+                        }
+
+                        @Override
+                        public void onSuccess(Message message) {
+
+                            mMessageList.add(message);
+                            mComAdapter.notifyData(mMessageList);
+                        }
+
+                        @Override
+                        public void onProgress(Message message, int i) {
+
+                        }
+                    });
+                } catch (URISyntaxException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
     }
 
 
@@ -230,45 +366,50 @@ public class CommunicationActivity extends BaseMCVActivity {
         float ey = event.getY();
         float ex = event.getX();
         float downY = 0 ;
-        switch (view.getId()) {
-            case R.id.iv_com_voice:
-                switch (action){
-                    case MotionEvent.ACTION_DOWN:
-                        //开始录音
-                        downY = ey;
-                        Log.e("@#","开始录音");
-                        if (Build.VERSION.SDK_INT > 22) {
-                            permissionForM();
-                        } else {
-                            startRecord();
-                        }
-                        ret =true;
-                        break;
-                    case MotionEvent.ACTION_UP:
-                        //结束录音
-                        if (!isCancel){
-                            stopRecord();
-                        }else {
-                            isCancel = false;
-                            cancelRecord();
-                        }
-                        ret = false;
-                        break;
-                    case MotionEvent.ACTION_MOVE:
-                        float currentY = event.getY();
-                        if (downY - currentY >BaseUtil.dip2px(200)){
-                            Log.e("@#","cancel");
-                            if (mRecordDialog!=null){
-                                mRecordDialog.setTitle("松开取消");
-                            }
-                            isCancel = true;
-                        }else {
-                            isCancel = false;
-                            mRecordDialog.setTitle("录音开始"+"\n"+"上滑取消");
-                        }
-                        break;
-                }
+        int vW = view.getWidth();
+        int left = 50;
+        int right = vW - 50;
+        switch (action){
+            case MotionEvent.ACTION_DOWN:
+                //开始录音
+//                if (ex > left && ex < right) {
+                    downY = ey;
+                    Log.e("@#","开始录音");
+                    if (Build.VERSION.SDK_INT > 22) {
+                        permissionForM();
+                    } else {
+                        startRecord();
+                    }
+                    ret =true;
+//                }
                 break;
+            case MotionEvent.ACTION_UP:
+                //结束录音
+//                if (ex > left && ex < right) {
+                    if (!isCancel){
+                        stopRecord();
+                    }else {
+                        isCancel = false;
+                        cancelRecord();
+                    }
+                    ret = false;
+//                }
+                break;
+            case MotionEvent.ACTION_MOVE:
+//                if (ex > left && ex < right) {
+                    float currentY = event.getY();
+                    if (downY - currentY >BaseUtil.dip2px(200)){
+                        Log.e("@#","cancel");
+                        if (mRecordDialog!=null){
+                            mRecordDialog.setTitle("松开取消");
+                        }
+                        isCancel = true;
+                    }else {
+                        isCancel = false;
+                        mRecordDialog.setTitle("录音开始"+"\n"+"上滑取消");
+                    }
+                    break;
+//                }
         }
         return ret;
     }
@@ -335,6 +476,8 @@ public class CommunicationActivity extends BaseMCVActivity {
      * 取消录制
      */
     private void cancelRecord(){
+        Log.e("@#","取消录音");
+        mRecordDialog.dismiss();
         if (mMediaRecorder!=null){
             mMediaRecorder.setOnErrorListener(null);
             mMediaRecorder.setOnInfoListener(null);
@@ -484,6 +627,8 @@ public class CommunicationActivity extends BaseMCVActivity {
     }
 
 
+
+
     /*******6.0以上版本手机权限处理***************************/
     /**
      * @description 兼容手机6.0权限管理
@@ -500,6 +645,38 @@ public class CommunicationActivity extends BaseMCVActivity {
                     PERMISSIONS_REQUEST_FOR_AUDIO);
         } else {
             startRecord();
+        }
+    }
+
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        mImagePicker.onActivityResult(this, requestCode, resultCode, data);
+    }
+
+
+    @Override public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions,
+                                                     @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        switch (requestCode){
+            //录音
+            case Const.PERMISSIONS_REQUEST_FOR_AUDIO:
+                if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    startRecord();
+                }
+                break;
+            default:
+                mImagePicker.onRequestPermissionsResult(this, requestCode, permissions, grantResults);
+                break;
+        }
+
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if (mAudioFile!=null){
+            mAudioFile.delete();
         }
     }
 }
