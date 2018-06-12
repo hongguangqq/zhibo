@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.jyt.baseapp.view.widget.RoundLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:jyt="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="30dp"
+    android:background="#ECECEC"
+    jyt:roundLayoutRadius="30">
+
+    <RelativeLayout
+        android:id="@+id/v_mainView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <EditText
+            android:id="@+id/input_text"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_centerInParent="false"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="40dp"
+            android:layout_marginRight="40dp"
+            android:background="@null"
+            android:gravity="left|center"
+            android:textSize="13dp"
+            android:visibility="gone"
+            android:singleLine="true"
+            android:imeOptions="actionDone"/>
+
+        <LinearLayout
+            android:id="@+id/v_hintContent"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_centerVertical="true"
+            android:gravity="center">
+
+            <ImageView
+                android:id="@+id/img_search"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:scaleType="fitCenter"
+                android:src="@mipmap/icon_seach" />
+
+            <TextView
+                android:id="@+id/text_hintText"
+                android:textSize="14dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="搜索"
+                android:textColor="#868686" />
+        </LinearLayout>
+        <!--<RelativeLayout-->
+        <!--android:id="@+id/v_hintLayout"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="match_parent"-->
+        <!--android:layout_centerInParent="true"-->
+        <!--android:layout_centerVertical="false"-->
+        <!--&gt;-->
+
+
+        <!--</RelativeLayout>-->
+
+        <ImageView
+            android:id="@+id/img_clear"
+            android:layout_width="16dp"
+            android:layout_height="16dp"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="10dp"
+            android:src="@mipmap/close_circled"
+            android:visibility="gone" />
+    </RelativeLayout>
+</com.jyt.baseapp.view.widget.RoundLayout>

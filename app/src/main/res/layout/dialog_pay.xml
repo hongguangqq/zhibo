@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:divider="@drawable/divider"
+    android:showDividers="middle"
+    android:background="@drawable/bg_white_solid_angle"
+    >
+    <RelativeLayout
+        android:padding="15dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <TextView
+            android:textColor="#4F4F4F"
+            android:textSize="17sp"
+            android:text="请选择支付方式"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true" />
+        
+        <ImageView
+            android:layout_alignParentRight="true"
+            android:src="@mipmap/pay_icon_close_n"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/btn_close" />
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:padding="15dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/layout_wxpay">
+        <ImageView
+            android:layout_centerVertical="true"
+            android:src="@mipmap/pay_icon_weixin_n"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+        <TextView
+            android:textSize="15sp"
+            android:textColor="#4F4F4F"
+            android:layout_marginLeft="50dp"
+            android:layout_centerVertical="true"
+            android:text="微信支付"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            />
+
+        <CheckBox
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:background="@drawable/sel_check_box"
+            android:button="@null"
+            android:id="@+id/cb_wxpay"
+            android:layout_width="15dp"
+            android:layout_height="15dp"
+            android:clickable="false" />
+    </RelativeLayout>
+
+
+    <RelativeLayout
+        android:padding="15dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/layout_alipay">
+        <ImageView
+            android:layout_centerVertical="true"
+            android:src="@mipmap/pay_icon_zhifubao_n"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+        <TextView
+            android:textSize="15sp"
+            android:textColor="#4F4F4F"
+            android:layout_marginLeft="50dp"
+            android:layout_centerVertical="true"
+            android:text="支付宝支付"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <CheckBox
+            android:layout_centerVertical="true"
+            android:layout_alignParentRight="true"
+            android:background="@drawable/sel_check_box"
+            android:button="@null"
+            android:id="@+id/cb_alipay"
+            android:layout_width="15dp"
+            android:layout_height="15dp"
+            android:clickable="false" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="15dp">
+        <TextView
+            android:layout_centerInParent="true"
+            android:paddingLeft="60dp"
+            android:paddingRight="60dp"
+            android:paddingTop="8dp"
+            android:paddingBottom="8dp"
+            android:text="确认"
+            android:textColor="@color/white"
+            android:background="@drawable/shape_oval_blue"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/btn_done"
+            android:textSize="15sp" />
+    </RelativeLayout>
+</LinearLayout>

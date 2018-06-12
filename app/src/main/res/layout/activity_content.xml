@@ -1,0 +1,179 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context="com.jyt.baseapp.view.activity.ContentActivity"
+    android:background="@color/bg_content">
+
+   <com.jyt.baseapp.view.widget.NoScrollViewPager
+       android:id="@+id/vp_content"
+       android:layout_width="match_parent"
+       android:layout_height="match_parent"
+       android:layout_marginBottom="53dp">
+   </com.jyt.baseapp.view.widget.NoScrollViewPager>
+
+    <LinearLayout
+        android:id="@+id/ll_tab_content"
+        android:layout_alignParentBottom="true"
+        android:layout_width="match_parent"
+        android:layout_height="52dp"
+        android:background="@color/tab_bg">
+        <LinearLayout
+            android:id="@+id/ll_tab1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_weight="1"
+            android:gravity="center_horizontal"
+            android:layout_gravity="bottom">
+            <ImageView
+                android:id="@+id/iv_tab1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@mipmap/tab_1_selx"/>
+            <TextView
+                android:id="@+id/tv_tab1"
+                android:layout_marginBottom="2dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="11dp"
+                android:text="广场"
+                android:textColor="@color/tab_sel"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/ll_tab2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom"
+            android:layout_weight="1"
+            android:gravity="center_horizontal"
+            android:orientation="vertical">
+
+            <RelativeLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+
+                <ImageView
+                    android:id="@+id/iv_tab2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@mipmap/tab_2_nolx"/>
+
+                <com.jyt.baseapp.view.widget.CircleImageView
+                    android:id="@+id/civ_tab2_hint"
+                    android:layout_width="6dp"
+                    android:layout_height="6dp"
+                    android:layout_marginLeft="-12dp"
+                    android:layout_marginTop="6dp"
+                    android:layout_toRightOf="@id/iv_tab2"
+                    android:visibility="gone"
+                    android:src="@color/tab_sel"
+                    app:border_color="@color/tab_sel"/>
+            </RelativeLayout>
+
+            <TextView
+                android:id="@+id/tv_tab2"
+                android:layout_marginBottom="2dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="消息"
+                android:textColor="@color/tab_no"
+                android:textSize="11dp"/>
+        </LinearLayout>
+
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_weight="1"
+            android:gravity="center_horizontal"
+            android:layout_gravity="bottom">
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/ll_tab3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_weight="1"
+            android:gravity="center_horizontal"
+            android:layout_gravity="bottom">
+            <ImageView
+                android:id="@+id/iv_tab3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@mipmap/tab_3_nolx"/>
+            <TextView
+                android:id="@+id/tv_tab3"
+                android:layout_marginBottom="2dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="11dp"
+                android:text="排行榜"
+                android:textColor="@color/tab_no"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/ll_tab4"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_weight="1"
+            android:gravity="center_horizontal"
+            android:layout_gravity="bottom">
+            <ImageView
+                android:id="@+id/iv_tab4"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@mipmap/tab_4_nolx"/>
+            <TextView
+                android:id="@+id/tv_tab4"
+                android:layout_marginBottom="2dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="11dp"
+                android:text="我的"
+                android:textColor="@color/tab_no"/>
+        </LinearLayout>
+    </LinearLayout>
+
+    <ImageView
+        android:id="@+id/iv_tab_add"
+        android:layout_centerHorizontal="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="7dp"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:src="@mipmap/tab_jia"/>
+
+    <Button
+        android:id="@+id/btn_random"
+        android:layout_width="144dp"
+        android:layout_height="55dp"
+        android:layout_above="@+id/btn_eavesdrop"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="10dp"
+        android:text="随机拨号"
+        android:textColor="@color/white"
+        android:visibility="gone"
+        android:background="@drawable/corner_rg100"/>
+
+    <Button
+        android:id="@+id/btn_eavesdrop"
+        android:layout_width="144dp"
+        android:layout_height="55dp"
+        android:layout_above="@+id/ll_tab_content"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="13dp"
+        android:text="偷听"
+        android:textColor="@color/white"
+        android:visibility="gone"
+        android:background="@drawable/corner_gg100"/>
+
+</RelativeLayout>

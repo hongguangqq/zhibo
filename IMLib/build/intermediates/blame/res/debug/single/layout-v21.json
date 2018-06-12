@@ -1,0 +1,18 @@
+[
+    {
+        "merged": "E:\\Android\\Projects\\Projects\\zhibo\\IMLib\\build\\intermediates\\res\\merged\\debug\\layout-v21\\notification_template_icon_group.xml",
+        "source": "E:\\Android\\Projects\\Projects\\zhibo\\IMLib\\build\\intermediates\\exploded-aar\\com.android.support\\support-compat\\26.0.0\\res\\layout-v21\\notification_template_icon_group.xml"
+    },
+    {
+        "merged": "E:\\Android\\Projects\\Projects\\zhibo\\IMLib\\build\\intermediates\\res\\merged\\debug\\layout-v21\\notification_action_tombstone.xml",
+        "source": "E:\\Android\\Projects\\Projects\\zhibo\\IMLib\\build\\intermediates\\exploded-aar\\com.android.support\\support-compat\\26.0.0\\res\\layout-v21\\notification_action_tombstone.xml"
+    },
+    {
+        "merged": "E:\\Android\\Projects\\Projects\\zhibo\\IMLib\\build\\intermediates\\res\\merged\\debug\\layout-v21\\notification_template_custom_big.xml",
+        "source": "E:\\Android\\Projects\\Projects\\zhibo\\IMLib\\build\\intermediates\\exploded-aar\\com.android.support\\support-compat\\26.0.0\\res\\layout-v21\\notification_template_custom_big.xml"
+    },
+    {
+        "merged": "E:\\Android\\Projects\\Projects\\zhibo\\IMLib\\build\\intermediates\\res\\merged\\debug\\layout-v21\\notification_action.xml",
+        "source": "E:\\Android\\Projects\\Projects\\zhibo\\IMLib\\build\\intermediates\\exploded-aar\\com.android.support\\support-compat\\26.0.0\\res\\layout-v21\\notification_action.xml"
+    }
+]

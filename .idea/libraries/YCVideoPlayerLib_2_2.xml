@@ -1,0 +1,12 @@
+<component name="libraryTable">
+  <library name="YCVideoPlayerLib-2.2">
+    <CLASSES>
+      <root url="file://$PROJECT_DIR$/app/build/intermediates/exploded-aar/cn.yc/YCVideoPlayerLib/2.2/res" />
+      <root url="jar://$PROJECT_DIR$/app/build/intermediates/exploded-aar/cn.yc/YCVideoPlayerLib/2.2/jars/classes.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES>
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/cn.yc/YCVideoPlayerLib/2.2/193502c91508bcbc381d89a8522f9a6fd6c3dc5c/YCVideoPlayerLib-2.2-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>

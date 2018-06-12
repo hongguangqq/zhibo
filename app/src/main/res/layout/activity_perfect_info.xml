@@ -1,0 +1,158 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingLeft="12dp"
+    android:paddingRight="12dp"
+    android:gravity="center_horizontal"
+    android:background="@color/transparent"
+    tools:context="com.jyt.baseapp.view.activity.entrance.RegisterActivity">
+
+    <LinearLayout
+        android:layout_width="320dp"
+        android:layout_height="401dp"
+        android:orientation="vertical"
+        android:paddingLeft="20dp"
+        android:paddingRight="20dp"
+        android:paddingTop="27dp"
+        android:layout_marginTop="34dp"
+        android:background="@drawable/corner12"
+        tools:layout_editor_absoluteY="0dp"
+        tools:layout_editor_absoluteX="8dp">
+
+        <ImageView
+            android:layout_width="63dp"
+            android:layout_height="42dp"
+            android:src="@mipmap/pic_mingpian"/>
+        <EditText
+            android:id="@+id/et_pi_nick"
+            android:layout_marginTop="41dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="请输入昵称"
+            android:textSize="15dp"
+            android:imeOptions="actionDone"
+            android:singleLine="true"
+            android:textColor="@color/white"
+            android:textColorHint="@color/et_hint2"
+            android:background="@null"/>
+        <View
+            android:layout_marginTop="14dp"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/et_hint1"/>
+        <LinearLayout
+            android:id="@+id/ll_pi_birthday"
+            android:orientation="vertical"
+            android:layout_marginTop="19dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+                <TextView
+                    android:id="@+id/tv_pi_birthday"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="wrap_content"
+                    android:text="请选择您的生日日期"
+                    android:textSize="15dp"
+                    android:textColor="@color/et_hint3"
+                    android:background="@null"/>
+
+                <ImageView
+                    android:layout_gravity="center_vertical"
+                    android:layout_width="12dp"
+                    android:layout_height="6dp"
+                    android:src="@mipmap/btn_down"/>
+
+            </LinearLayout>
+            <View
+                android:layout_marginTop="14dp"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/et_hint1"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/ll_pi_city"
+            android:orientation="vertical"
+            android:layout_marginTop="19dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+                <TextView
+                    android:id="@+id/tv_pi_city"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="wrap_content"
+                    android:text="请选择您所在城市"
+                    android:textSize="15dp"
+                    android:textColor="@color/et_hint3"/>
+
+                <ImageView
+                    android:layout_gravity="center_vertical"
+                    android:layout_width="12dp"
+                    android:layout_height="6dp"
+                    android:src="@mipmap/btn_down"/>
+
+            </LinearLayout>
+            <View
+                android:layout_marginTop="14dp"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/et_hint1"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_marginTop="19dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+                <TextView
+                    android:id="@+id/tv_pi_sex"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="wrap_content"
+                    android:hint="请选择您的性别"
+                    android:textSize="15dp"
+                    android:textColor="@color/white"
+                    android:textColorHint="@color/et_hint2"
+                    android:background="@null"/>
+
+                <ImageView
+                    android:id="@+id/iv_pi_female"
+                    android:layout_width="48dp"
+                    android:layout_height="26dp"
+                    android:src="@mipmap/icon_nv"
+                    android:padding="1dp"/>
+                <ImageView
+                    android:id="@+id/iv_pi_male"
+                    android:layout_width="48dp"
+                    android:layout_height="26dp"
+                    android:layout_marginLeft="10dp"
+                    android:src="@mipmap/btn_nan"/>
+
+            </LinearLayout>
+            <View
+                android:layout_marginTop="14dp"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/et_hint1"/>
+        </LinearLayout>
+
+
+    </LinearLayout>
+
+</LinearLayout>

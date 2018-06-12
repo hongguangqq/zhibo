@@ -1,0 +1,37 @@
+package com.jyt.baseapp.view.viewholder;
+
+import android.view.LayoutInflater;
+import android.view.ViewGroup;
+import android.widget.TextView;
+
+import com.jyt.baseapp.R;
+import com.jyt.baseapp.bean.GiftBean;
+import com.jyt.baseapp.view.widget.CircleImageView;
+
+import butterknife.BindView;
+
+/**
+ * @author LinWei on 2018/5/8 11:08
+ */
+public class GiftViewHolder extends BaseViewHolder<GiftBean> {
+    @BindView(R.id.tv_hgift_time)
+    TextView mTvHgiftTime;
+    @BindView(R.id.iv_hgift_send)
+    CircleImageView mIvHgiftSend;
+    @BindView(R.id.tv_hgift_send)
+    TextView mTvHgiftSend;
+    @BindView(R.id.tv_hgift_receiver)
+    TextView mTvHgiftReceiver;
+    @BindView(R.id.iv_hgift_receiver)
+    CircleImageView mIvHgiftReceiver;
+
+    public GiftViewHolder(ViewGroup parent) {
+        super(LayoutInflater.from(parent.getContext()).inflate(R.layout.holder_gift, parent, false));
+    }
+
+    @Override
+    public void setData(GiftBean data) {
+        super.setData(data);
+
+    }
+}

@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:paddingTop="21dp"
+    android:background="@color/bg_content"
+    tools:context="com.jyt.baseapp.view.activity.FeebackActivity">
+
+    <EditText
+        android:id="@+id/et_feedback"
+        android:layout_width="305dp"
+        android:layout_height="156dp"
+        android:layout_gravity="center_horizontal"
+        android:layout_centerHorizontal="true"
+        android:focusable="true"
+        android:focusableInTouchMode="true"
+        android:gravity="left"
+        android:hint="请输入您要反馈的内容"
+        android:padding="10dp"
+        android:text=""
+        android:textColor="@color/white"
+        android:textColorHint="#FF8B8B8B"
+        android:textSize="15dp"
+        android:background="@drawable/rectangle"/>
+
+    <RelativeLayout
+        android:id="@+id/rl_feedback_upload"
+        android:layout_below="@+id/et_feedback"
+        android:layout_width="305dp"
+        android:layout_height="156dp"
+        android:layout_gravity="center_horizontal"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="30dp"
+        android:background="@drawable/rectangle">
+        <ImageView
+            android:id="@+id/iv_feedback"
+            android:layout_width="52dp"
+            android:layout_height="41dp"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="52dp"
+            android:src="@mipmap/pic_wutu"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/iv_feedback"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="3dp"
+            android:text="从相册中上传/拍照"
+            android:textColor="#FFBFBFBF"
+            android:textSize="15dp"/>
+        <ImageView
+            android:id="@+id/iv_feedback_upload"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"/>
+    </RelativeLayout>
+
+    <Button
+        android:id="@+id/btn_feedback_submit"
+        android:layout_width="285dp"
+        android:layout_height="48dp"
+        android:gravity="center"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="50dp"
+        android:text="提交"
+        android:textSize="16dp"
+        android:textColor="@color/white"
+        android:background="@drawable/corner_pp62"/>
+
+</RelativeLayout>

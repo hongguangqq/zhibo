@@ -1,0 +1,18 @@
+[
+    {
+        "merged": "E:\\Android\\Projects\\Projects\\zhibo\\IMLib\\build\\intermediates\\res\\merged\\androidTest\\debug\\drawable\\notification_tile_bg.xml",
+        "source": "E:\\Android\\Projects\\Projects\\zhibo\\IMLib\\build\\intermediates\\exploded-aar\\com.android.support\\support-compat\\26.0.0\\res\\drawable\\notification_tile_bg.xml"
+    },
+    {
+        "merged": "E:\\Android\\Projects\\Projects\\zhibo\\IMLib\\build\\intermediates\\res\\merged\\androidTest\\debug\\drawable\\notification_bg_low.xml",
+        "source": "E:\\Android\\Projects\\Projects\\zhibo\\IMLib\\build\\intermediates\\exploded-aar\\com.android.support\\support-compat\\26.0.0\\res\\drawable\\notification_bg_low.xml"
+    },
+    {
+        "merged": "E:\\Android\\Projects\\Projects\\zhibo\\IMLib\\build\\intermediates\\res\\merged\\androidTest\\debug\\drawable\\notification_bg.xml",
+        "source": "E:\\Android\\Projects\\Projects\\zhibo\\IMLib\\build\\intermediates\\exploded-aar\\com.android.support\\support-compat\\26.0.0\\res\\drawable\\notification_bg.xml"
+    },
+    {
+        "merged": "E:\\Android\\Projects\\Projects\\zhibo\\IMLib\\build\\intermediates\\res\\merged\\androidTest\\debug\\drawable\\notification_icon_background.xml",
+        "source": "E:\\Android\\Projects\\Projects\\zhibo\\IMLib\\build\\intermediates\\exploded-aar\\com.android.support\\support-compat\\26.0.0\\res\\drawable\\notification_icon_background.xml"
+    }
+]

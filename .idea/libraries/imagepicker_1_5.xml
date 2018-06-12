@@ -1,0 +1,12 @@
+<component name="libraryTable">
+  <library name="imagepicker-1.5">
+    <CLASSES>
+      <root url="file://$PROJECT_DIR$/app/build/intermediates/exploded-aar/com.linchaolong.android/imagepicker/1.5/res" />
+      <root url="jar://$PROJECT_DIR$/app/build/intermediates/exploded-aar/com.linchaolong.android/imagepicker/1.5/jars/classes.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES>
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.linchaolong.android/imagepicker/1.5/a17fea4e62c7a1eeb08b9672c84ee34211de03d5/imagepicker-1.5-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>

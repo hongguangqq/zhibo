@@ -1,0 +1,39 @@
+<resources>
+
+    <declare-styleable name="CircleImageView">
+        <attr name="border_width" format="dimension" />
+        <attr name="border_color" format="color" />
+    </declare-styleable>
+
+    <declare-styleable name="SwitchView">
+        <!--中间的小滑块的 左边的颜色，开关处于点亮的状态的颜色-->
+        <attr name="sv_lightColor" format="color" />
+        <!--中间的小滑块的 右边的颜色，开关处于关闭的状态的颜色-->
+        <attr name="sv_darkColor" format="color" />
+        <!--中间的消化快的颜色-->
+        <attr name="sv_circleSlideColor" format="color" />
+        <!--中间的小滑块占 开关控件的 高度比例-->
+        <attr name="sv_circleSlideScale" format="float" />
+        <!--当前开关的状态，处于打开-->
+        <attr name="sv_isOpened" format="boolean" />
+        <attr name="sv_openDuration" format="integer" />
+        <attr name="sv_closeDuration" format="integer" />
+    </declare-styleable>
+
+    <declare-styleable name="SearchView">
+        <!--背景颜色-->
+        <attr name="bg_color" format="color" />
+        <!--搜索logo图片-->
+        <attr name="logo" format="reference"/>
+        <!--提示文字-->
+        <attr name="hint" format="string"/>
+        <!--提示文字颜色-->
+        <attr name="hintColor" format="color"/>
+        <!--输入文字颜色-->
+        <attr name="TextColor" format="color"/>
+    </declare-styleable>
+
+    <declare-styleable name="RoundLayout">
+        <attr name="roundLayoutRadius" format="integer"/>
+    </declare-styleable>
+</resources>

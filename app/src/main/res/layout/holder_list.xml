@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/rl_hfocus_content"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <ImageView
+        android:id="@+id/iv_focus_hpic"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scaleType="centerCrop"
+        android:background="@mipmap/timg"/>
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="5dp"
+        android:layout_marginTop="5dp"
+        android:orientation="horizontal"
+        android:paddingRight="10dp"
+        android:paddingLeft="10dp"
+        android:paddingTop="3dp"
+        android:paddingBottom="3dp"
+        android:background="@drawable/corner_ht97">
+        <ImageView
+            android:layout_width="10dp"
+            android:layout_height="10dp"
+            android:scaleType="centerCrop"
+            android:src="@mipmap/icon_shandian"
+            android:layout_gravity="center_vertical"/>
+        <TextView
+            android:id="@+id/tv_focus_price"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:layout_marginLeft="3dp"
+            android:text="10币/分钟"
+            android:textSize="10dp"
+            android:textColor="@color/white"/>
+    </LinearLayout>
+
+
+    <LinearLayout
+        android:id="@+id/ll_hlist_line1"
+        android:layout_width="match_parent"
+        android:layout_height="20dp"
+        android:layout_alignParentBottom="true"
+        android:paddingLeft="9dp"
+        android:paddingRight="9dp"
+        android:layout_marginBottom="13dp">
+        <TextView
+            android:id="@+id/tv_focus_mark"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="5dp"
+            android:text="今晚的风真的喧嚣"
+            android:textSize="14dp"
+            android:textColor="@color/white"
+            android:singleLine="true"/>
+        <TextView
+            android:id="@+id/tv_focus_online"
+            android:layout_width="wrap_content"
+            android:layout_height="15dp"
+            android:gravity="center"
+            android:paddingLeft="6dp"
+            android:paddingRight="6dp"
+
+            android:text="在线"
+            android:textSize="10dp"
+            android:textColor="@color/white"
+            android:background="@drawable/corner_p62"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/ll_hlist_line1"
+        android:layout_marginBottom="1dp"
+        android:paddingLeft="9dp"
+        android:paddingRight="9dp"
+        android:orientation="horizontal">
+        <TextView
+            android:id="@+id/tv_focus_nick"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="田晓璐"
+            android:textSize="20dp"
+            android:textColor="@color/white"
+            android:singleLine="true"/>
+        <TextView
+            android:id="@+id/tv_focus_work"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp"
+            android:paddingTop="2dp"
+            android:paddingBottom="2dp"
+            android:text="护士"
+            android:textSize="10dp"
+            android:textColor="@color/white"
+            android:background="@drawable/corner_p62"/>
+    </LinearLayout>
+
+</RelativeLayout>

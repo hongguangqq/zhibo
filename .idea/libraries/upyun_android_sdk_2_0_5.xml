@@ -1,0 +1,12 @@
+<component name="libraryTable">
+  <library name="upyun-android-sdk-2.0.5">
+    <CLASSES>
+      <root url="file://$PROJECT_DIR$/app/build/intermediates/exploded-aar/com.upyun/upyun-android-sdk/2.0.5/res" />
+      <root url="jar://$PROJECT_DIR$/app/build/intermediates/exploded-aar/com.upyun/upyun-android-sdk/2.0.5/jars/classes.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES>
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.upyun/upyun-android-sdk/2.0.5/b7d9574c4122a2109a75b6d11e47d0ada5542511/upyun-android-sdk-2.0.5-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>

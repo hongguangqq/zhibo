@@ -1,0 +1,147 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.jyt.baseapp.view.activity.LaunchActivity">
+    <LinearLayout
+        android:id="@+id/ro_launch"
+        android:layout_width="match_parent"
+        android:layout_marginTop="50dp"
+        android:layout_marginLeft="12dp"
+        android:layout_marginRight="12dp"
+        android:layout_height="270dp"
+        android:orientation="vertical"
+        android:background="@drawable/corner12">
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="50dp"
+            android:layout_gravity="center_horizontal"
+            android:src="@mipmap/icon_guaduan_big"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:layout_gravity="center_horizontal"
+            android:text="通话结束"
+            android:textSize="25dp"
+            android:textColor="@color/white"/>
+        <TextView
+            android:id="@+id/tv_endcall_time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:layout_gravity="center_horizontal"
+            android:text="通话时长 30:00"
+            android:textSize="15dp"
+            android:textColor="@color/white"/>
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginTop="32dp"
+            android:layout_marginLeft="17dp"
+            android:layout_marginRight="17dp"
+            android:background="#64FFFFFF"/>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="25dp"
+            android:layout_marginLeft="17dp"
+            android:layout_marginRight="17dp"
+            android:orientation="horizontal">
+
+            <LinearLayout
+                android:id="@+id/ll_endcall_g"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+                <ImageView
+                    android:layout_width="38dp"
+                    android:layout_height="38dp"
+                    android:src="@mipmap/icon_bi"/>
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:orientation="vertical">
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="礼物结算"
+                        android:textSize="15dp"
+                        android:textColor="#83FFFFFF"/>
+                    <TextView
+                        android:id="@+id/tv_endcall_gmoney"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="获得金币 600"
+                        android:textSize="15dp"
+                        android:textColor="@color/white"/>
+                </LinearLayout>
+            </LinearLayout>
+
+            <View
+                android:layout_width="0dp"
+                android:layout_height="1dp"
+                android:layout_weight="1"/>
+
+            <LinearLayout
+                android:id="@+id/ll_endcall_c"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+                <ImageView
+                    android:layout_width="38dp"
+                    android:layout_height="38dp"
+                    android:src="@mipmap/icon_bi"/>
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:orientation="vertical">
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="聊天结算"
+                        android:textSize="15dp"
+                        android:textColor="#83FFFFFF"/>
+                    <TextView
+                        android:id="@+id/tv_endcall_cmoney"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="获得金币 1000"
+                        android:textSize="15dp"
+                        android:textColor="@color/white"/>
+                </LinearLayout>
+            </LinearLayout>
+
+
+        </LinearLayout>
+    </LinearLayout>
+
+    <Button
+        android:id="@+id/btn_endcall_back"
+        android:layout_below="@+id/ro_launch"
+        android:layout_centerHorizontal="true"
+        android:layout_width="351dp"
+        android:layout_height="95dp"
+        android:layout_marginTop="28dp"
+        android:gravity="center"
+        android:text="返回首页"
+        android:textSize="16dp"
+        android:textColor="@color/white"
+        android:background="@drawable/corner12"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="15dp"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:text="请勿散播色情、暴力、反动言论"
+        android:textSize="15dp"
+        android:textColor="@color/white"/>
+</RelativeLayout>

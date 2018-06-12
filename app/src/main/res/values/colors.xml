@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#3F51B5</color>
+    <color name="colorPrimaryDark">#303F9F</color>
+    <color name="colorAccent">#FF4081</color>
+
+    <color name="transparent">#00000000</color>
+    <color name="gray">#cccccc</color>
+    <color name="divider">#e5e5e5</color>
+    <color name="background">#f1f4f8</color>
+    <color name="white">#FFFFFF</color>
+    <color name="black">#000</color>red
+    <color name="red">#000</color>
+
+    <color name="disableColor">#9a9a9a</color>
+    <color name="enableColor">#00a3e9</color>
+
+
+    <color name="et_hint1">#21FFFFFF</color>
+    <color name="et_hint2">#66FFFFFF</color>
+    <color name="et_hint3">#E0E0E0 </color>
+
+    <color name="btn_press">#FF2EB4</color>
+    <color name="btn_normal">#FF6CC4</color>
+    <color name="text_press">#FF7799</color>
+    <color name="bg_content">#494949</color>
+    <color name="bg_color1">#5C5B5B </color>
+
+    <color name="tab_bg">#343434</color>
+    <color name="tab_sel">#FF2EB4</color>
+    <color name="tab_no">#BFBFBF</color>
+
+    <color name="text_col1">#717171</color>
+    <color name="text_col2">#AAAAAA</color>
+    <color name="line_color1">#646464</color>
+    <color name="line_color2">#B2B2B2</color>
+
+    <color name="sel_off">#5C5C5C</color>
+    <color name="sel_on">#F53D3D</color>
+    <color name="picker_city">#FFE60012</color>
+
+
+
+</resources>
