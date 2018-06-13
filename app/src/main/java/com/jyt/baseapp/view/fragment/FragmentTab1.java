@@ -82,6 +82,7 @@ public class FragmentTab1 extends BaseFragment {
     LinearLayout mLlHotParent;
     @BindView(R.id.ll_tab1_themeParent)
     LinearLayout mLlThemeParent;
+    private boolean mWorking = true;
 
     private static final int HandLer_Net_Bunner=100;
     private static final int HandLer_Net_List=101;
@@ -429,11 +430,13 @@ public class FragmentTab1 extends BaseFragment {
 
         @Override
         public void run() {
-            int currentItem = mvpNews.getCurrentItem();
-            currentItem++;
-            mvpNews.setCurrentItem(currentItem);
-            //延迟3秒，继续发消息,实现内循环
-            BaseUtil.getHandle().postDelayed(this, 3000);
+            if (mWorking){
+                int currentItem = mvpNews.getCurrentItem();
+                currentItem++;
+                mvpNews.setCurrentItem(currentItem);
+                //延迟3秒，继续发消息,实现内循环
+                BaseUtil.getHandle().postDelayed(this, 3000);
+            }
         }
     }
 
@@ -492,5 +495,8 @@ public class FragmentTab1 extends BaseFragment {
         super.onDestroy();
         mTab1Model.onDestroy();
         getActivity().unregisterReceiver(mReceiver);
+        if (mWorking){
+            mWorking=false;
+        }
     }
 }

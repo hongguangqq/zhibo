@@ -3,13 +3,21 @@ package com.jyt.baseapp.view.activity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.View;
 
 import com.jyt.baseapp.R;
 import com.jyt.baseapp.adapter.NewAdapter;
+import com.jyt.baseapp.api.BeanCallback;
+import com.jyt.baseapp.bean.AppointBean;
+import com.jyt.baseapp.bean.BaseJson;
 import com.jyt.baseapp.bean.Tuple;
 import com.jyt.baseapp.helper.IntentHelper;
 import com.jyt.baseapp.itemDecoration.RecycleViewDivider;
+import com.jyt.baseapp.model.AppointModel;
+import com.jyt.baseapp.model.impl.AppointModelImpl;
+import com.jyt.baseapp.view.dialog.IPhoneDialog;
+import com.jyt.baseapp.view.viewholder.NewViewHolder5;
 import com.lcodecore.tkrefreshlayout.TwinklingRefreshLayout;
 
 import java.util.ArrayList;
@@ -24,11 +32,13 @@ public class NewsActivity extends BaseMCVActivity {
     RecyclerView mRvContent;
     @BindView(R.id.trl_tabnew)
     TwinklingRefreshLayout mTrlLoad;
+
+
     private int mCode;
-
-
+    private AppointModel mAppointModel;
     private NewAdapter mAdapter;
-    private List<String> mDataList;
+    private List mDataList;
+
 
     @Override
     protected int getLayoutId() {
@@ -50,6 +60,19 @@ public class NewsActivity extends BaseMCVActivity {
     }
 
     private void init() {
+        setvMainBackgroundColor(R.color.bg_content);
+        mAppointModel = new AppointModelImpl();
+        mAdapter = new NewAdapter(mCode);
+        mDataList = new ArrayList<>();
+
+    }
+
+    private void initSetting() {
+        mTrlLoad.setEnableLoadmore(false);//不可上拉加载更多
+        mRvContent.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false));
+        mRvContent.addItemDecoration(new RecycleViewDivider(getActivity(), LinearLayoutManager.VERTICAL, 1, getResources().getColor(R.color.line_color2)));
+        mAdapter.setDataList(mDataList);
+        mRvContent.setAdapter(mAdapter);
         switch (mCode){
             case 1:
                 setTextTitle("好友消息");
@@ -65,23 +88,53 @@ public class NewsActivity extends BaseMCVActivity {
                 break;
             case 5:
                 setTextTitle("我的预约");
+                mAppointModel.getMyOrder(new BeanCallback<BaseJson<List<AppointBean>>>() {
+                    @Override
+                    public void response(boolean success, BaseJson<List<AppointBean>> response, int id) {
+                        if (success && response.getCode()==200){
+                            mDataList = response.getData();
+                            mAdapter.notifyData(mDataList);
+                        }
+                    }
+                });
                 break;
 
         }
-        setvMainBackgroundColor(R.color.bg_content);
-        mAdapter = new NewAdapter(mCode);
-        mDataList = new ArrayList<>();
-        mDataList.add("");
-        mDataList.add("");
-        mDataList.add("");
-        mDataList.add("");
+        mAdapter.setOnAppointListener(new NewViewHolder5.OnAppointListener() {
+            @Override
+            public void CallBack(int id) {
+
+            }
+
+            @Override
+            public void CancelOrder(final int id) {
+                IPhoneDialog dialog = new IPhoneDialog(NewsActivity.this);
+                dialog.setTitle("确认取消?");
+                dialog.setInputShow(false);
+                dialog.setOnIPhoneClickListener(new IPhoneDialog.OnIPhoneClickListener() {
+                    @Override
+                    public void ClickSubmit(boolean isShow, String input) {
+                        mAppointModel.CancelOrder(id, new BeanCallback() {
+                            @Override
+                            public void response(boolean success, Object response, int id) {
+
+                            }
+                        });
+                    }
+
+                    @Override
+                    public void ClickCancel() {
+                        Log.e("@#","ClickCancel");
+                    }
+                });
+                dialog.show();
+            }
+        });
     }
 
-    private void initSetting() {
-        mTrlLoad.setEnableLoadmore(false);//不可上拉加载更多
-        mRvContent.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false));
-        mRvContent.addItemDecoration(new RecycleViewDivider(getActivity(), LinearLayoutManager.VERTICAL, 1, getResources().getColor(R.color.line_color2)));
-        mAdapter.setDataList(mDataList);
-        mRvContent.setAdapter(mAdapter);
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        mAppointModel.onDestroy();
     }
 }

@@ -24,6 +24,7 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.jyt.baseapp.App;
 import com.jyt.baseapp.R;
 import com.jyt.baseapp.adapter.ComAdapter;
 import com.jyt.baseapp.api.Const;
@@ -35,6 +36,7 @@ import com.jyt.baseapp.view.dialog.RecordDialog;
 import com.jyt.baseapp.view.viewholder.ComMeViewHolder;
 import com.jyt.baseapp.view.viewholder.ComOtherViewHolder;
 import com.linchaolong.android.imagepicker.ImagePicker;
+import com.squareup.leakcanary.RefWatcher;
 
 import java.io.File;
 import java.io.IOException;
@@ -206,8 +208,9 @@ public class CommunicationActivity extends BaseMCVActivity {
         mImagePicker = new ImagePicker();
 
 
-
     }
+
+
 
     private void initSetting(){
         mComAdapter.setDataList(mMessageList);
@@ -255,37 +258,46 @@ public class CommunicationActivity extends BaseMCVActivity {
 
             }
         });
+//        RongIMClient.getInstance().setOnReceiveMessageListener(new RongIMClient.OnReceiveMessageListener() {
+//            @Override
+//            public boolean onReceived(final Message message, int i) {
+//                mHandler.post(new Runnable() {
+//                    @Override
+//                    public void run() {
+//                        mMessageList.add(message);
+//                        mComAdapter.notifyData(mMessageList);
+//                        mRvContent.scrollToPosition(mMessageList.size());
+//                    }
+//                });
+//                return false;
+//            }
+//        });
 
-        RongIMClient.getInstance().setOnReceiveMessageListener(new RongIMClient.OnReceiveMessageListener() {
+        mComAdapter.setOnMeVoicePlayListener(new ComMeViewHolder.OnMePlayListener() {
             @Override
-            public boolean onReceived(final Message message, int i) {
-                mHandler.post(new Runnable() {
-                    @Override
-                    public void run() {
-                        mMessageList.add(message);
-                        mComAdapter.notifyData(mMessageList);
-                        mRvContent.scrollToPosition(mMessageList.size()-1);
-                    }
-                });
-                return false;
+            public void PlayVoice(Uri uri) {
+                isPlayAudio = true;
+                String path = BaseUtil.getRealFilePath(CommunicationActivity.this,uri);
+                startPlay(path);
+            }
+
+            @Override
+            public void ShowImg(String path) {
+                IntentHelper.openBrowseImagesActivity(CommunicationActivity.this,path);
             }
         });
 
-        mComAdapter.setOnMeVoicePlayListener(new ComMeViewHolder.OnVoicePlayListener() {
+        mComAdapter.setOnOtherVoicePlayListener(new ComOtherViewHolder.OnOtherPlayListener() {
             @Override
             public void PlayVoice(Uri uri) {
                 isPlayAudio = true;
                 String path = BaseUtil.getRealFilePath(CommunicationActivity.this,uri);
                 startPlay(path);
             }
-        });
 
-        mComAdapter.setOnOtherVoicePlayListener(new ComOtherViewHolder.OnVoicePlayListener() {
             @Override
-            public void PlayVoice(Uri uri) {
-                isPlayAudio = true;
-                String path = BaseUtil.getRealFilePath(CommunicationActivity.this,uri);
-                startPlay(path);
+            public void ShowImg(String path) {
+                IntentHelper.openBrowseImagesActivity(CommunicationActivity.this,path);
             }
         });
 
@@ -678,5 +690,13 @@ public class CommunicationActivity extends BaseMCVActivity {
         if (mAudioFile!=null){
             mAudioFile.delete();
         }
+        if (mediaPlayer!=null){
+            mediaPlayer.stop();
+            mediaPlayer.reset();
+            mediaPlayer.release();
+            mediaPlayer=null;
+        }
+        RefWatcher refWatcher = App.getRefWatcher(this);//1
+        refWatcher.watch(this);
     }
 }

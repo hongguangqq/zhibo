@@ -45,5 +45,9 @@ public class Path {
     public static final String GetFansList = BasePath+"/chat/user/followMeList";
     public static final String FeedBack = BasePath+"/chat/user/saveSuggestion";
     public static final String RongYunPath = "http://api.cn.ronghub.com/user/getToken.json";
+    public static final String InsertAppointment = BasePath + "/chat/sub/insertAppointment";
+    public static final String MaleAppointmentList = BasePath + "/chat/sub/userAppointmentList";
+    public static final String FemaleAppointmentList = BasePath + "/chat/sub/anchorAppointmentList";
+    public static final String DeleteAppoint = BasePath + "/chat/sub/deleteAppoint";
 
 }

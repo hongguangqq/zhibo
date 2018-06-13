@@ -18,4 +18,6 @@ public interface TabModel extends BaseModel{
     void getListData(int code ,int page, int size, Callback callback);
 
 
+
+
 }

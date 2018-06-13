@@ -38,6 +38,7 @@ public class NewAdapter  extends BaseRcvAdapter{
                 return holder4;
             case 5:
                 NewViewHolder5 holder5 = new NewViewHolder5(parent);
+                holder5.setOnAppointListener(mOnAppointListener);
                 return holder5;
         }
         return null;
@@ -46,5 +47,10 @@ public class NewAdapter  extends BaseRcvAdapter{
     private NewViewHolder2.OnOpenVideoListener mOpenVideoListener;
     public void setsetOnOpenVideoListener(NewViewHolder2.OnOpenVideoListener listener){
         this.mOpenVideoListener = listener;
+    }
+
+    private NewViewHolder5.OnAppointListener  mOnAppointListener;
+    public void setOnAppointListener(NewViewHolder5.OnAppointListener listener){
+        this.mOnAppointListener = listener;
     }
 }

@@ -68,23 +68,32 @@ public class ComMeViewHolder extends BaseViewHolder<Message> {
                 }
             });
         } else if ("RC:ImgMsg".equals(data.getObjectName())) {
-            ImageMessage imageMessage = (ImageMessage) data.getContent();
+            final ImageMessage imageMessage = (ImageMessage) data.getContent();
             mIvSan.setVisibility(View.GONE);
             mIvImg.setVisibility(View.VISIBLE);
             mTvText.setVisibility(View.GONE);
             mLlVoice.setVisibility(View.GONE);
             Glide.with(BaseUtil.getContext()).load(imageMessage.getLocalUri()).into(mIvImg);
+            mIvImg.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    if (PlayListener!=null){
+                        PlayListener.ShowImg(imageMessage.getLocalUri().getPath());
+                    }
+                }
+            });
         }
     }
 
 
-    private OnVoicePlayListener PlayListener;
+    private OnMePlayListener PlayListener;
 
-    public void setOnVoicePlayListener(OnVoicePlayListener listener) {
+    public void setOnMePlayListener(OnMePlayListener listener) {
         this.PlayListener = listener;
     }
 
-    public interface OnVoicePlayListener {
+    public interface OnMePlayListener {
         void PlayVoice(Uri uri);
+        void ShowImg(String path);
     }
 }

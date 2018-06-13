@@ -39,6 +39,15 @@
     </item>
     <item
         is-multidex="false"
+        jar="E:\Android\Projects\Projects\zhibo\app\build\intermediates\exploded-aar\com.netease.nimlib\basesdk\4.4.0\jars\classes.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="27.0.0"
+        sha1="e13210acc7f26fcb015e4753c462acd75815cc58">
+        <dex dex="E:\Android\Projects\Projects\zhibo\app\build\intermediates\pre-dexed\debug\com.netease.nimlib-basesdk-4.4.0_67ae36248ec4fd806c0d62314a6f475033486ea4.jar" />
+    </item>
+    <item
+        is-multidex="false"
         jar="E:\Android\Projects\Projects\zhibo\app\build\intermediates\exploded-aar\com.android.support\transition\26.1.0\jars\classes.jar"
         jumboMode="false"
         optimize="true"
@@ -228,6 +237,15 @@
     </item>
     <item
         is-multidex="false"
+        jar="C:\Users\Administrator\.gradle\caches\modules-2\files-2.1\com.squareup.haha\haha\2.0.3\640a438d2d415c056ca6a673ac26b183b044e160\haha-2.0.3.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="27.0.0"
+        sha1="640a438d2d415c056ca6a673ac26b183b044e160">
+        <dex dex="E:\Android\Projects\Projects\zhibo\app\build\intermediates\pre-dexed\debug\haha-2.0.3_02c885a6c8edb0ef36625a4d869b76ce170a5c46.jar" />
+    </item>
+    <item
+        is-multidex="false"
         jar="E:\Android\Projects\Projects\zhibo\app\build\intermediates\exploded-aar\tv.danmaku.ijk.media\ijkplayer-armv7a\0.8.4\jars\classes.jar"
         jumboMode="false"
         optimize="true"
@@ -243,6 +261,15 @@
         revision="27.0.0"
         sha1="f3316e923e487c407f8206ebee47f9dd934c6318">
         <dex dex="E:\Android\Projects\Projects\zhibo\app\build\intermediates\pre-dexed\debug\ShareSDK-QQ-3.2.0_ced18f61c32ffe485d6afb88f5a4ea820a540d8a.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="C:\Users\Administrator\.gradle\caches\modules-2\files-2.1\com.squareup.leakcanary\leakcanary-analyzer\1.5\3277b0b0c2ace34a2edb5ddf9d1f67829561fb8f\leakcanary-analyzer-1.5.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="27.0.0"
+        sha1="3277b0b0c2ace34a2edb5ddf9d1f67829561fb8f">
+        <dex dex="E:\Android\Projects\Projects\zhibo\app\build\intermediates\pre-dexed\debug\leakcanary-analyzer-1.5_1c9538df116ffddb5272c7355d65a1d2955ff7ca.jar" />
     </item>
     <item
         is-multidex="false"
@@ -273,6 +300,15 @@
     </item>
     <item
         is-multidex="false"
+        jar="E:\Android\Projects\Projects\zhibo\app\build\intermediates\exploded-aar\com.netease.nimlib\avchat\4.4.0\jars\classes.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="27.0.0"
+        sha1="6032df8b319d6c99a2cd9a392259e5c65ab1a091">
+        <dex dex="E:\Android\Projects\Projects\zhibo\app\build\intermediates\pre-dexed\debug\com.netease.nimlib-avchat-4.4.0_39ac2e9dd9ca4cb13872f91ba7f8cfbfe8424957.jar" />
+    </item>
+    <item
+        is-multidex="false"
         jar="E:\Android\Projects\Projects\zhibo\app\build\intermediates\exploded-aar\zhibo\IMLib\unspecified\jars\libs\Rong_IMLib.jar"
         jumboMode="false"
         optimize="true"
@@ -297,6 +333,15 @@
         revision="27.0.0"
         sha1="9e9eeaf9948ee4d6c3ab354e8dc14368f16994a4">
         <dex dex="E:\Android\Projects\Projects\zhibo\app\build\intermediates\pre-dexed\debug\glide-3.7.0_1f3ddf859a86296da03fddcf50d19f29d652df81.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="E:\Android\Projects\Projects\zhibo\app\build\intermediates\exploded-aar\com.netease.nimlib\nrtc\4.4.0\jars\libs\video_effect.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="27.0.0"
+        sha1="3a163c779e00aebcb3f862ad58e6a5f7516e6976">
+        <dex dex="E:\Android\Projects\Projects\zhibo\app\build\intermediates\pre-dexed\debug\video_effect_7dcda93e653daff542d5b235da23024fac431a32.jar" />
     </item>
     <item
         is-multidex="false"
@@ -408,6 +453,15 @@
     </item>
     <item
         is-multidex="false"
+        jar="E:\Android\Projects\Projects\zhibo\app\build\intermediates\exploded-aar\com.netease.nimlib\nrtc\4.4.0\jars\libs\nrtc-sdk.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="27.0.0"
+        sha1="922b57715c0339a64558370efb97d43c9f7e1d69">
+        <dex dex="E:\Android\Projects\Projects\zhibo\app\build\intermediates\pre-dexed\debug\nrtc-sdk_0345a58c98be0635b9b756d163d981d2c0e50d07.jar" />
+    </item>
+    <item
+        is-multidex="false"
         jar="C:\Users\Administrator\.gradle\caches\modules-2\files-2.1\cn.sharesdk\ShareSDK-Wechat-Core\3.2.0\856b1c7112333bd634e7dd49113228d85fbf391b\ShareSDK-Wechat-Core-3.2.0.jar"
         jumboMode="false"
         optimize="true"
@@ -450,6 +504,15 @@
         revision="27.0.0"
         sha1="93ea828efc2138f53d966e635d693ccec8479a94">
         <dex dex="E:\Android\Projects\Projects\zhibo\app\build\intermediates\pre-dexed\debug\zhibo-IMLib-unspecified_84e109227798cdc848f143838c22abd660a1f8e6.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="C:\Users\Administrator\.gradle\caches\modules-2\files-2.1\com.squareup.leakcanary\leakcanary-watcher\1.5\288101b16513158c2923ad3fb6161d1452b65e73\leakcanary-watcher-1.5.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="27.0.0"
+        sha1="288101b16513158c2923ad3fb6161d1452b65e73">
+        <dex dex="E:\Android\Projects\Projects\zhibo\app\build\intermediates\pre-dexed\debug\leakcanary-watcher-1.5_34a203fec755c3a4cf8b68e6158267ab4379fd5b.jar" />
     </item>
     <item
         is-multidex="false"
@@ -504,6 +567,15 @@
         revision="27.0.0"
         sha1="d1ab92de56263aaa9d16e4507190af7618fde0d5">
         <dex dex="E:\Android\Projects\Projects\zhibo\app\build\intermediates\pre-dexed\debug\MobCommons-2018.0523.1925_18af9637e66121e44a7df408edb85da78b21c79b.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="E:\Android\Projects\Projects\zhibo\app\build\intermediates\exploded-aar\com.squareup.leakcanary\leakcanary-android\1.5\jars\classes.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="27.0.0"
+        sha1="c7a2672b3122b897a0751f327929ae405ea02bf7">
+        <dex dex="E:\Android\Projects\Projects\zhibo\app\build\intermediates\pre-dexed\debug\com.squareup.leakcanary-leakcanary-android-1.5_d819d17ee403ab5f89ec60e3ca4d6309cdbc39bc.jar" />
     </item>
     <item
         is-multidex="false"

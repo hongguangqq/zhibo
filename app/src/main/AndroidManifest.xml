@@ -23,6 +23,23 @@
     <uses-feature android:name="android.hardware.camera"/>
     <uses-feature android:name="android.hardware.camera.autofocus"/>
 
+    <uses-permission android:name="android.permission.FLASHLIGHT" />
+    <uses-permission android:name="android.permission.BLUETOOTH" />
+    <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
+    <uses-permission android:name="android.permission.MODIFY_AUDIO_SETTINGS"/>
+    <uses-permission android:name="android.permission.BROADCAST_STICKY"/>
+    <uses-feature android:name="android.hardware.camera" />
+    <uses-feature android:name="android.hardware.camera.autofocus" />
+    <uses-feature android:glEsVersion="0x00020000" android:required="true" />
+
+    <!-- SDK 权限申明, 第三方 APP 接入时，请将 com.netease.nim.demo 替换为自己的包名 -->
+    <!-- 和下面的 uses-permission 一起加入到你的 AndroidManifest 文件中。 -->
+    <permission
+        android:name="com.netease.nim.demo.permission.RECEIVE_MSG"
+        android:protectionLevel="signature"/>
+    <!-- 接收 SDK 消息广播权限， 第三方 APP 接入时，请将 com.netease.nim.demo 替换为自己的包名 -->
+    <uses-permission android:name="com.netease.nim.demo.permission.RECEIVE_MSG"/>
+
     <permission
         android:name="com.jyt.zhibo.permission.MIPUSH_RECEIVE"
         android:protectionLevel="signature"/> <!-- 这里com.xiaomi.mipushdemo改成app的包名 -->
@@ -117,6 +134,71 @@
             </intent-filter>
         </receiver>
 
+        <receiver
+            android:name=".receiver.SealNotificationReceiver"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="io.rong.push.intent.MESSAGE_ARRIVED" />
+                <action android:name="io.rong.push.intent.MI_MESSAGE_ARRIVED" />
+                <action android:name="io.rong.push.intent.MESSAGE_CLICKED" />
+                <action android:name="io.rong.push.intent.MI_MESSAGE_CLICKED" />
+                <action android:name="io.rong.push.intent.THIRD_PARTY_PUSH_STATE" />
+            </intent-filter>
+        </receiver>
+
+        <!--第三方相关,向第三方推送服务请求 token 的服务 -->
+        <!--<service-->
+            <!--android:name="io.rong.push.core.PushRegistrationService"-->
+            <!--android:exported="false"-->
+            <!--android:permission="android.permission.BIND_JOB_SERVICE">-->
+        <!--</service>-->
+
+
+        <!--&lt;!&ndash; 处理 push 消息相关的服务 &ndash;&gt;-->
+        <!--<service-->
+            <!--android:name="io.rong.push.core.MessageHandleService"-->
+            <!--android:exported="true"-->
+            <!--android:permission="android.permission.BIND_JOB_SERVICE">-->
+        <!--</service>-->
+
+
+        <!--&lt;!&ndash; push服务 &ndash;&gt;-->
+        <!--<service-->
+            <!--android:name="io.rong.push.PushService"-->
+            <!--android:exported="false"-->
+            <!--android:process="io.rong.push"-->
+            <!--android:permission="android.permission.BIND_JOB_SERVICE">  &lt;!&ndash; push进程，可以改名 &ndash;&gt;-->
+        <!--</service>-->
+
+
+        <!--&lt;!&ndash; push 相关事件接收器 &ndash;&gt;-->
+        <!--<receiver-->
+            <!--android:name="io.rong.push.PushReceiver"-->
+            <!--android:process="io.rong.push">-->
+            <!--&lt;!&ndash; 此处进程可以改名，名称需要和PushService所在进程统一 &ndash;&gt;-->
+
+            <!--&lt;!&ndash; 心跳事件 &ndash;&gt;-->
+            <!--<intent-filter>-->
+                <!--<action android:name="io.rong.push.intent.action.HEART_BEAT" />-->
+            <!--</intent-filter>-->
+            <!--&lt;!&ndash; 网络变动事件 &ndash;&gt;-->
+            <!--<intent-filter>-->
+                <!--<action android:name="android.net.conn.CONNECTIVITY_CHANGE" />-->
+            <!--</intent-filter>-->
+            <!--&lt;!&ndash; 部分用户事件 &ndash;&gt;-->
+            <!--<intent-filter>-->
+                <!--<action android:name="android.intent.action.BOOT_COMPLETED" />-->
+            <!--</intent-filter>-->
+            <!--<intent-filter>-->
+                <!--<action android:name="android.intent.action.USER_PRESENT" />-->
+                <!--<action android:name="android.intent.action.ACTION_POWER_CONNECTED" />-->
+                <!--<action android:name="android.intent.action.ACTION_POWER_DISCONNECTED" />-->
+            <!--</intent-filter>-->
+        <!--</receiver>-->
+
+        <!--必选： SDK 核心功能-->
+
+
         <activity android:name=".view.activity.entrance.LoginActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
@@ -205,7 +287,8 @@
         </activity>
         <activity android:name=".view.activity.CallActivity">
         </activity>
-        <activity android:name=".view.activity.CommunicationActivity">
+        <activity android:name=".view.activity.CommunicationActivity"
+            android:launchMode="singleTask">
         </activity>
     </application>
 

@@ -1,6 +1,7 @@
 package com.jyt.baseapp.view.activity;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.os.Handler;
@@ -14,6 +15,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.bigkoo.pickerview.OptionsPickerView;
 import com.jyt.baseapp.R;
 import com.jyt.baseapp.adapter.ItemAdapter;
 import com.jyt.baseapp.adapter.PagePropagandaAdapter;
@@ -27,7 +29,9 @@ import com.jyt.baseapp.bean.Tuple;
 import com.jyt.baseapp.bean.UserBean;
 import com.jyt.baseapp.helper.IntentHelper;
 import com.jyt.baseapp.itemDecoration.SpacesItemDecoration;
+import com.jyt.baseapp.model.AppointModel;
 import com.jyt.baseapp.model.PersonModel;
+import com.jyt.baseapp.model.impl.AppointModelImpl;
 import com.jyt.baseapp.model.impl.PersonModelImpl;
 import com.jyt.baseapp.util.BaseUtil;
 import com.jyt.baseapp.view.dialog.IPhoneDialog;
@@ -95,10 +99,14 @@ public class PersonActivity extends BaseMCVActivity {
     private MediaPlayer mediaPlayer;
     private boolean isPlayAudio;
     private PersonModel mPersonModel;
+    private AppointModel mAppointModel;
     private PersonBean mPersonData;
     private UserBean mUser;
     private int id;
     private int mPreviousPs;
+    private List<String> mHourList;
+    private List<ArrayList<String>> mMinuteList;
+    private OptionsPickerView mTimePickerView;
 
     private Handler mHandler = new Handler(){
         @Override
@@ -136,6 +144,8 @@ public class PersonActivity extends BaseMCVActivity {
         id = (int) tuple.getItem1();
         mPersonModel = new PersonModelImpl();
         mPersonModel.onStart(this);
+        mAppointModel = new AppointModelImpl();
+        mAppointModel.onStart(this);
         mDialog = new PersonDialog(this);
         mReportDialog = new IPhoneDialog(this);
         mReportDialog.setTitle("举报原因");
@@ -144,15 +154,56 @@ public class PersonActivity extends BaseMCVActivity {
         mVisitorAdapter = new VisitorAdapter();
         mItemAdapter = new ItemAdapter();
         mPropagandaList = new LinkedList<>();
+        mHourList = new ArrayList<>();
+        mMinuteList = new ArrayList<>();
 
-
-//        mPropagandaList.add(new PropagationBean(false,"http://asset.nos-eastchina1.126.net/test/31/469b73aca39e212d30dfcea4a3e6d96b.jpg"));
-//        mPropagandaList.add(new PropagationBean(true,"http://asset.nos-eastchina1.126.net/test/31/4782.mp4"));
-//        mPropagandaList.add(new PropagationBean(false,"http://asset.nos-eastchina1.126.net/test/31/469b73aca39e212d30dfcea4a3e6d96b.jpg"));
-//        mPropagandaList.add(new PropagationBean(false,"http://asset.nos-eastchina1.126.net/test/31/469b73aca39e212d30dfcea4a3e6d96b.jpg"));
-        mPropagandaAdapter = new PagePropagandaAdapter(this, mPropagandaList);
+        for (int i = 0; i < 25; i++) {
+            mHourList.add(String.valueOf(i));
+            ArrayList<String> list = new ArrayList<>();
+            if (i!=24){
+                for (int j = 0; j < 60; j++) {
+                    list.add(String.valueOf(j));
+                }
+            }else {
+                list.add(String.valueOf(0));
+            }
+            mMinuteList.add(list);
+        }
         mVisitorList = new ArrayList<>();
         mItemList= new ArrayList<>();
+        mPropagandaAdapter = new PagePropagandaAdapter(this, mPropagandaList);
+        mTimePickerView = new OptionsPickerView.Builder(this, new OptionsPickerView.OnOptionsSelectListener() {
+            @Override
+            public void onOptionsSelect(int options1, int options2, int options3, View v) {
+                int hour = Integer.valueOf(mHourList.get(options1));
+                int minute = Integer.valueOf(mMinuteList.get(options1).get(options2));
+                int timelength = hour*60+minute;
+                if (timelength>0){
+                    mAppointModel.MakeAppointment(mUser.getId(), timelength, new BeanCallback<BaseJson>() {
+                        @Override
+                        public void response(boolean success, BaseJson response, int id) {
+                            if (success && response.getCode()==200){
+                                BaseUtil.makeText("预约成功");
+                            }
+                        }
+                    });
+                }
+
+            }}).setSubmitText("确定")//确定按钮文字
+                .setCancelText("取消")//取消按钮文字
+                .setTitleText("预约")//标题
+                .setSubCalSize(18)//确定和取消文字大小
+                .setTitleSize(20)//标题文字大小
+                .setTitleColor(Color.WHITE)//标题文字颜色
+                .setSubmitColor(Color.WHITE)//确定按钮文字颜色
+                .setCancelColor(Color.WHITE)//取消按钮文字颜色
+                .setTitleBgColor(getResources().getColor(R.color.picker_city))//标题背景颜色 Night mode
+                .setBgColor(getResources().getColor(R.color.white))//滚轮背景颜色 Night mode
+                .setContentTextSize(18)//滚轮文字大小
+                .setLabels("小时","分钟","")
+                .setLinkage(true)//设置是否联动，默认true
+                .build();
+        mTimePickerView.setPicker(mHourList,mMinuteList);
 
     }
 
@@ -365,6 +416,11 @@ public class PersonActivity extends BaseMCVActivity {
         IntentHelper.OpenCommunicationActivity(mUser.getId(),this);
     }
 
+    @OnClick(R.id.ll_person2)
+    public void setOrderTime(){
+        mTimePickerView.show();
+    }
+
     @OnClick(R.id.iv_person_more)
     public void Duang(){
         mDialog.show();
@@ -384,8 +440,8 @@ public class PersonActivity extends BaseMCVActivity {
     @Override
     protected void onPause() {
         super.onPause();
-        MediaPlayer mediaPlayer = mPropagandaAdapter.getMediaPlayer();
         if (mediaPlayer!=null){
+            MediaPlayer mediaPlayer = mPropagandaAdapter.getMediaPlayer();
             mediaPlayer.pause();
         }
     }
@@ -393,11 +449,14 @@ public class PersonActivity extends BaseMCVActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        MediaPlayer mediaPlayer = mPropagandaAdapter.getMediaPlayer();
-        if (mediaPlayer!=null && !TextUtils.isEmpty(mUser.getVideo())){
-            mPropagandaAdapter.showPlayLogo();
-            mPropagandaAdapter.setVideoData(mPropagandaList.get(1).getPath());
+        if (mPropagandaAdapter!=null){
+            MediaPlayer mediaPlayer = mPropagandaAdapter.getMediaPlayer();
+            if (mediaPlayer!=null && !TextUtils.isEmpty(mUser.getVideo())){
+                mPropagandaAdapter.showPlayLogo();
+                mPropagandaAdapter.setVideoData(mPropagandaList.get(1).getPath());
+            }
         }
+
     }
 
     /**
@@ -469,6 +528,7 @@ public class PersonActivity extends BaseMCVActivity {
     protected void onDestroy() {
         super.onDestroy();
         mPersonModel.onDestroy();
+        mAppointModel.onDestroy();
         mPropagandaAdapter.MediaPlayerDestory();
     }
 

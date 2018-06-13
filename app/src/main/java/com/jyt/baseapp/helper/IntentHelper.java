@@ -3,6 +3,7 @@ package com.jyt.baseapp.helper;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.net.Uri;
 import android.support.v4.app.Fragment;
 
 import com.jyt.baseapp.bean.SearchBean;
@@ -289,13 +290,24 @@ public class IntentHelper {
     }
 
     /**
-     * 浏览图片
+     * 浏览图片 By Path
      * @param context
      * @param image
      */
     public static void openBrowseImagesActivity(Context context ,String image){
         List images = new ArrayList();
         images.add(image);
+        openBrowseImagesActivity(context,images,0);
+    }
+
+    /**
+     * 浏览图片 By Uri
+     * @param context
+     * @param uri
+     */
+    public static void openBrowseImagesActivity(Context context ,Uri uri){
+        List images = new ArrayList();
+        images.add(uri);
         openBrowseImagesActivity(context,images,0);
     }
 

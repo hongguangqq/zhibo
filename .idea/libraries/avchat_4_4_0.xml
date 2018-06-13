@@ -1,0 +1,12 @@
+<component name="libraryTable">
+  <library name="avchat-4.4.0">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/app/build/intermediates/exploded-aar/com.netease.nimlib/avchat/4.4.0/jars/classes.jar!/" />
+      <root url="file://$PROJECT_DIR$/app/build/intermediates/exploded-aar/com.netease.nimlib/avchat/4.4.0/res" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES>
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.netease.nimlib/avchat/4.4.0/315dc60c8ce7c7583053196d3b6caf0bec15ae7d/avchat-4.4.0-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>

@@ -21,8 +21,8 @@ public class ComAdapter extends RecyclerView.Adapter<BaseViewHolder> {
     List<Message> dataList;
     BaseViewHolder.OnViewHolderClickListener onViewHolderClickListener;
     BaseViewHolder.OnViewHolderClickListener onViewHolderLongClickListener;
-    ComMeViewHolder.OnVoicePlayListener onMeVoicePlayListener;
-    ComOtherViewHolder.OnVoicePlayListener onOtherVoicePlayListener;
+    ComMeViewHolder.OnMePlayListener onMeVoicePlayListener;
+    ComOtherViewHolder.OnOtherPlayListener onOtherVoicePlayListener;
     private int Type_Me=1;
     private int Type_Other=2;
 
@@ -42,11 +42,11 @@ public class ComAdapter extends RecyclerView.Adapter<BaseViewHolder> {
         this.onViewHolderLongClickListener = onViewHolderLongClickListener;
     }
 
-    public void setOnMeVoicePlayListener(ComMeViewHolder.OnVoicePlayListener onMeVoicePlayListener){
+    public void setOnMeVoicePlayListener(ComMeViewHolder.OnMePlayListener onMeVoicePlayListener){
         this.onMeVoicePlayListener = onMeVoicePlayListener;
     }
 
-    public void setOnOtherVoicePlayListener(ComOtherViewHolder.OnVoicePlayListener onOtherVoicePlayListener){
+    public void setOnOtherVoicePlayListener(ComOtherViewHolder.OnOtherPlayListener onOtherVoicePlayListener){
         this.onOtherVoicePlayListener = onOtherVoicePlayListener;
     }
 
@@ -56,11 +56,11 @@ public class ComAdapter extends RecyclerView.Adapter<BaseViewHolder> {
 
         if (viewType==Type_Me){
             ComMeViewHolder holder = new ComMeViewHolder(parent);
-            holder.setOnVoicePlayListener(onMeVoicePlayListener);
+            holder.setOnMePlayListener(onMeVoicePlayListener);
             return holder;
         }else if (viewType==Type_Other){
            ComOtherViewHolder holder = new ComOtherViewHolder(parent);
-            holder.setOnVoicePlayListener(onOtherVoicePlayListener);
+            holder.setOnOtherPlayListener(onOtherVoicePlayListener);
             return holder;
         }
         return null;

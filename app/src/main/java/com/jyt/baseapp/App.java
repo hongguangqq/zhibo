@@ -1,18 +1,20 @@
 package com.jyt.baseapp;
 
 import android.app.ActivityManager;
-import android.app.Application;
 import android.content.Context;
 import android.graphics.Typeface;
 import android.os.Handler;
 import android.os.Message;
 import android.os.Process;
+import android.support.multidex.MultiDexApplication;
 import android.util.Log;
 
 import com.jyt.baseapp.api.Const;
 import com.jyt.baseapp.util.L;
 import com.orhanobut.hawk.Hawk;
 import com.orhanobut.hawk.LogInterceptor;
+import com.squareup.leakcanary.LeakCanary;
+import com.squareup.leakcanary.RefWatcher;
 import com.xiaomi.channel.commonutils.logger.LoggerInterface;
 import com.xiaomi.mipush.sdk.Logger;
 import com.xiaomi.mipush.sdk.MiPushClient;
@@ -32,18 +34,20 @@ import javax.net.ssl.TrustManager;
 import javax.net.ssl.X509TrustManager;
 
 import io.rong.imlib.RongIMClient;
+import io.rong.push.RongPushClient;
 import okhttp3.OkHttpClient;
 
 /**
  * Created by chenweiqi on 2017/10/30.
  */
 
-public class App  extends Application{
+public class App  extends MultiDexApplication {
 
 
     private static Context mcontext;
     private static Handler mhandler;
     private static int mainThreadid;
+    private RefWatcher refWatcher;
 
     public boolean isDebug() {
         return isDebug;
@@ -87,6 +91,9 @@ public class App  extends Application{
 //        MobSDK.init(this);
         initMiPush();
         initRY();
+        initNimLib();
+        refWatcher= setupLeakCanary();
+
 
     }
 
@@ -145,7 +152,32 @@ public class App  extends Application{
     }
 
     private void initRY(){
+        RongPushClient.registerMiPush(this,Const.MiAppID,Const.MiAppKey);
         RongIMClient.init(this);
+        RongIMClient.setOnReceiveMessageListener(new RongIMClient.OnReceiveMessageListener() {
+            @Override
+            public boolean onReceived(io.rong.imlib.model.Message message, int i) {
+                Log.e("@#","onReceived");
+                return false;
+            }
+        });
+    }
+
+    private void initNimLib(){
+
+    }
+
+//
+    private RefWatcher setupLeakCanary() {
+        if (LeakCanary.isInAnalyzerProcess(this)) {
+            return RefWatcher.DISABLED;
+        }
+        return LeakCanary.install(this);
+    }
+
+    public static RefWatcher getRefWatcher(Context context) {
+        App leakApplication = (App) context.getApplicationContext();
+        return leakApplication.refWatcher;
     }
 
     //通过判断手机里的所有进程是否有这个App的进程

@@ -169,6 +169,8 @@ public class PagePropagandaAdapter extends PagerAdapter {
 
     public void MediaPlayerDestory(){
         if (mMediaPlayer!=null){
+            mMediaPlayer.stop();
+            mMediaPlayer.reset();
             mMediaPlayer.release();
             mMediaPlayer = null;
         }

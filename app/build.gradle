@@ -18,6 +18,7 @@ android {
         targetSdkVersion 22
         versionCode 1
         versionName "1.0"
+        multiDexEnabled true
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
 
         ndk {
@@ -49,7 +50,7 @@ MobSDK {
         devInfo {
             Wechat {
                 appId "1106817451"
-                appSecret "CBLKB8aZ4Q17oxeu"
+                appSecret "b47f4c048d60dd44633dda8c305bcbba"
             }
             QQ {
                 appId "1106817451"
@@ -68,6 +69,7 @@ dependencies {
 
     //    compile 'cn.jiguang.sdk:jcore:1.1.7'  // 此处以JCore 1.1.7 版本为例。
     compile files('libs/nos-android-sdk-1.0.0.jar')
+    compile 'com.android.support:multidex:1.0.1'
     compile 'com.linchaolong.android:imagepicker:1.5'
     compile 'com.orhanobut:hawk:2.0.1'
     compile 'com.nex3z:flow-layout:0.1.2'
@@ -89,7 +91,17 @@ dependencies {
     compile 'com.android.support.constraint:constraint-layout:1.0.2'
     compile 'com.jzxiang.pickerview:TimePickerDialog:0.9.2'
     compile 'com.contrarywind:Android-PickerView:3.2.6'
+    debugCompile 'com.squareup.leakcanary:leakcanary-android:1.5'
+    releaseCompile 'com.squareup.leakcanary:leakcanary-android-no-op:1.5'
+    testCompile 'com.squareup.leakcanary:leakcanary-android-no-op:1.5'
+    // 基础功能 (必需)
+    compile 'com.netease.nimlib:basesdk:4.4.0'
+    // 音视频需要
+    compile 'com.netease.nimlib:nrtc:4.4.0'
+    // 音视频需要
+    compile 'com.netease.nimlib:avchat:4.4.0'
     compile project(':IMLib')
     testCompile 'junit:junit:4.12'
     annotationProcessor 'com.jakewharton:butterknife-compiler:8.5.1'
+
 }

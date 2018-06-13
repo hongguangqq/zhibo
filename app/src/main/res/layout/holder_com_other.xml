@@ -48,7 +48,7 @@
             android:paddingRight="8dp"
             android:paddingTop="13dp"
             android:paddingBottom="13dp"
-            android:src="@mipmap/icon_voice_play"
+            android:src="@mipmap/icon_voice_playr"
             android:background="@drawable/com_other"/>
         <TextView
             android:id="@+id/tv_other_second"
