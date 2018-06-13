@@ -120,6 +120,21 @@
                 <action android:name="com.xiaomi.push.PING_TIMER"/>
             </intent-filter>
         </receiver>
+
+        <receiver android:name="io.rong.push.platform.MiMessageReceiver" android:exported="true">
+            <intent-filter>
+                <action android:name="com.xiaomi.mipush.RECEIVE_MESSAGE" />
+            </intent-filter>
+            <intent-filter>
+                <action android:name="com.xiaomi.mipush.MESSAGE_ARRIVED" />
+            </intent-filter>
+            <intent-filter>
+                <action android:name="com.xiaomi.mipush.ERROR" />
+            </intent-filter>
+        </receiver>
+
+
+
         <receiver
             android:name=".receiver.DemoMessageReceiver"
             android:exported="true">
@@ -146,57 +161,8 @@
             </intent-filter>
         </receiver>
 
-        <!--第三方相关,向第三方推送服务请求 token 的服务 -->
-        <!--<service-->
-            <!--android:name="io.rong.push.core.PushRegistrationService"-->
-            <!--android:exported="false"-->
-            <!--android:permission="android.permission.BIND_JOB_SERVICE">-->
-        <!--</service>-->
 
-
-        <!--&lt;!&ndash; 处理 push 消息相关的服务 &ndash;&gt;-->
-        <!--<service-->
-            <!--android:name="io.rong.push.core.MessageHandleService"-->
-            <!--android:exported="true"-->
-            <!--android:permission="android.permission.BIND_JOB_SERVICE">-->
-        <!--</service>-->
-
-
-        <!--&lt;!&ndash; push服务 &ndash;&gt;-->
-        <!--<service-->
-            <!--android:name="io.rong.push.PushService"-->
-            <!--android:exported="false"-->
-            <!--android:process="io.rong.push"-->
-            <!--android:permission="android.permission.BIND_JOB_SERVICE">  &lt;!&ndash; push进程，可以改名 &ndash;&gt;-->
-        <!--</service>-->
-
-
-        <!--&lt;!&ndash; push 相关事件接收器 &ndash;&gt;-->
-        <!--<receiver-->
-            <!--android:name="io.rong.push.PushReceiver"-->
-            <!--android:process="io.rong.push">-->
-            <!--&lt;!&ndash; 此处进程可以改名，名称需要和PushService所在进程统一 &ndash;&gt;-->
-
-            <!--&lt;!&ndash; 心跳事件 &ndash;&gt;-->
-            <!--<intent-filter>-->
-                <!--<action android:name="io.rong.push.intent.action.HEART_BEAT" />-->
-            <!--</intent-filter>-->
-            <!--&lt;!&ndash; 网络变动事件 &ndash;&gt;-->
-            <!--<intent-filter>-->
-                <!--<action android:name="android.net.conn.CONNECTIVITY_CHANGE" />-->
-            <!--</intent-filter>-->
-            <!--&lt;!&ndash; 部分用户事件 &ndash;&gt;-->
-            <!--<intent-filter>-->
-                <!--<action android:name="android.intent.action.BOOT_COMPLETED" />-->
-            <!--</intent-filter>-->
-            <!--<intent-filter>-->
-                <!--<action android:name="android.intent.action.USER_PRESENT" />-->
-                <!--<action android:name="android.intent.action.ACTION_POWER_CONNECTED" />-->
-                <!--<action android:name="android.intent.action.ACTION_POWER_DISCONNECTED" />-->
-            <!--</intent-filter>-->
-        <!--</receiver>-->
-
-        <!--必选： SDK 核心功能-->
+<!--////////////////////////////////////////////////////////////////////////////////////-->
 
 
         <activity android:name=".view.activity.entrance.LoginActivity">

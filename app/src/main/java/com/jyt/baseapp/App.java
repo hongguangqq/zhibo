@@ -35,6 +35,7 @@ import javax.net.ssl.X509TrustManager;
 
 import io.rong.imlib.RongIMClient;
 import io.rong.push.RongPushClient;
+import io.rong.push.common.RongException;
 import okhttp3.OkHttpClient;
 
 /**
@@ -89,7 +90,7 @@ public class App  extends MultiDexApplication {
         }
         initUtil();
 //        MobSDK.init(this);
-        initMiPush();
+//        initMiPush();
         initRY();
         initNimLib();
         refWatcher= setupLeakCanary();
@@ -154,6 +155,12 @@ public class App  extends MultiDexApplication {
     private void initRY(){
         RongPushClient.registerMiPush(this,Const.MiAppID,Const.MiAppKey);
         RongIMClient.init(this);
+        try {
+            RongPushClient.checkManifest(this);
+        } catch (RongException e) {
+            e.printStackTrace();
+            Log.e("@#","ASD");
+        }
         RongIMClient.setOnReceiveMessageListener(new RongIMClient.OnReceiveMessageListener() {
             @Override
             public boolean onReceived(io.rong.imlib.model.Message message, int i) {
@@ -161,6 +168,7 @@ public class App  extends MultiDexApplication {
                 return false;
             }
         });
+
     }
 
     private void initNimLib(){

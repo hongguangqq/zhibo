@@ -34,6 +34,14 @@ android {
 //        ]
 //endregion
     }
+
+    sourceSets{
+        main{
+            jni.srcDirs = []
+            jniLibs.srcDirs=['src/main/libs']
+        }
+    }
+
     buildTypes {
         release {
             minifyEnabled false
@@ -103,5 +111,5 @@ dependencies {
     compile project(':IMLib')
     testCompile 'junit:junit:4.12'
     annotationProcessor 'com.jakewharton:butterknife-compiler:8.5.1'
-
+    compile files('libs/MiPush_SDK_Client_3_5_1.jar')
 }
