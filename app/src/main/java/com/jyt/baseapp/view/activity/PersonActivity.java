@@ -391,7 +391,7 @@ public class PersonActivity extends BaseMCVActivity {
                     if (success && response.getCode()==200){
                         mTvFocus.setText("未关注");
                         mPersonData.setFllow(false);
-                        sendBroadcast( new Intent().setAction(Const.Reciver_CODE1));
+                        sendBroadcast( new Intent().setAction(Const.Reciver_Tab1));
                     }
                 }
             });
@@ -403,7 +403,7 @@ public class PersonActivity extends BaseMCVActivity {
                     if (success && response.getCode()==200){
                         mTvFocus.setText("已关注");
                         mPersonData.setFllow(true);
-                        sendBroadcast( new Intent().setAction(Const.Reciver_CODE1));
+                        sendBroadcast( new Intent().setAction(Const.Reciver_Tab1));
                     }
                 }
             });

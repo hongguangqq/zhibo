@@ -243,7 +243,7 @@ public class FragmentTab1 extends BaseFragment {
         }
         mReceiver = new UpdataPicReceiver();
         IntentFilter filter = new IntentFilter();
-        filter.addAction(Const.Reciver_CODE1);
+        filter.addAction(Const.Reciver_Tab1);
         filter.setPriority(Integer.MAX_VALUE);
         getActivity().registerReceiver(mReceiver,filter);
     }
@@ -389,6 +389,7 @@ public class FragmentTab1 extends BaseFragment {
     @OnClick(R.id.tv_tab1_dynamic)
     public void OpenDynamicActivity(){
         IntentHelper.OpenDynamicActivity(getActivity());
+
     }
 
     @OnClick(R.id.ll_tab1_search)
@@ -441,35 +442,12 @@ public class FragmentTab1 extends BaseFragment {
     }
 
 
-    @Override
-    public void onResume() {
-        super.onResume();
-//        if (!isFirst){
-//            mTab1Model.getAllList(new BeanCallback<BaseJson<List<ListBean>>>() {
-//                @Override
-//                public void response(boolean success, BaseJson<List<ListBean>> response, int id) {
-//                    if(success){
-//                        if (response.getCode()==200){
-//
-//                            List<ListBean> data = response.getData();
-//                            Message msg = new Message();
-//                            msg.what=HandLer_Net_List;
-//                            msg.obj=data;
-//                            mHandler.sendMessage(msg);
-//                        }
-//                    }
-//
-//                }
-//            });
-//        }else {
-//            isFirst=false;
-//        }
-    }
+
 
     class UpdataPicReceiver extends BroadcastReceiver {
         @Override
         public void onReceive(Context context, Intent intent) {
-            if (Const.Reciver_CODE1.equals(intent.getAction())){
+            if (Const.Reciver_Tab1.equals(intent.getAction())){
                 mTab1Model.getAllList(new BeanCallback<BaseJson<List<ListBean>>>() {
                     @Override
                     public void response(boolean success, BaseJson<List<ListBean>> response, int id) {

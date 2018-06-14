@@ -41,7 +41,7 @@ public interface PersonModel extends BaseModel{
 
     void FeedBack(String img , String content ,Callback callback);
 
-    void GetRongID(Callback callback);
+
 
 
 

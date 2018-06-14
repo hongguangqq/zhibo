@@ -1,20 +1,16 @@
 package com.jyt.baseapp.model.impl;
 
 import android.content.Context;
-import android.util.Log;
 
 import com.jyt.baseapp.api.Const;
 import com.jyt.baseapp.api.Path;
 import com.jyt.baseapp.bean.UserBean;
 import com.jyt.baseapp.model.PersonModel;
-import com.jyt.baseapp.util.MD5Util;
 import com.zhy.http.okhttp.OkHttpUtils;
 import com.zhy.http.okhttp.builder.PostFormBuilder;
 import com.zhy.http.okhttp.callback.Callback;
 
 import java.lang.reflect.Field;
-import java.security.NoSuchAlgorithmException;
-import java.util.Date;
 
 
 /**
@@ -223,32 +219,6 @@ public class PersonModelImpl implements PersonModel {
 
     }
 
-    @Override
-    public void GetRongID(Callback callback) {
-        int nonce = (int) (Math.random()*100);
-        long Timestamp = new Date().getTime();
-        String Signature = null;
-        try {
-            Signature = MD5Util.sha1(Const.RongYunSecret+nonce+Timestamp);
-        } catch (NoSuchAlgorithmException e) {
-            e.printStackTrace();
-        }
-        Log.e("@#","1--"+nonce);
-        Log.e("@#","2--"+Timestamp);
-        Log.e("@#","3--"+Signature);
 
-        OkHttpUtils.post()
-                .url(Path.RongYunPath)
-                .tag(mContext)
-                .addHeader("RC-App-Key",Const.RongYunKey)
-                .addHeader("RC-Nonce",nonce+"")
-                .addHeader("RC-Timestamp",Timestamp+"")
-                .addHeader("RC-Signature",Signature)
-                .addParams("userId",Const.getUserID())
-                .addParams("name",Const.getUserNick())
-                .addParams("portraitUri",Const.getUserHeadImg())
-                .build()
-                .execute(callback);
-    }
 
 }

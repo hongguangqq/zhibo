@@ -9,6 +9,9 @@ import com.jyt.baseapp.util.MD5Util;
 import com.zhy.http.okhttp.OkHttpUtils;
 import com.zhy.http.okhttp.callback.Callback;
 
+import java.security.NoSuchAlgorithmException;
+import java.util.Date;
+
 /**
  * @author LinWei on 2018/5/25 15:09
  */
@@ -69,4 +72,33 @@ public class LoginModelImpl implements LoginModel {
                 .build()
                 .execute(callback);
     }
+
+    @Override
+    public void GetRongID(Callback callback) {
+        int nonce = (int) (Math.random()*100);
+        long Timestamp = new Date().getTime();
+        String Signature = null;
+        try {
+            Signature = MD5Util.sha1(Const.RongYunSecret+nonce+Timestamp);
+        } catch (NoSuchAlgorithmException e) {
+            e.printStackTrace();
+        }
+//        Log.e("@#","1--"+nonce);
+//        Log.e("@#","2--"+Timestamp);
+//        Log.e("@#","3--"+Signature);
+
+        OkHttpUtils.post()
+                .url(Path.RongYunPath)
+                .tag(mContext)
+                .addHeader("RC-App-Key",Const.RongYunKey)
+                .addHeader("RC-Nonce",nonce+"")
+                .addHeader("RC-Timestamp",Timestamp+"")
+                .addHeader("RC-Signature",Signature)
+                .addParams("userId",Const.getUserID())
+                .addParams("name",Const.getUserNick())
+                .addParams("portraitUri",Const.getUserHeadImg())
+                .build()
+                .execute(callback);
+    }
+
 }

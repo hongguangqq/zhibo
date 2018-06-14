@@ -3,6 +3,7 @@ package com.jyt.baseapp.view.activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.view.animation.Animation;
@@ -19,7 +20,9 @@ import com.jyt.baseapp.adapter.FragmentViewPagerAdapter;
 import com.jyt.baseapp.api.BeanCallback;
 import com.jyt.baseapp.api.Const;
 import com.jyt.baseapp.helper.IntentRequestCode;
+import com.jyt.baseapp.model.LoginModel;
 import com.jyt.baseapp.model.PersonModel;
+import com.jyt.baseapp.model.impl.LoginModelImpl;
 import com.jyt.baseapp.model.impl.PersonModelImpl;
 import com.jyt.baseapp.util.BaseUtil;
 import com.jyt.baseapp.view.fragment.FragmentTab1;
@@ -87,6 +90,7 @@ public class ContentActivity extends BaseMCVActivity implements View.OnClickList
     private FragmentViewPagerAdapter mViewPagerAdapter;
     private FactoryPageAdapter mFactoryPageAdapter;
     private PersonModel mPersonModel;
+    private LoginModel mLoginModel;
 
     @Override
     protected int getLayoutId() {
@@ -105,43 +109,19 @@ public class ContentActivity extends BaseMCVActivity implements View.OnClickList
         init();
         initSetting();
         initListener();
-        MiPushClient.setAlias(this, Const.getUserID(),null);
-        mPersonModel.GetRongID(new BeanCallback<String>() {
-            @Override
-            public void response(boolean success, String response, int id) {
-                try {
 
-                    JSONObject job = new JSONObject(response);
-                    String token = job.getString("token");
-                    RongIMClient.connect(token, new RongIMClient.ConnectCallback() {
-                        @Override
-                        public void onTokenIncorrect() {
 
-                        }
-
-                        @Override
-                        public void onSuccess(String s) {
-                            BaseUtil.e("onSuccess---id="+s);
-                        }
-
-                        @Override
-                        public void onError(RongIMClient.ErrorCode errorCode) {
-                            BaseUtil.e(errorCode.getMessage());
-                        }
-                    });
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-            }
-        });
     }
 
     private void init() {
         HideActionBar();
         mAnim_in = AnimationUtils.loadAnimation(this,R.anim.button_alpha_in);
         mAnim_out = AnimationUtils.loadAnimation(this,R.anim.button_alpha_out);
+        MiPushClient.setAlias(this, Const.getUserID(),null);
         mPersonModel = new PersonModelImpl();
         mPersonModel.onStart(this);
+        mLoginModel = new LoginModelImpl();
+        mLoginModel.onStart(this);
         mFragmentList = new ArrayList<>();
         mFragmentList.add(new FragmentTab1());
         mFragmentList.add(new FragmentTab2());
@@ -176,6 +156,58 @@ public class ContentActivity extends BaseMCVActivity implements View.OnClickList
         mVpContent.setAdapter(mViewPagerAdapter);
         mVpContent.setOffscreenPageLimit(4);
 //        mVpContent.setAdapter(mFactoryPageAdapter);
+        //融云登录
+        if (TextUtils.isEmpty(Const.getRongToken())){
+            mLoginModel.GetRongID(new BeanCallback<String>() {
+                @Override
+                public void response(boolean success, String response, int id) {
+                    try {
+                        JSONObject job = new JSONObject(response);
+                        String token = job.getString("token");
+                        BaseUtil.setSpString(Const.RongToken,token);
+                        RongIMClient.connect(token, new RongIMClient.ConnectCallback() {
+                            @Override
+                            public void onTokenIncorrect() {
+
+                            }
+
+                            @Override
+                            public void onSuccess(String s) {
+                                BaseUtil.e("onSuccess---id="+s);
+
+
+                            }
+
+                            @Override
+                            public void onError(RongIMClient.ErrorCode errorCode) {
+                                BaseUtil.e(errorCode.getMessage());
+                            }
+                        });
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                }
+            });
+        }
+        //网易云音视频登录
+//        LoginInfo loginInfo = new LoginInfo("123","123456");
+//        NIMClient.getService(AuthService.class).login(loginInfo).setCallback(new RequestCallback() {
+//            @Override
+//            public void onSuccess(Object param) {
+//
+//            }
+//
+//            @Override
+//            public void onFailed(int code) {
+//                Log.e("@#","code="+code);
+//            }
+//
+//            @Override
+//            public void onException(Throwable exception) {
+//                Log.e("@#", exception.getMessage());
+//            }
+//        });
+
 
     }
 
@@ -288,6 +320,7 @@ public class ContentActivity extends BaseMCVActivity implements View.OnClickList
             mPressedTime = mNowTime;
         }
         else{//退出程序
+
             this.finish();
             System.exit(0);
         }
@@ -297,5 +330,6 @@ public class ContentActivity extends BaseMCVActivity implements View.OnClickList
     protected void onDestroy() {
         super.onDestroy();
         mPersonModel.onDestroy();
+        mLoginModel.onDestroy();
     }
 }

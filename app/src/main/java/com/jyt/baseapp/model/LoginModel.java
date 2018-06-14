@@ -26,4 +26,6 @@ public interface LoginModel extends BaseModel{
      * @param callback
      */
     void LogOff(Callback callback);
+
+    void GetRongID(Callback callback);
 }

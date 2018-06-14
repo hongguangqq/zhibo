@@ -126,9 +126,9 @@ public class LoginActivity extends BaseMCVActivity implements PlatformActionList
         HideActionBar();
         setvMainBackground(R.mipmap.bg_entrance);
         mLoginModel = new LoginModelImpl();
-//        if (!TextUtils.isEmpty(Const.getUserID())){
-//            IntentHelper.OpenContentActivity(this);
-//        }
+        if (!TextUtils.isEmpty(Const.getUserID())){
+            IntentHelper.OpenContentActivity(this);
+        }
     }
 
     private void initSetting(){
@@ -153,8 +153,8 @@ public class LoginActivity extends BaseMCVActivity implements PlatformActionList
                 if (success){
                     BaseUtil.e(response);
                     if (response.getCode()==200){
-                        BaseUtil.makeText("登录成功");
                         Const.SaveUser(response.getData());
+                        BaseUtil.makeText("登录成功");
                         IntentHelper.OpenContentActivity(LoginActivity.this);
                     }else if(response.getCode()==300){
                         BaseUtil.makeText(response.getMessage());

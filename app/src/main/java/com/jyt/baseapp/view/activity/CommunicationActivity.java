@@ -1,7 +1,10 @@
 package com.jyt.baseapp.view.activity;
 
 import android.Manifest;
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.pm.PackageManager;
 import android.media.MediaPlayer;
 import android.media.MediaRecorder;
@@ -175,6 +178,7 @@ public class CommunicationActivity extends BaseMCVActivity {
     private List<Message> mMessageList;
     private ImagePicker mImagePicker;
     private File mImgFile;
+    private MessageBroreceiver mMessageBroreceiver;
 
 
     @Override
@@ -206,7 +210,11 @@ public class CommunicationActivity extends BaseMCVActivity {
         mRecordDialog = new RecordDialog(this);
         mExecutorService = Executors.newSingleThreadExecutor();
         mImagePicker = new ImagePicker();
-
+        mMessageBroreceiver = new MessageBroreceiver();
+        //注册消息接收广播
+        IntentFilter filter = new IntentFilter();
+        filter.addAction(Const.Reciver_Message);
+        registerReceiver(mMessageBroreceiver,filter);
 
     }
 
@@ -684,6 +692,22 @@ public class CommunicationActivity extends BaseMCVActivity {
 
     }
 
+    class MessageBroreceiver extends BroadcastReceiver{
+
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            if (Const.Reciver_Message.equals(intent.getAction())){
+                Message message = intent.getParcelableExtra(Const.Rong_Message);
+                if (message.getTargetId().equals(comid)){
+                    mMessageList.add(message);
+                    mComAdapter.notifyData(mMessageList);
+                }
+
+            }
+        }
+    }
+
+
     @Override
     protected void onDestroy() {
         super.onDestroy();
@@ -699,4 +723,5 @@ public class CommunicationActivity extends BaseMCVActivity {
         RefWatcher refWatcher = App.getRefWatcher(this);//1
         refWatcher.watch(this);
     }
+
 }

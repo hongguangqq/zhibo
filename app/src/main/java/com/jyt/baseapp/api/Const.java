@@ -64,10 +64,14 @@ public class Const {
     //MiPush
     public static final String MiPush = "MiPush";
 
-    public static final String Reciver_CODE1="Reciver_CODE1";
+    public static final String Reciver_Tab1 ="Reciver_Tab1";
+    public static final String Reciver_Message="Reciver_Message";
 
+
+    public static final String RongToken="RongToken";
     public static final String RongYunKey="cpj2xarlc78zn";
     public static final String RongYunSecret="HXsxYcwy88";
+    public static final String Rong_Message="Rong_Message";
 
 
     public static void SaveUser(UserBean user){
@@ -90,10 +94,12 @@ public class Const {
         BaseUtil.setSpString(UserToken,"");
         BaseUtil.setSpString(UserAnchorState,"");
         BaseUtil.setSpString(MiPush,"");
+        BaseUtil.setSpString(RongToken,"");
         MiPushClient.unregisterPush(BaseUtil.getContext());
-        IntentHelper.OpenLoginActivityByLogOff(context);
         BaseUtil.makeText("退出登录成功");
-        RongIMClient.getInstance().disconnect();
+        RongIMClient.getInstance().logout();
+
+        IntentHelper.OpenLoginActivityByLogOff(context);
     }
 
 
@@ -123,6 +129,10 @@ public class Const {
 
     public static int getGender(){
         return BaseUtil.getSpInt(UserGender);
+    }
+
+    public static String getRongToken(){
+        return BaseUtil.getSpString(Const.RongToken);
     }
 
     public static String getUserHeadImg(){
