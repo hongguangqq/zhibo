@@ -62,6 +62,7 @@ import io.rong.message.ImageMessage;
 import io.rong.message.TextMessage;
 import io.rong.message.VoiceMessage;
 
+import static android.R.attr.path;
 import static com.jyt.baseapp.api.Const.PERMISSIONS_REQUEST_FOR_AUDIO;
 
 
@@ -304,8 +305,8 @@ public class CommunicationActivity extends BaseMCVActivity {
             }
 
             @Override
-            public void ShowImg(String path) {
-                IntentHelper.openBrowseImagesActivity(CommunicationActivity.this,path);
+            public void ShowImg(Uri uri) {
+                IntentHelper.openBrowseImagesActivity(CommunicationActivity.this,uri);
             }
         });
 

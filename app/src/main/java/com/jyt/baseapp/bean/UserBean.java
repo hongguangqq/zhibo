@@ -36,6 +36,8 @@ public class UserBean implements Serializable{
     private String miPush;
     private List<String> imgsList;
     private int age;
+    private String easyId;
+    private String easyToken;
 
 
     public int getId() {
@@ -220,6 +222,22 @@ public class UserBean implements Serializable{
 
     public void setAge(int age) {
         this.age = age;
+    }
+
+    public String getEasyId() {
+        return easyId;
+    }
+
+    public void setEasyId(String easyId) {
+        this.easyId = easyId;
+    }
+
+    public String getEasyToken() {
+        return easyToken;
+    }
+
+    public void setEasyToken(String easyToken) {
+        this.easyToken = easyToken;
     }
 
     public List<String> getImgsArray(){

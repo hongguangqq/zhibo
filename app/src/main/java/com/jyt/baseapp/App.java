@@ -313,7 +313,11 @@ public class App  extends MultiDexApplication {
 
     // 如果已经存在用户登录信息，返回LoginInfo，否则返回null即可
     private LoginInfo loginInfo() {
-        return null;
+        LoginInfo loginInfo = null;
+//        if (!TextUtils.isEmpty(Const.getWyAccount()) && TextUtils.isEmpty(Const.getWyToken())){
+//            loginInfo = new LoginInfo(Const.getWyAccount(),Const.getWyToken());
+//        }
+        return loginInfo;
     }
 
 

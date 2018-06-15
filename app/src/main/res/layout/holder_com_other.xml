@@ -18,7 +18,7 @@
         android:layout_height="wrap_content"
         android:layout_marginRight="-2dp"
         android:layout_marginLeft="5dp"
-        android:layout_marginTop="5dp"
+        android:layout_marginTop="15dp"
         android:src="@mipmap/icon_lsan"/>
     <TextView
         android:id="@+id/tv_other_text"
@@ -26,6 +26,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_toRightOf="@id/iv_san"
+        android:layout_marginTop="10dp"
         android:paddingLeft="8dp"
         android:paddingRight="8dp"
         android:paddingTop="13dp"
@@ -38,6 +39,7 @@
     <LinearLayout
         android:id="@+id/ll_other_voice"
         android:visibility="gone"
+        android:layout_marginTop="10dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_toRightOf="@id/iv_san">
@@ -64,6 +66,7 @@
     <ImageView
         android:id="@+id/iv_other_img"
         android:visibility="gone"
+        android:layout_marginTop="10dp"
         android:layout_width="100dp"
         android:layout_height="150dp"
         android:layout_marginLeft="5dp"

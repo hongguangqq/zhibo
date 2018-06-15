@@ -3,7 +3,6 @@ package com.jyt.baseapp.view.activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.view.animation.Animation;
@@ -31,6 +30,10 @@ import com.jyt.baseapp.view.fragment.FragmentTab3;
 import com.jyt.baseapp.view.fragment.FragmentTab4;
 import com.jyt.baseapp.view.widget.CircleImageView;
 import com.jyt.baseapp.view.widget.NoScrollViewPager;
+import com.netease.nimlib.sdk.NIMClient;
+import com.netease.nimlib.sdk.RequestCallback;
+import com.netease.nimlib.sdk.auth.AuthService;
+import com.netease.nimlib.sdk.auth.LoginInfo;
 import com.xiaomi.mipush.sdk.MiPushClient;
 
 import org.json.JSONException;
@@ -157,56 +160,54 @@ public class ContentActivity extends BaseMCVActivity implements View.OnClickList
         mVpContent.setOffscreenPageLimit(4);
 //        mVpContent.setAdapter(mFactoryPageAdapter);
         //融云登录
-        if (TextUtils.isEmpty(Const.getRongToken())){
-            mLoginModel.GetRongID(new BeanCallback<String>() {
-                @Override
-                public void response(boolean success, String response, int id) {
-                    try {
-                        JSONObject job = new JSONObject(response);
-                        String token = job.getString("token");
-                        BaseUtil.setSpString(Const.RongToken,token);
-                        RongIMClient.connect(token, new RongIMClient.ConnectCallback() {
-                            @Override
-                            public void onTokenIncorrect() {
+        mLoginModel.GetRongID(new BeanCallback<String>() {
+            @Override
+            public void response(boolean success, String response, int id) {
+                try {
+                    JSONObject job = new JSONObject(response);
+                    String token = job.getString("token");
+                    BaseUtil.setSpString(Const.RongToken,token);
+                    RongIMClient.connect(token, new RongIMClient.ConnectCallback() {
+                        @Override
+                        public void onTokenIncorrect() {
 
-                            }
+                        }
 
-                            @Override
-                            public void onSuccess(String s) {
-                                BaseUtil.e("onSuccess---id="+s);
+                        @Override
+                        public void onSuccess(String s) {
+                            BaseUtil.e("onSuccess---id="+s);
 
 
-                            }
+                        }
 
-                            @Override
-                            public void onError(RongIMClient.ErrorCode errorCode) {
-                                BaseUtil.e(errorCode.getMessage());
-                            }
-                        });
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                    }
+                        @Override
+                        public void onError(RongIMClient.ErrorCode errorCode) {
+                            BaseUtil.e(errorCode.getMessage());
+                        }
+                    });
+                } catch (JSONException e) {
+                    e.printStackTrace();
                 }
-            });
-        }
+            }
+        });
         //网易云音视频登录
-//        LoginInfo loginInfo = new LoginInfo("123","123456");
-//        NIMClient.getService(AuthService.class).login(loginInfo).setCallback(new RequestCallback() {
-//            @Override
-//            public void onSuccess(Object param) {
-//
-//            }
-//
-//            @Override
-//            public void onFailed(int code) {
-//                Log.e("@#","code="+code);
-//            }
-//
-//            @Override
-//            public void onException(Throwable exception) {
-//                Log.e("@#", exception.getMessage());
-//            }
-//        });
+        LoginInfo loginInfo = new LoginInfo(Const.getWyAccount(),Const.getWyToken());
+        NIMClient.getService(AuthService.class).login(loginInfo).setCallback(new RequestCallback() {
+            @Override
+            public void onSuccess(Object param) {
+                Log.e("@#","Wy-onSuccess");
+            }
+
+            @Override
+            public void onFailed(int code) {
+                Log.e("@#","Wy-onFailed-code:"+code);
+            }
+
+            @Override
+            public void onException(Throwable exception) {
+                Log.e("@#","Wy-onException:"+exception.getMessage());
+            }
+        });
 
 
     }

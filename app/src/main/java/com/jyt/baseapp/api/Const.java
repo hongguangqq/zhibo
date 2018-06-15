@@ -6,6 +6,8 @@ import android.os.Environment;
 import com.jyt.baseapp.bean.UserBean;
 import com.jyt.baseapp.helper.IntentHelper;
 import com.jyt.baseapp.util.BaseUtil;
+import com.netease.nimlib.sdk.NIMClient;
+import com.netease.nimlib.sdk.auth.AuthService;
 import com.xiaomi.mipush.sdk.MiPushClient;
 
 import java.io.File;
@@ -73,6 +75,9 @@ public class Const {
     public static final String RongYunSecret="HXsxYcwy88";
     public static final String Rong_Message="Rong_Message";
 
+    public static final String WyAccount = "WyAccount";
+    public static final String WyToken = "WyToken";
+
 
     public static void SaveUser(UserBean user){
 
@@ -85,6 +90,8 @@ public class Const {
         BaseUtil.setSpString(UserHeadImg,user.getHeadImg());
         BaseUtil.setSpNumInt(UserGender,user.getGender());
         BaseUtil.setSpString(MiPush,user.getMiPush());
+        BaseUtil.setSpString(WyAccount,user.getEasyId());
+        BaseUtil.setSpString(WyToken,user.getEasyToken());
     }
 
     public static void LogOff(Context context){
@@ -95,10 +102,12 @@ public class Const {
         BaseUtil.setSpString(UserAnchorState,"");
         BaseUtil.setSpString(MiPush,"");
         BaseUtil.setSpString(RongToken,"");
+        BaseUtil.setSpString(WyAccount,"");
+        BaseUtil.setSpString(WyToken,"");
         MiPushClient.unregisterPush(BaseUtil.getContext());
         BaseUtil.makeText("退出登录成功");
         RongIMClient.getInstance().logout();
-
+        NIMClient.getService(AuthService.class).logout();
         IntentHelper.OpenLoginActivityByLogOff(context);
     }
 
@@ -132,7 +141,15 @@ public class Const {
     }
 
     public static String getRongToken(){
-        return BaseUtil.getSpString(Const.RongToken);
+        return BaseUtil.getSpString(RongToken);
+    }
+
+    public static String getWyAccount(){
+        return BaseUtil.getSpString(WyAccount);
+    }
+
+    public static String getWyToken(){
+        return BaseUtil.getSpString(WyToken);
     }
 
     public static String getUserHeadImg(){

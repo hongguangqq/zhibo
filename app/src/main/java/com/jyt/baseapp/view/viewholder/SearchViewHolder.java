@@ -1,5 +1,6 @@
 package com.jyt.baseapp.view.viewholder;
 
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -36,10 +37,11 @@ public class SearchViewHolder extends BaseViewHolder<UserBean> {
     public void setData(UserBean data) {
         super.setData(data);
         mTvName.setText(data.getNickname());
-        if (data.getHeadImg()==null){
-            Glide.with(BaseUtil.getContext()).load(R.mipmap.timg).into(mIvHpic);
+        Glide.with(BaseUtil.getContext()).load(data.getHeadImg()).error(R.mipmap.timg).into(mIvHpic);
+        if (!TextUtils.isEmpty(data.getIntroduction())){
+            mTvMark.setText(data.getIntroduction());
         }else {
-            Glide.with(BaseUtil.getContext()).load(data.getHeadImg()).error(R.mipmap.timg).into(mIvHpic);
+            mTvMark.setText("");
         }
         if (data.getOnlineState()==1){
             mTvState.setText("在线");

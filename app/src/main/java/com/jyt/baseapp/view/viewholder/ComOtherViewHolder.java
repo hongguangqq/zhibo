@@ -78,7 +78,7 @@ public class ComOtherViewHolder extends BaseViewHolder<Message> {
                 @Override
                 public void onClick(View view) {
                     if (PlayListener!=null){
-                        PlayListener.ShowImg(imageMessage.getMediaUrl().getPath());
+                        PlayListener.ShowImg(imageMessage.getMediaUrl());
                     }
                 }
             });
@@ -93,6 +93,6 @@ public class ComOtherViewHolder extends BaseViewHolder<Message> {
 
     public interface OnOtherPlayListener {
         void PlayVoice(Uri uri);
-        void ShowImg(String path);
+        void ShowImg(Uri uri);
     }
 }
