@@ -11,6 +11,7 @@ import com.jyt.baseapp.bean.SearchConditionBean;
 import com.jyt.baseapp.bean.Tuple;
 import com.jyt.baseapp.util.FinishActivityManager;
 import com.jyt.baseapp.view.activity.AccountActivity;
+import com.jyt.baseapp.view.activity.AudienceActivity;
 import com.jyt.baseapp.view.activity.BlackActivity;
 import com.jyt.baseapp.view.activity.BrowseImagesActivity;
 import com.jyt.baseapp.view.activity.CommunicationActivity;
@@ -19,6 +20,7 @@ import com.jyt.baseapp.view.activity.DynamicActivity;
 import com.jyt.baseapp.view.activity.FFActivity;
 import com.jyt.baseapp.view.activity.FeedbackActivity;
 import com.jyt.baseapp.view.activity.ListActivity;
+import com.jyt.baseapp.view.activity.LivePlayActivity;
 import com.jyt.baseapp.view.activity.ModifyActivity;
 import com.jyt.baseapp.view.activity.NewsActivity;
 import com.jyt.baseapp.view.activity.PersonActivity;
@@ -414,7 +416,7 @@ public class IntentHelper {
     }
 
     /**
-     * 跳转黑名单
+     * 跳转
      * @param activity
      */
     public static void OpenFFActivit(Activity activity,int page){
@@ -427,6 +429,33 @@ public class IntentHelper {
         int page = intent.getIntExtra(IntentKey.FFPage,0);
         return new Tuple(page);
     }
+
+    /**
+     * 跳转到直播界面
+     * @param activity
+     */
+    public static void OpenLivePlayActivity(Activity activity){
+        Intent intent =getIntent(activity, LivePlayActivity.class);
+        activity.startActivity(intent);
+    }
+
+    /**
+     * 跳转到直播界面
+     * @param activity
+     * @param id
+     */
+    public static void OpenAudienceActivity(Activity activity , int id){
+        Intent intent =getIntent(activity, AudienceActivity.class);
+        intent.putExtra(IntentKey.User_ID,id);
+        activity.startActivity(intent);
+    }
+
+    public static Tuple AudienceActivityGetPara(Intent intent){
+        int page = intent.getIntExtra(IntentKey.User_ID,0);
+        return new Tuple(page);
+    }
+
+
 
 
 

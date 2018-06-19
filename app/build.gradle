@@ -22,7 +22,7 @@ android {
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
 
         ndk {
-            abiFilters 'armeabi','armeabi-v7a', 'arm64-v8a', 'x86'
+            abiFilters 'armeabi', 'armeabi-v7a', 'arm64-v8a', 'x86'
 
         }
 
@@ -83,6 +83,10 @@ dependencies {
     // 音视频需要
     compile project(':IMLib')
     compile files('libs/MiPush_SDK_Client_3_5_1.jar')
+    compile files('libs/nim-avchat-5.2.0.jar')
+    compile files('libs/nim-basesdk-5.2.0.jar')
+    compile files('libs/nrtc-sdk.jar')
+    compile files('libs/video_effect.jar')
     compile 'com.android.support:multidex:1.0.1'
     compile 'com.linchaolong.android:imagepicker:1.5'
     compile 'com.orhanobut:hawk:2.0.1'
@@ -110,8 +114,4 @@ dependencies {
     annotationProcessor 'com.jakewharton:butterknife-compiler:8.5.1'
     debugCompile 'com.squareup.leakcanary:leakcanary-android:1.5'
     releaseCompile 'com.squareup.leakcanary:leakcanary-android-no-op:1.5'
-    compile files('libs/nim-avchat-5.2.0.jar')
-    compile files('libs/nim-basesdk-5.2.0.jar')
-    compile files('libs/nrtc-sdk.jar')
-    compile files('libs/video_effect.jar')
 }

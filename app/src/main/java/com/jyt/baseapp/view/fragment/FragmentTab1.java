@@ -399,14 +399,15 @@ public class FragmentTab1 extends BaseFragment {
 
     @OnClick({R.id.ll_tab1_focus,R.id.ll_tab1_hot,R.id.ll_tab1_user,R.id.ll_tab1_recommend})
     public void OpenListActivity(View v){
-        int code = (int) v.getTag();
-        IntentHelper.OpenListActivity(getActivity(),code);
+//        int code = (int) v.getTag();
+//        IntentHelper.OpenListActivity(getActivity(),code);
+        IntentHelper.OpenAudienceActivity(getActivity(),0);
     }
 
     @OnClick(R.id.ll_tab1_theme)
     public void OpenThemeActivity(){
 //        IntentHelper.OpenThemeActivity(getActivity());
-        IntentHelper.OpenCommunicationActivity(11,getActivity());
+        IntentHelper.OpenLivePlayActivity(getActivity());
     }
 
 

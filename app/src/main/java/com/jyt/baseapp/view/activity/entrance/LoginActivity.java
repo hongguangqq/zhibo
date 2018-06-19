@@ -126,9 +126,9 @@ public class LoginActivity extends BaseMCVActivity implements PlatformActionList
         HideActionBar();
         setvMainBackground(R.mipmap.bg_entrance);
         mLoginModel = new LoginModelImpl();
-        if (!TextUtils.isEmpty(Const.getUserID())){
-            IntentHelper.OpenContentActivity(this);
-        }
+//        if (!TextUtils.isEmpty(Const.getUserID())){
+//            IntentHelper.OpenContentActivity(this);
+//        }
     }
 
     private void initSetting(){

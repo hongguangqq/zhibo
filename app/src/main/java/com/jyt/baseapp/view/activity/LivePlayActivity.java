@@ -8,13 +8,13 @@ import android.view.View;
 import com.jyt.baseapp.R;
 import com.jyt.baseapp.api.Const;
 import com.netease.nimlib.sdk.NIMClient;
-import com.netease.nimlib.sdk.RequestCallback;
+import com.netease.nimlib.sdk.Observer;
 import com.netease.nimlib.sdk.ResponseCode;
-import com.netease.nimlib.sdk.auth.AuthService;
 import com.netease.nimlib.sdk.auth.LoginInfo;
 import com.netease.nimlib.sdk.avchat.AVChatCallback;
 import com.netease.nimlib.sdk.avchat.AVChatManager;
 import com.netease.nimlib.sdk.avchat.constant.AVChatMediaCodecMode;
+import com.netease.nimlib.sdk.avchat.constant.AVChatType;
 import com.netease.nimlib.sdk.avchat.constant.AVChatUserRole;
 import com.netease.nimlib.sdk.avchat.constant.AVChatVideoCaptureOrientation;
 import com.netease.nimlib.sdk.avchat.constant.AVChatVideoCropRatio;
@@ -27,14 +27,22 @@ import com.netease.nimlib.sdk.avchat.model.AVChatLiveCompositingLayout;
 import com.netease.nimlib.sdk.avchat.model.AVChatParameters;
 import com.netease.nimlib.sdk.avchat.model.AVChatSurfaceViewRenderer;
 import com.netease.nimlib.sdk.avchat.model.AVChatVideoCapturerFactory;
+import com.netease.nimlib.sdk.msg.MsgServiceObserve;
+import com.netease.nimlib.sdk.msg.model.CustomNotification;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
 import java.util.UUID;
 
 
 public class LivePlayActivity extends BaseMCVActivity {
     private AVChatSurfaceViewRenderer mRenderer;
     private AVChatCameraCapturer mVideoCapturer;
-    private String roomId;
+    private String mMeetingName;
 
 
     @Override
@@ -55,29 +63,28 @@ public class LivePlayActivity extends BaseMCVActivity {
         Log.e("@#",Const.getWyAccount()+"--"+Const.getWyToken());
         LoginInfo loginInfo = new LoginInfo(Const.getWyAccount(),Const.getWyToken());
 
-        NIMClient.getService(AuthService.class).login(loginInfo).setCallback(new RequestCallback() {
-            @Override
-            public void onSuccess(Object param) {
-                Log.e("@#","Wy-onSuccess");
-            }
-
-            @Override
-            public void onFailed(int code) {
-                Log.e("@#","Wy-onFailed-code:"+code);
-            }
-
-            @Override
-            public void onException(Throwable exception) {
-                Log.e("@#","Wy-onException:"+exception.getMessage());
-            }
-        });
-        final String meetingName = UUID.randomUUID().toString();
-        Log.e("@#","room="+meetingName);
-        AVChatManager.getInstance().createRoom(meetingName, null, new AVChatCallback<AVChatChannelInfo>() {
+//        NIMClient.getService(AuthService.class).login(loginInfo).setCallback(new RequestCallback() {
+//            @Override
+//            public void onSuccess(Object param) {
+//                Log.e("@#","Wy-onSuccess");
+//            }
+//
+//            @Override
+//            public void onFailed(int code) {
+//                Log.e("@#","Wy-onFailed-code:"+code);
+//            }
+//
+//            @Override
+//            public void onException(Throwable exception) {
+//                Log.e("@#","Wy-onException:"+exception.getMessage());
+//            }
+//        });
+        mMeetingName = UUID.randomUUID().toString();
+        AVChatManager.getInstance().createRoom(mMeetingName, null, new AVChatCallback<AVChatChannelInfo>() {
             @Override
             public void onSuccess(AVChatChannelInfo avChatChannelInfo) {
-                Log.e("@#","room创建成功"+meetingName);
-
+                Log.e("@#","room创建成功--"+ mMeetingName);
+                Log.e("@#","accid--"+Const.getWyAccount());
 
             }
 
@@ -95,8 +102,6 @@ public class LivePlayActivity extends BaseMCVActivity {
                 Log.e("@#", "create room onException, throwable:" + exception.getMessage());
             }
         });
-
-
 
     }
 
@@ -132,6 +137,50 @@ public class LivePlayActivity extends BaseMCVActivity {
             AVChatManager.getInstance().startVideoPreview();
         }
     }
+
+    private void masterEnterRoom(final boolean isVideoMode) {
+        Map<String, Object> ext = new HashMap<>();
+        ext.put("type", isVideoMode ? AVChatType.VIDEO.getValue() : AVChatType.AUDIO.getValue());
+        ext.put("meetingName", mMeetingName);
+        JSONObject jsonObject = null;
+        try {
+            jsonObject = parseMap(ext);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        boolean isPortrait = getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT;
+    }
+
+    private JSONObject parseMap(Map map) throws JSONException {
+        if (map == null) {
+            return null;
+        }
+
+        JSONObject obj = new JSONObject();
+        Iterator entries = map.entrySet().iterator();
+        while (entries.hasNext()) {
+            Map.Entry entry = (Map.Entry) entries.next();
+            String key = String.valueOf(entry.getKey());
+            Object value = entry.getValue();
+            obj.put(key, value);
+        }
+
+        return obj;
+    }
+
+
+    private void registerObservers(boolean register){
+        NIMClient.getService(MsgServiceObserve.class).observeCustomNotification(customNotification, register);
+    }
+
+    Observer<CustomNotification> customNotification = new Observer<CustomNotification>() {
+        @Override
+        public void onEvent(CustomNotification customNotification) {
+            if (customNotification == null) {
+                return;
+            }
+        }
+    };
 
 
 }
