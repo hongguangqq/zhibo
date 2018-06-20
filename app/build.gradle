@@ -76,11 +76,6 @@ dependencies {
 
     //    compile 'cn.jiguang.sdk:jcore:1.1.7'  // 此处以JCore 1.1.7 版本为例。
     compile files('libs/nos-android-sdk-1.0.0.jar')
-    // 基础功能 (必需)
-
-    // 音视频需要
-
-    // 音视频需要
     compile project(':IMLib')
     compile files('libs/MiPush_SDK_Client_3_5_1.jar')
     compile files('libs/nim-avchat-5.2.0.jar')

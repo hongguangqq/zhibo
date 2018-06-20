@@ -6,11 +6,6 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="com.jyt.baseapp.view.activity.LivePlayActivity">
-    <com.netease.nim.chatroom.demo.thirdparty.video.NEVideoView
-        android:id="@+id/video_view"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:scaleType="centerCrop"/>
     <com.netease.nimlib.sdk.avchat.model.AVChatSurfaceViewRenderer
         android:id="@+id/video_render"
         android:layout_width="match_parent"

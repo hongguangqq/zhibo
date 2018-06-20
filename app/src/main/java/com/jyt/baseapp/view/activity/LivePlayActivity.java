@@ -10,9 +10,10 @@ import com.jyt.baseapp.api.Const;
 import com.netease.nimlib.sdk.NIMClient;
 import com.netease.nimlib.sdk.Observer;
 import com.netease.nimlib.sdk.ResponseCode;
-import com.netease.nimlib.sdk.auth.LoginInfo;
 import com.netease.nimlib.sdk.avchat.AVChatCallback;
 import com.netease.nimlib.sdk.avchat.AVChatManager;
+import com.netease.nimlib.sdk.avchat.AVChatStateObserverLite;
+import com.netease.nimlib.sdk.avchat.constant.AVChatDeviceEvent;
 import com.netease.nimlib.sdk.avchat.constant.AVChatMediaCodecMode;
 import com.netease.nimlib.sdk.avchat.constant.AVChatType;
 import com.netease.nimlib.sdk.avchat.constant.AVChatUserRole;
@@ -21,25 +22,25 @@ import com.netease.nimlib.sdk.avchat.constant.AVChatVideoCropRatio;
 import com.netease.nimlib.sdk.avchat.constant.AVChatVideoFrameRate;
 import com.netease.nimlib.sdk.avchat.constant.AVChatVideoQuality;
 import com.netease.nimlib.sdk.avchat.constant.AVChatVideoScalingType;
+import com.netease.nimlib.sdk.avchat.model.AVChatAudioFrame;
 import com.netease.nimlib.sdk.avchat.model.AVChatCameraCapturer;
 import com.netease.nimlib.sdk.avchat.model.AVChatChannelInfo;
+import com.netease.nimlib.sdk.avchat.model.AVChatData;
 import com.netease.nimlib.sdk.avchat.model.AVChatLiveCompositingLayout;
+import com.netease.nimlib.sdk.avchat.model.AVChatNetworkStats;
 import com.netease.nimlib.sdk.avchat.model.AVChatParameters;
+import com.netease.nimlib.sdk.avchat.model.AVChatSessionStats;
 import com.netease.nimlib.sdk.avchat.model.AVChatSurfaceViewRenderer;
 import com.netease.nimlib.sdk.avchat.model.AVChatVideoCapturerFactory;
+import com.netease.nimlib.sdk.avchat.model.AVChatVideoFrame;
 import com.netease.nimlib.sdk.msg.MsgServiceObserve;
 import com.netease.nimlib.sdk.msg.model.CustomNotification;
 
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.util.HashMap;
-import java.util.Iterator;
 import java.util.Map;
 import java.util.UUID;
 
 
-public class LivePlayActivity extends BaseMCVActivity {
+public class LivePlayActivity extends BaseMCVActivity implements AVChatStateObserverLite {
     private AVChatSurfaceViewRenderer mRenderer;
     private AVChatCameraCapturer mVideoCapturer;
     private String mMeetingName;
@@ -59,32 +60,32 @@ public class LivePlayActivity extends BaseMCVActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mRenderer = findViewById(R.id.video_render);
+        mRenderer.setZOrderMediaOverlay(false);
+        AVChatManager.getInstance().observeAVChatState(this,true);
         startPreview();
-        Log.e("@#",Const.getWyAccount()+"--"+Const.getWyToken());
-        LoginInfo loginInfo = new LoginInfo(Const.getWyAccount(),Const.getWyToken());
-
-//        NIMClient.getService(AuthService.class).login(loginInfo).setCallback(new RequestCallback() {
-//            @Override
-//            public void onSuccess(Object param) {
-//                Log.e("@#","Wy-onSuccess");
-//            }
-//
-//            @Override
-//            public void onFailed(int code) {
-//                Log.e("@#","Wy-onFailed-code:"+code);
-//            }
-//
-//            @Override
-//            public void onException(Throwable exception) {
-//                Log.e("@#","Wy-onException:"+exception.getMessage());
-//            }
-//        });
         mMeetingName = UUID.randomUUID().toString();
+        Log.e("@#","room--"+ mMeetingName);
         AVChatManager.getInstance().createRoom(mMeetingName, null, new AVChatCallback<AVChatChannelInfo>() {
             @Override
             public void onSuccess(AVChatChannelInfo avChatChannelInfo) {
                 Log.e("@#","room创建成功--"+ mMeetingName);
                 Log.e("@#","accid--"+Const.getWyAccount());
+                AVChatManager.getInstance().joinRoom2(mMeetingName, AVChatType.VIDEO, new AVChatCallback<AVChatData>() {
+                    @Override
+                    public void onSuccess(AVChatData avChatData) {
+                        Log.e("@#", "Live join channel success");
+                    }
+
+                    @Override
+                    public void onFailed(int i) {
+
+                    }
+
+                    @Override
+                    public void onException(Throwable throwable) {
+
+                    }
+                });
 
             }
 
@@ -114,6 +115,16 @@ public class LivePlayActivity extends BaseMCVActivity {
             AVChatManager.getInstance().setupVideoCapturer(mVideoCapturer);
             mVideoCapturer.setFlash(true);//设置闪光灯
         }
+        if (true){
+            AVChatManager.getInstance().enableVideo();
+        }
+        //设置视频采集模块
+        AVChatCameraCapturer videoCapturer = AVChatVideoCapturerFactory.createCameraCapturer();
+        AVChatManager.getInstance().setupVideoCapturer(videoCapturer);
+        if (true) {
+            AVChatManager.getInstance().setupLocalVideoRender(mRenderer, false, AVChatVideoScalingType.SCALE_ASPECT_BALANCED);
+        }
+        //parameters
         AVChatParameters parameters = new AVChatParameters();
         parameters.setBoolean(AVChatParameters.KEY_SESSION_LIVE_MODE, true);
         parameters.setInteger(AVChatParameters.KEY_SESSION_MULTI_MODE_USER_ROLE, AVChatUserRole.NORMAL);
@@ -129,44 +140,14 @@ public class LivePlayActivity extends BaseMCVActivity {
         int videoOrientation = getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT ? AVChatVideoCaptureOrientation.ORIENTATION_PORTRAIT : AVChatVideoCaptureOrientation.ORIENTATION_LANDSCAPE_RIGHT;
         parameters.setInteger(AVChatParameters.KEY_VIDEO_CAPTURE_ORIENTATION, videoOrientation);
         parameters.setBoolean(AVChatParameters.KEY_VIDEO_FRAME_FILTER, true);
-
         AVChatManager.getInstance().setParameters(parameters);
-        if (true) {
-            AVChatManager.getInstance().enableVideo();
-            AVChatManager.getInstance().setupLocalVideoRender(mRenderer, false, AVChatVideoScalingType.SCALE_ASPECT_BALANCED);
+
+        if (true){
             AVChatManager.getInstance().startVideoPreview();
         }
     }
 
-    private void masterEnterRoom(final boolean isVideoMode) {
-        Map<String, Object> ext = new HashMap<>();
-        ext.put("type", isVideoMode ? AVChatType.VIDEO.getValue() : AVChatType.AUDIO.getValue());
-        ext.put("meetingName", mMeetingName);
-        JSONObject jsonObject = null;
-        try {
-            jsonObject = parseMap(ext);
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-        boolean isPortrait = getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT;
-    }
 
-    private JSONObject parseMap(Map map) throws JSONException {
-        if (map == null) {
-            return null;
-        }
-
-        JSONObject obj = new JSONObject();
-        Iterator entries = map.entrySet().iterator();
-        while (entries.hasNext()) {
-            Map.Entry entry = (Map.Entry) entries.next();
-            String key = String.valueOf(entry.getKey());
-            Object value = entry.getValue();
-            obj.put(key, value);
-        }
-
-        return obj;
-    }
 
 
     private void registerObservers(boolean register){
@@ -183,4 +164,116 @@ public class LivePlayActivity extends BaseMCVActivity {
     };
 
 
+    @Override
+    public void onJoinedChannel(int i, String s, String s1, int i1) {
+
+    }
+
+    @Override
+    public void onUserJoined(String s) {
+        Log.e("@#","onUserJoined"+" s="+s);
+    }
+
+    @Override
+    public void onUserLeave(String s, int i) {
+
+    }
+
+    @Override
+    public void onLeaveChannel() {
+
+    }
+
+    @Override
+    public void onProtocolIncompatible(int i) {
+
+    }
+
+    @Override
+    public void onDisconnectServer(int i) {
+
+    }
+
+    @Override
+    public void onNetworkQuality(String s, int i, AVChatNetworkStats avChatNetworkStats) {
+
+    }
+
+    @Override
+    public void onCallEstablished() {
+
+    }
+
+    @Override
+    public void onDeviceEvent(int i, String s) {
+        if (i == AVChatDeviceEvent.VIDEO_CAMERA_SWITCH_OK) {
+
+        }
+    }
+
+    @Override
+    public void onConnectionTypeChanged(int i) {
+
+    }
+
+    @Override
+    public void onFirstVideoFrameAvailable(String s) {
+
+    }
+
+    @Override
+    public void onFirstVideoFrameRendered(String s) {
+
+    }
+
+    @Override
+    public void onVideoFrameResolutionChanged(String s, int i, int i1, int i2) {
+
+    }
+
+    @Override
+    public void onVideoFpsReported(String s, int i) {
+
+    }
+
+    @Override
+    public boolean onVideoFrameFilter(AVChatVideoFrame avChatVideoFrame, boolean b) {
+        return true;
+    }
+
+    @Override
+    public boolean onAudioFrameFilter(AVChatAudioFrame avChatAudioFrame) {
+        return false;
+    }
+
+    @Override
+    public void onAudioDeviceChanged(int i) {
+
+    }
+
+    @Override
+    public void onReportSpeaker(Map<String, Integer> map, int i) {
+
+    }
+
+    @Override
+    public void onSessionStats(AVChatSessionStats avChatSessionStats) {
+
+    }
+
+    @Override
+    public void onLiveEvent(int i) {
+
+    }
+
+    @Override
+    public void onConfigurationChanged(Configuration newConfig) {
+        super.onConfigurationChanged(newConfig);
+        AVChatParameters parameters = new AVChatParameters();
+        int videoOrientation = getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT ? AVChatVideoCaptureOrientation.ORIENTATION_PORTRAIT : AVChatVideoCaptureOrientation.ORIENTATION_LANDSCAPE_RIGHT;
+        parameters.setInteger(AVChatParameters.KEY_VIDEO_CAPTURE_ORIENTATION, videoOrientation);
+        AVChatManager.getInstance().setParameters(parameters);
+        AVChatManager.getInstance().setupLocalVideoRender(mRenderer, false, AVChatVideoScalingType.SCALE_ASPECT_BALANCED);
+
+    }
 }
