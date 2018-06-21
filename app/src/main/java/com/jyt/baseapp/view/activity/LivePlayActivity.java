@@ -276,4 +276,6 @@ public class LivePlayActivity extends BaseMCVActivity implements AVChatStateObse
         AVChatManager.getInstance().setupLocalVideoRender(mRenderer, false, AVChatVideoScalingType.SCALE_ASPECT_BALANCED);
 
     }
+
+
 }

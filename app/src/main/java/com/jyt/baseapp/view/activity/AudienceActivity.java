@@ -2,10 +2,11 @@ package com.jyt.baseapp.view.activity;
 
 import android.content.res.Configuration;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.View;
 
 import com.jyt.baseapp.R;
+import com.jyt.baseapp.api.Const;
 import com.netease.nimlib.sdk.avchat.AVChatCallback;
 import com.netease.nimlib.sdk.avchat.AVChatManager;
 import com.netease.nimlib.sdk.avchat.AVChatStateObserverLite;
@@ -25,58 +26,55 @@ import com.netease.nimlib.sdk.avchat.model.AVChatSurfaceViewRenderer;
 import com.netease.nimlib.sdk.avchat.model.AVChatVideoCapturerFactory;
 import com.netease.nimlib.sdk.avchat.model.AVChatVideoFrame;
 
-import org.yczbj.ycvideoplayerlib.VideoPlayer;
-
 import java.util.Map;
 
 
-public class AudienceActivity extends AppCompatActivity implements AVChatStateObserverLite {
+public class AudienceActivity extends BaseMCVActivity implements AVChatStateObserverLite {
     private static final String TAG = "@#";
 
-    private AVChatSurfaceViewRenderer videoRender;
+    private AVChatCameraCapturer mVideoCapturer;
+    private AVChatCameraCapturer mVideoBypassCapturer;
+    private AVChatSurfaceViewRenderer videoRender;//主播画面
+    private AVChatSurfaceViewRenderer bypassVideoRender;//观众画面
 
-    // 播放器
-    private VideoPlayer videoPlayer;
     // state
-    private boolean isStartLive = false; // 推流是否开始
-    private boolean isMyVideoLink = true; // 观众连麦模式，默认视频
-    private boolean isMyAlreadyApply = false; // 我是否已经申请连麦
-    private boolean isAgreeToLink = false; // 主播是否同意我连麦（为了确保权限时使用）
+    private boolean isStartVoice = true;//声音是否开启
+    private boolean isStartVideo = true;//画面是否开启
 
-    private String roomCreator = "96c372c5d70978f1239aac722c75080d";
+    private String roomCreator = "96c372c5d70978f1239aac722c75080d";//主播的accid
     private String roomName;
+
+    @Override
+    protected int getLayoutId() {
+        return R.layout.activity_audience;
+    }
+
+    @Override
+    protected View getContentView() {
+        return null;
+    }
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_audience);
-        AVChatManager.getInstance().observeAVChatState(this,true);
-        videoRender = findViewById(R.id.video_render);
-        videoRender.setZOrderMediaOverlay(false);
-        roomName = "95e08be0-c774-4477-9cbf-724d8a4b731d";
+        init();
         JoinChannel();
-        AVChatManager.getInstance().joinRoom2(roomName, AVChatType.VIDEO, new AVChatCallback<AVChatData>() {
-            @Override
-            public void onSuccess(AVChatData avChatData) {
-                Log.e(TAG , "join channel success");
-            }
 
-            @Override
-            public void onFailed(int i) {
-                Log.e(TAG , "join channel failed, code:" + i);
-            }
-
-            @Override
-            public void onException(Throwable throwable) {
-                Log.e(TAG , "join channel exception, throwable:" + throwable.getMessage());
-            }
-        });
 
     }
 
+    private void init(){
+        HideActionBar();
+        AVChatManager.getInstance().observeAVChatState(this,true);
+        videoRender = findViewById(R.id.video_render);
+        bypassVideoRender = findViewById(R.id.video_local_render);
+        videoRender.setZOrderMediaOverlay(false);
+        bypassVideoRender.setZOrderMediaOverlay(true);
+        roomName = "ccd7640d-7ab5-4cfe-a26e-6e3fdfb6989e";
+    }
 
-    private AVChatCameraCapturer mVideoCapturer;
+
     private void JoinChannel(){
         AVChatManager.getInstance().enableRtc();
         if (mVideoCapturer == null) {
@@ -93,13 +91,41 @@ public class AudienceActivity extends AppCompatActivity implements AVChatStateOb
         AVChatManager.getInstance().setParameters(parameters);
         AVChatManager.getInstance().enableVideo();
         AVChatManager.getInstance().startVideoPreview();
+        AVChatManager.getInstance().joinRoom2(roomName, AVChatType.VIDEO, new AVChatCallback<AVChatData>() {
+            @Override
+            public void onSuccess(AVChatData avChatData) {
+                Log.e(TAG , "join channel success");
+                showOnMicView(Const.getWyAccount());
+            }
+
+            @Override
+            public void onFailed(int i) {
+                Log.e(TAG , "join channel failed, code:" + i);
+            }
+
+            @Override
+            public void onException(Throwable throwable) {
+                Log.e(TAG , "join channel exception, throwable:" + throwable.getMessage());
+            }
+        });
+    }
+
+    //观众连线
+    public void showOnMicView(String account){
+        if (Const.getWyAccount().equals(account)){
+            bypassVideoRender.setVisibility(View.VISIBLE);
+            AVChatManager.getInstance().setupLocalVideoRender(bypassVideoRender, false, AVChatVideoScalingType.SCALE_ASPECT_BALANCED);
+        }
     }
 
 
     @Override
     public void onJoinedChannel(int i, String s, String s1, int i1) {
-        Log.e(TAG,"onJoinedChannel");
+
+//        AVChatManager.getInstance().setMicrophoneMute(true);
+//        AVChatManager.getInstance().muteLocalAudio(false);
         if (i == AVChatResCode.JoinChannelCode.OK ) {
+            Log.e(TAG,"onJoinedChannel");
             AVChatManager.getInstance().setSpeaker(true);
         }
     }
@@ -224,5 +250,30 @@ public class AudienceActivity extends AppCompatActivity implements AVChatStateOb
     protected void onDestroy() {
         super.onDestroy();
         AVChatManager.getInstance().observeAVChatState(this,false);
+        AVChatManager.getInstance().stopVideoPreview();
+        //关闭音视频引擎
+        AVChatManager.getInstance().disableRtc();
+        // 如果是视频通话，关闭视频模块
+        AVChatManager.getInstance().disableVideo();
+        //离开房间
+        AVChatManager.getInstance().leaveRoom2(roomName, new AVChatCallback<Void>() {
+            @Override
+            public void onSuccess(Void aVoid) {
+
+            }
+
+            @Override
+            public void onFailed(int i) {
+
+            }
+
+            @Override
+            public void onException(Throwable throwable) {
+
+            }
+        });
+
     }
+
+
 }
