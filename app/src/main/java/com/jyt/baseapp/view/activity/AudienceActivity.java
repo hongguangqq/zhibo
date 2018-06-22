@@ -7,6 +7,7 @@ import android.view.View;
 
 import com.jyt.baseapp.R;
 import com.jyt.baseapp.api.Const;
+import com.jyt.baseapp.view.dialog.IPhoneDialog;
 import com.netease.nimlib.sdk.avchat.AVChatCallback;
 import com.netease.nimlib.sdk.avchat.AVChatManager;
 import com.netease.nimlib.sdk.avchat.AVChatStateObserverLite;
@@ -28,18 +29,22 @@ import com.netease.nimlib.sdk.avchat.model.AVChatVideoFrame;
 
 import java.util.Map;
 
+import static com.jyt.baseapp.App.getHandler;
+
 
 public class AudienceActivity extends BaseMCVActivity implements AVChatStateObserverLite {
     private static final String TAG = "@#";
 
     private AVChatCameraCapturer mVideoCapturer;
-    private AVChatCameraCapturer mVideoBypassCapturer;
     private AVChatSurfaceViewRenderer videoRender;//主播画面
+    private AVChatCameraCapturer mVideoBypassCapturer;
     private AVChatSurfaceViewRenderer bypassVideoRender;//观众画面
+    private IPhoneDialog mExitDialog;
 
     // state
     private boolean isStartVoice = true;//声音是否开启
     private boolean isStartVideo = true;//画面是否开启
+    private boolean isStartLive = false; // 推流是否开始
 
     private String roomCreator = "96c372c5d70978f1239aac722c75080d";//主播的accid
     private String roomName;
@@ -60,6 +65,7 @@ public class AudienceActivity extends BaseMCVActivity implements AVChatStateObse
         super.onCreate(savedInstanceState);
         init();
         JoinChannel();
+        initSetting();
 
 
     }
@@ -67,11 +73,13 @@ public class AudienceActivity extends BaseMCVActivity implements AVChatStateObse
     private void init(){
         HideActionBar();
         AVChatManager.getInstance().observeAVChatState(this,true);
+        roomName = "26fd326e-d3c0-4d2f-a39e-9cf5b229d25a";
         videoRender = findViewById(R.id.video_render);
         bypassVideoRender = findViewById(R.id.video_local_render);
         videoRender.setZOrderMediaOverlay(false);
         bypassVideoRender.setZOrderMediaOverlay(true);
-        roomName = "ccd7640d-7ab5-4cfe-a26e-6e3fdfb6989e";
+        mExitDialog = new IPhoneDialog(this);
+        mExitDialog.setTitle("确认退出吗？");
     }
 
 
@@ -106,6 +114,20 @@ public class AudienceActivity extends BaseMCVActivity implements AVChatStateObse
             @Override
             public void onException(Throwable throwable) {
                 Log.e(TAG , "join channel exception, throwable:" + throwable.getMessage());
+            }
+        });
+    }
+
+    private void initSetting(){
+        mExitDialog.setOnIPhoneClickListener(new IPhoneDialog.OnIPhoneClickListener() {
+            @Override
+            public void ClickSubmit(boolean isShow, String input) {
+                doCompletelyFinish();
+            }
+
+            @Override
+            public void ClickCancel() {
+
             }
         });
     }
@@ -183,7 +205,7 @@ public class AudienceActivity extends BaseMCVActivity implements AVChatStateObse
 
     @Override
     public void onCallEstablished() {
-
+        AVChatManager.getInstance().enableAudienceRole(false);
     }
 
     @Override
@@ -223,7 +245,7 @@ public class AudienceActivity extends BaseMCVActivity implements AVChatStateObse
 
     @Override
     public boolean onAudioFrameFilter(AVChatAudioFrame avChatAudioFrame) {
-        return false;
+        return true;
     }
 
     @Override
@@ -246,32 +268,89 @@ public class AudienceActivity extends BaseMCVActivity implements AVChatStateObse
 
     }
 
+    private void releaseRtc(boolean isReleaseRtc, boolean isLeaveRoom){
+
+        if (isReleaseRtc) {
+            AVChatManager.getInstance().setupLocalVideoRender(null, false, AVChatVideoScalingType.SCALE_ASPECT_BALANCED);
+            AVChatManager.getInstance().stopVideoPreview();
+            AVChatManager.getInstance().disableVideo();
+
+        }
+        if (isLeaveRoom){
+            AVChatManager.getInstance().leaveRoom2(roomName, new AVChatCallback<Void>() {
+                @Override
+                public void onSuccess(Void aVoid) {
+                    Log.e("@#","leave channel success");
+                }
+
+                @Override
+                public void onFailed(int i) {
+                    Log.e("@#","leave channel failed, code:" + i);
+                }
+
+                @Override
+                public void onException(Throwable throwable) {
+                    Log.e("@#","leave channel exception, throwable:" + throwable.getMessage());
+                }
+            });
+        }
+        AVChatManager.getInstance().disableRtc();
+    }
+
+
+    // 退出聊天室
+    private void logoutChatRoom() {
+        if (mExitDialog.isShowing()){
+            doCompletelyFinish();
+        }else {
+            mExitDialog.show();
+        }
+    }
+
+    private void doCompletelyFinish() {
+        isStartLive = false;
+        //        showLiveFinishLayout();
+        getHandler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                releaseRtc(true, true);
+                finish();
+            }
+        }, 50);
+    }
+
+    @Override
+    public void onBackPressed() {
+        logoutChatRoom();
+
+    }
+
     @Override
     protected void onDestroy() {
         super.onDestroy();
         AVChatManager.getInstance().observeAVChatState(this,false);
-        AVChatManager.getInstance().stopVideoPreview();
-        //关闭音视频引擎
-        AVChatManager.getInstance().disableRtc();
-        // 如果是视频通话，关闭视频模块
-        AVChatManager.getInstance().disableVideo();
-        //离开房间
-        AVChatManager.getInstance().leaveRoom2(roomName, new AVChatCallback<Void>() {
-            @Override
-            public void onSuccess(Void aVoid) {
-
-            }
-
-            @Override
-            public void onFailed(int i) {
-
-            }
-
-            @Override
-            public void onException(Throwable throwable) {
-
-            }
-        });
+//        AVChatManager.getInstance().stopVideoPreview();
+//        //关闭音视频引擎
+//        AVChatManager.getInstance().disableRtc();
+//        // 如果是视频通话，关闭视频模块
+//        AVChatManager.getInstance().disableVideo();
+//        //离开房间
+//        AVChatManager.getInstance().leaveRoom2(roomName, new AVChatCallback<Void>() {
+//            @Override
+//            public void onSuccess(Void aVoid) {
+//
+//            }
+//
+//            @Override
+//            public void onFailed(int i) {
+//
+//            }
+//
+//            @Override
+//            public void onException(Throwable throwable) {
+//
+//            }
+//        });
 
     }
 

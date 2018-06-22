@@ -19,6 +19,7 @@ import com.jyt.baseapp.view.activity.ContentActivity;
 import com.jyt.baseapp.view.activity.DynamicActivity;
 import com.jyt.baseapp.view.activity.FFActivity;
 import com.jyt.baseapp.view.activity.FeedbackActivity;
+import com.jyt.baseapp.view.activity.LaunchActivity;
 import com.jyt.baseapp.view.activity.ListActivity;
 import com.jyt.baseapp.view.activity.LivePlayActivity;
 import com.jyt.baseapp.view.activity.ModifyActivity;
@@ -453,6 +454,23 @@ public class IntentHelper {
     public static Tuple AudienceActivityGetPara(Intent intent){
         int page = intent.getIntExtra(IntentKey.User_ID,0);
         return new Tuple(page);
+    }
+
+    public static void OpenLaunchActivity(Activity activity , int id ,int type,String nick ,String hpic){
+        Intent intent =getIntent(activity, LaunchActivity.class);
+        intent.putExtra(IntentKey.ComId,id);
+        intent.putExtra(IntentKey.Type,type);
+        intent.putExtra(IntentKey.RegisterNick,nick);
+        intent.putExtra(IntentKey.IMAGES,hpic);
+        activity.startActivity(intent);
+    }
+
+    public static Tuple LaunchActivityGetPara(Intent intent){
+        int id = intent.getIntExtra(IntentKey.ComId,0);
+        int type = intent.getIntExtra(IntentKey.Type,0);
+        String nick  = intent.getStringExtra(IntentKey.RegisterNick);
+        String hpic  = intent.getStringExtra(IntentKey.IMAGES);
+        return new Tuple(id,type,nick,hpic);
     }
 
 

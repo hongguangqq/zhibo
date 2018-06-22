@@ -31,6 +31,8 @@ public class IntentKey {
     public static final String SearchCondition = "SearchCondition";
     public static final String FFPage = "FFPage";
     public static final String ComId = "ComId";
+    public static final String Type = "Type";
+
 
 
 

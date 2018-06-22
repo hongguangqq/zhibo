@@ -12,7 +12,14 @@ import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.jyt.baseapp.R;
+import com.jyt.baseapp.api.BeanCallback;
+import com.jyt.baseapp.bean.BaseJson;
+import com.jyt.baseapp.bean.Tuple;
+import com.jyt.baseapp.helper.IntentHelper;
+import com.jyt.baseapp.model.LiveModel;
+import com.jyt.baseapp.model.impl.LiveModelImpl;
 import com.jyt.baseapp.util.BaseUtil;
 import com.jyt.baseapp.util.FastBlurUtil;
 import com.jyt.baseapp.view.widget.CircleImageView;
@@ -45,8 +52,12 @@ public class LaunchActivity extends BaseMCVActivity {
     @BindView(R.id.btn_launch_star)
     Button mBtnStar;
 
-    private boolean isLaunch;
+    private boolean isLaunch = true;
     private ValueAnimator mValueAnimator;
+    private int id;
+    private int type;
+    private int trid;
+    private LiveModel mLiveModel;
 
 
     @Override
@@ -69,10 +80,17 @@ public class LaunchActivity extends BaseMCVActivity {
     private void init(){
         HideActionBar();
         setvMainBackground(R.mipmap.bg_entrance);
+        Tuple tuple = IntentHelper.LaunchActivityGetPara(getIntent());
+        mLiveModel = new LiveModelImpl();
+        id = (int) tuple.getItem1();
+        type = (int) tuple.getItem2();
+        String nick = (String) tuple.getItem3();
+        String hpic = (String) tuple.getItme4();
+        mTvName.setText(nick);
+        Glide.with(this).load(hpic).error(R.mipmap.timg).into(mIvHpic);
     }
 
     private void initSetting(){
-
         Resources rs = getResources();
         Bitmap scaledBitmap = BitmapFactory.decodeResource(rs, R.mipmap.timg);
         Bitmap blurBitmap = FastBlurUtil.toBlur(scaledBitmap, 5);
@@ -98,6 +116,12 @@ public class LaunchActivity extends BaseMCVActivity {
                 BaseUtil.makeText("无人接听");
                 mPbProgress.setVisibility(View.GONE);
                 mPbProgress.setProgress(0);
+                mLiveModel.HangUp(id, trid, new BeanCallback() {
+                    @Override
+                    public void response(boolean success, Object response, int id) {
+
+                    }
+                });
             }
 
             @Override
@@ -110,7 +134,18 @@ public class LaunchActivity extends BaseMCVActivity {
 
             }
         });
-        mValueAnimator.setDuration(30000);
+        mLiveModel.MakeCall(id, type, new BeanCallback<BaseJson>() {
+            @Override
+            public void response(boolean success, BaseJson response, int id) {
+                if (success && response.getCode()==200){
+                    mPbProgress.setVisibility(View.VISIBLE);
+                    mValueAnimator.start();
+                }else if (success && response.getCode()==500){
+                    BaseUtil.makeText(response.getMessage());
+                    isLaunch=false;
+                }
+            }
+        });
 
     }
 

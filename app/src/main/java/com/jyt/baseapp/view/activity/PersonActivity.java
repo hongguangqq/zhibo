@@ -421,6 +421,16 @@ public class PersonActivity extends BaseMCVActivity {
         mTimePickerView.show();
     }
 
+    @OnClick(R.id.ll_person3)
+    public void OpenLaunchActivityByVoice(){
+        IntentHelper.OpenLaunchActivity(this,mUser.getId(),3,mUser.getNickname(),mUser.getHeadImg());
+    }
+
+    @OnClick(R.id.ll_person4)
+    public void OpenLaunchActivityByVideo(){
+        IntentHelper.OpenLaunchActivity(this,mUser.getId(),2,mUser.getNickname(),mUser.getHeadImg());
+    }
+
     @OnClick(R.id.iv_person_more)
     public void Duang(){
         mDialog.show();

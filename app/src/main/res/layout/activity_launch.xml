@@ -84,7 +84,7 @@
         android:layout_height="95dp"
         android:layout_marginTop="28dp"
         android:gravity="center"
-        android:text="拨号"
+        android:text="挂断"
         android:textSize="16dp"
         android:textColor="@color/white"
         android:background="@drawable/corner12"/>

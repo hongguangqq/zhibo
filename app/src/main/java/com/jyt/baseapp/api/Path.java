@@ -49,5 +49,7 @@ public class Path {
     public static final String MaleAppointmentList = BasePath + "/chat/sub/userAppointmentList";
     public static final String FemaleAppointmentList = BasePath + "/chat/sub/anchorAppointmentList";
     public static final String DeleteAppoint = BasePath + "/chat/sub/deleteAppoint";
+    public static final String MakeCall = BasePath + "/chat/user/makeCall";
+    public static final String HangUp = BasePath + "/chat/user/hangUp";
 
 }

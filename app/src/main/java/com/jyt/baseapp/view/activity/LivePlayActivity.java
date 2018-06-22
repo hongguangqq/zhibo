@@ -1,12 +1,16 @@
 package com.jyt.baseapp.view.activity;
 
 import android.content.res.Configuration;
+import android.graphics.Bitmap;
+import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 
 import com.jyt.baseapp.R;
-import com.jyt.baseapp.api.Const;
+import com.jyt.baseapp.view.dialog.IPhoneDialog;
 import com.netease.nimlib.sdk.NIMClient;
 import com.netease.nimlib.sdk.Observer;
 import com.netease.nimlib.sdk.ResponseCode;
@@ -35,15 +39,26 @@ import com.netease.nimlib.sdk.avchat.model.AVChatVideoCapturerFactory;
 import com.netease.nimlib.sdk.avchat.model.AVChatVideoFrame;
 import com.netease.nimlib.sdk.msg.MsgServiceObserve;
 import com.netease.nimlib.sdk.msg.model.CustomNotification;
+import com.netease.nrtc.sdk.common.ImageFormat;
+import com.netease.vcloud.video.effect.VideoEffect;
+import com.netease.vcloud.video.effect.VideoEffectFactory;
 
 import java.util.Map;
 import java.util.UUID;
 
+import static com.jyt.baseapp.App.getHandler;
+
 
 public class LivePlayActivity extends BaseMCVActivity implements AVChatStateObserverLite {
-    private AVChatSurfaceViewRenderer mRenderer;
     private AVChatCameraCapturer mVideoCapturer;
+    private AVChatSurfaceViewRenderer mRenderer;//主播画面
+    private AVChatCameraCapturer mVideoBypassCapturer;
+    private AVChatSurfaceViewRenderer bypassVideoRender;//观众画面
+    private Button mBtnStar;
     private String mMeetingName;
+    private IPhoneDialog mExitDialog;
+    private boolean isStartLive = false; // 是否开始直播推流
+    private Handler mVideoEffectHandler = new Handler();
 
 
     @Override
@@ -59,51 +74,86 @@ public class LivePlayActivity extends BaseMCVActivity implements AVChatStateObse
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        init();
+        initStting();
+        initListener();
+
+    }
+
+    private void init(){
         mRenderer = findViewById(R.id.video_render);
+        bypassVideoRender = findViewById(R.id.video_local_render);
+        mBtnStar = findViewById(R.id.btn_star);
         mRenderer.setZOrderMediaOverlay(false);
-        AVChatManager.getInstance().observeAVChatState(this,true);
-        startPreview();
+        bypassVideoRender.setZOrderMediaOverlay(true);
         mMeetingName = UUID.randomUUID().toString();
         Log.e("@#","room--"+ mMeetingName);
-        AVChatManager.getInstance().createRoom(mMeetingName, null, new AVChatCallback<AVChatChannelInfo>() {
+        mExitDialog = new IPhoneDialog(this);
+        mExitDialog.setTitle("确认退出吗？");
+    }
+
+    private void initStting(){
+        AVChatManager.getInstance().observeAVChatState(this,true);
+        startPreview();
+
+    }
+
+    private void initListener(){
+        mBtnStar.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onSuccess(AVChatChannelInfo avChatChannelInfo) {
-                Log.e("@#","room创建成功--"+ mMeetingName);
-                Log.e("@#","accid--"+Const.getWyAccount());
-                AVChatManager.getInstance().joinRoom2(mMeetingName, AVChatType.VIDEO, new AVChatCallback<AVChatData>() {
+            public void onClick(View view) {
+                AVChatManager.getInstance().createRoom(mMeetingName, null, new AVChatCallback<AVChatChannelInfo>() {
                     @Override
-                    public void onSuccess(AVChatData avChatData) {
-                        Log.e("@#", "Live join channel success");
+                    public void onSuccess(AVChatChannelInfo avChatChannelInfo) {
+                        Log.e("@#","room创建成功--"+ mMeetingName);
+                        AVChatManager.getInstance().joinRoom2(mMeetingName, AVChatType.VIDEO, new AVChatCallback<AVChatData>() {
+                            @Override
+                            public void onSuccess(AVChatData avChatData) {
+                                Log.e("@#", "Live join channel success");
+                                isStartLive = true;//创建房间成功，推流开始
+                                mBtnStar.setVisibility(View.GONE);
+                            }
+
+                            @Override
+                            public void onFailed(int i) {
+
+                            }
+
+                            @Override
+                            public void onException(Throwable throwable) {
+
+                            }
+                        });
+
                     }
 
                     @Override
-                    public void onFailed(int i) {
-
+                    public void onFailed(int code) {
+                        if (code == ResponseCode.RES_EEXIST){
+                            Log.e("@#","房间已存在");
+                        }else {
+                            Log.e("@#","create room failed, code:" + code);
+                        }
                     }
 
                     @Override
-                    public void onException(Throwable throwable) {
-
+                    public void onException(Throwable exception) {
+                        Log.e("@#", "create room onException, throwable:" + exception.getMessage());
                     }
                 });
-
-            }
-
-            @Override
-            public void onFailed(int code) {
-                if (code == ResponseCode.RES_EEXIST){
-                    Log.e("@#","房间已存在");
-                }else {
-                    Log.e("@#","create room failed, code:" + code);
-                }
-            }
-
-            @Override
-            public void onException(Throwable exception) {
-                Log.e("@#", "create room onException, throwable:" + exception.getMessage());
             }
         });
+        mExitDialog.setOnIPhoneClickListener(new IPhoneDialog.OnIPhoneClickListener() {
+            @Override
+            public void ClickSubmit(boolean isShow, String input) {
+                doCompletelyFinish();
+            }
 
+            @Override
+            public void ClickCancel() {
+
+            }
+        });
     }
 
 
@@ -150,6 +200,8 @@ public class LivePlayActivity extends BaseMCVActivity implements AVChatStateObse
 
 
 
+
+
     private void registerObservers(boolean register){
         NIMClient.getService(MsgServiceObserve.class).observeCustomNotification(customNotification, register);
     }
@@ -191,7 +243,8 @@ public class LivePlayActivity extends BaseMCVActivity implements AVChatStateObse
 
     @Override
     public void onDisconnectServer(int i) {
-
+        releaseRtc(true, true);
+        finish();
     }
 
     @Override
@@ -236,8 +289,41 @@ public class LivePlayActivity extends BaseMCVActivity implements AVChatStateObse
 
     }
 
+    private VideoEffect mVideoEffect;
+    private boolean mHasSetFilterType = false;
+    private int mCurWidth, mCurHeight;
+    private Bitmap mWaterMaskBitmapStatic;
+    private Bitmap[] mWaterMaskBitmapDynamic;
+    private boolean isUninitVideoEffect = false;// 是否销毁滤镜模块
+    private boolean mIsmWaterMaskAdded = false;
+    private int rotation;
+    private int mDropFramesWhenConfigChanged = 0; //丢帧数
     @Override
-    public boolean onVideoFrameFilter(AVChatVideoFrame avChatVideoFrame, boolean b) {
+    public boolean onVideoFrameFilter(AVChatVideoFrame frame, boolean maybeDualInput) {
+        if (frame == null || (Build.VERSION.SDK_INT < 18)) {
+            return true;
+        }
+        if (mVideoEffect == null){
+            mVideoEffect = VideoEffectFactory.getVCloudEffect();
+            mVideoEffect.init(this, true, false);
+            //需要delay 否则filter设置不成功
+            mVideoEffect.setBeautyLevel(5);
+            mVideoEffect.setFilterLevel(0.5f);
+        }
+        //分辨率、清晰度变化后设置丢帧数为2
+        if (mCurWidth != frame.width || mCurHeight != frame.height) {
+            mCurWidth = frame.width;
+            mCurHeight = frame.height;
+        }
+        if (mVideoEffect == null) {
+            return true;
+        }
+        mVideoEffect.addWaterMark(null, 0, 0);
+        mVideoEffect.closeDynamicWaterMark(true);
+
+        VideoEffect.DataFormat format = frame.format == ImageFormat.I420 ? VideoEffect.DataFormat.YUV420 : VideoEffect.DataFormat.NV21;
+
+
         return true;
     }
 
@@ -277,5 +363,85 @@ public class LivePlayActivity extends BaseMCVActivity implements AVChatStateObse
 
     }
 
+    private void releaseRtc(boolean isReleaseRtc, boolean isLeaveRoom){
+        if (mVideoEffect != null) {
+            mVideoEffectHandler.post(new Runnable() {
+                @Override
+                public void run() {
+                    Log.e("@#", "releaseRtc unInit");
+                    mVideoEffect.unInit();
+                    mVideoEffect = null;
+                }
+            });
+        }
+        if (isReleaseRtc) {
+            AVChatManager.getInstance().setupLocalVideoRender(null, false, AVChatVideoScalingType.SCALE_ASPECT_BALANCED);
+            AVChatManager.getInstance().stopVideoPreview();
+            AVChatManager.getInstance().disableVideo();
 
+        }
+        if (isLeaveRoom){
+            AVChatManager.getInstance().leaveRoom2(mMeetingName, new AVChatCallback<Void>() {
+                @Override
+                public void onSuccess(Void aVoid) {
+                    Log.e("@#","leave channel success");
+                }
+
+                @Override
+                public void onFailed(int i) {
+                    Log.e("@#","leave channel failed, code:" + i);
+                }
+
+                @Override
+                public void onException(Throwable throwable) {
+                    Log.e("@#","leave channel exception, throwable:" + throwable.getMessage());
+                }
+            });
+        }
+        AVChatManager.getInstance().disableRtc();
+    }
+
+    private void clearChatRoom() {
+        finish();
+    }
+
+    // 退出聊天室
+    private void logoutChatRoom() {
+        if (mExitDialog.isShowing()){
+            doCompletelyFinish();
+        }else {
+            mExitDialog.show();
+        }
+    }
+
+    private void doCompletelyFinish() {
+        isStartLive = false;
+        //        showLiveFinishLayout();
+        getHandler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                releaseRtc(true, true);
+                finish();
+            }
+        }, 50);
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (isStartLive) {
+            logoutChatRoom();
+        } else {
+            releaseRtc(true, false);
+            clearChatRoom();
+        }
+    }
+
+
+
+    @Override
+    protected void onDestroy() {
+        AVChatManager.getInstance().observeAVChatState(this, false);
+        super.onDestroy();
+
+    }
 }
