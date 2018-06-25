@@ -73,7 +73,7 @@ public class AudienceActivity extends BaseMCVActivity implements AVChatStateObse
     private void init(){
         HideActionBar();
         AVChatManager.getInstance().observeAVChatState(this,true);
-        roomName = "26fd326e-d3c0-4d2f-a39e-9cf5b229d25a";
+        roomName = "83cc601b-f0de-4179-89d9-8695e94ca495";
         videoRender = findViewById(R.id.video_render);
         bypassVideoRender = findViewById(R.id.video_local_render);
         videoRender.setZOrderMediaOverlay(false);

@@ -77,6 +77,7 @@ public class Const {
 
     public static final String WyAccount = "WyAccount";
     public static final String WyToken = "WyToken";
+    public static final String IsMaster = "IsMaster";
 
 
     public static void SaveUser(UserBean user){

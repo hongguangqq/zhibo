@@ -212,6 +212,8 @@
             android:exported="false"
             android:process=":core"/>
 
+        <service android:name=".service.ScannerService"/>
+
         <!-- //////////////////////////////////////////////////////////////////////////////////// -->
 
         <activity android:name=".view.activity.entrance.LoginActivity">
@@ -317,6 +319,9 @@
             <!-- </intent-filter> -->
         </activity>
         <activity android:name=".view.activity.AudienceActivity">
+        </activity>
+        <activity android:name=".view.activity.TestActivity">
+
         </activity>
     </application>
 
