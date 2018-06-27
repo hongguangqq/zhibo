@@ -1,5 +1,7 @@
 package com.jyt.baseapp.service;
 
+import android.app.Activity;
+
 import com.netease.nimlib.sdk.avchat.model.AVChatSurfaceViewRenderer;
 
 /**
@@ -8,7 +10,7 @@ import com.netease.nimlib.sdk.avchat.model.AVChatSurfaceViewRenderer;
 public interface ScannerCallBack {
     void createAndjoinRoom();
 
-    void joinRoom(String roomId);
+    void joinRoom(String roomId,String comId);
 
     AVChatSurfaceViewRenderer getLocalRender();
 
@@ -16,7 +18,7 @@ public interface ScannerCallBack {
 
     void show();
 
-    void closeScanner(boolean isReleaseRtc, boolean isLeaveRoom);
+    void closeScanner(Activity activity,boolean isReleaseRtc, boolean isLeaveRoom);
 
     void closeConnection();
 }

@@ -1,5 +1,6 @@
 package com.jyt.baseapp.service;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 
@@ -52,9 +53,9 @@ public class ScannerController {
         mScannerCallBack.createAndjoinRoom();
     }
 
-    public void joinRoom(String roomId){
+    public void joinRoom(String roomId,String comId){
         if (mScannerCallBack == null) return;
-        mScannerCallBack.joinRoom(roomId);
+        mScannerCallBack.joinRoom(roomId,comId);
     }
 
     public void show(){
@@ -67,14 +68,14 @@ public class ScannerController {
         return mScannerCallBack.getLocalRender();
     }
 
-    public AVChatSurfaceViewRenderer getBypassRender(){
+    public AVChatSurfaceViewRenderer getRemoteRender(){
         if (mScannerCallBack == null) return null;
         return mScannerCallBack.getBypassRender();
     }
 
-    public void closeScanner(boolean isReleaseRtc, boolean isLeaveRoom ){
+    public void closeScanner(Activity activity,boolean isReleaseRtc, boolean isLeaveRoom ){
         if (mScannerCallBack == null) return;
-        mScannerCallBack.closeScanner(isReleaseRtc,isLeaveRoom);
+        mScannerCallBack.closeScanner(activity,isReleaseRtc,isLeaveRoom);
     }
 
     public void closeConnection(){

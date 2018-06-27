@@ -1,14 +1,17 @@
 package com.jyt.baseapp.service;
 
+import android.app.Activity;
 import android.app.Service;
 import android.content.Intent;
 import android.os.IBinder;
 import android.support.annotation.Nullable;
 import android.util.Log;
 
+import com.jyt.baseapp.api.Const;
 import com.netease.nimlib.sdk.avchat.AVChatCallback;
 import com.netease.nimlib.sdk.avchat.AVChatManager;
 import com.netease.nimlib.sdk.avchat.AVChatStateObserverLite;
+import com.netease.nimlib.sdk.avchat.constant.AVChatResCode;
 import com.netease.nimlib.sdk.avchat.constant.AVChatVideoScalingType;
 import com.netease.nimlib.sdk.avchat.model.AVChatAudioFrame;
 import com.netease.nimlib.sdk.avchat.model.AVChatNetworkStats;
@@ -17,6 +20,8 @@ import com.netease.nimlib.sdk.avchat.model.AVChatSurfaceViewRenderer;
 import com.netease.nimlib.sdk.avchat.model.AVChatVideoFrame;
 
 import java.util.Map;
+
+import static com.netease.nimlib.sdk.media.player.AudioPlayer.TAG;
 
 /**
  * @author LinWei on 2018/6/25 10:30
@@ -47,7 +52,7 @@ import java.util.Map;
  * #####################################################
  */
 public class ScannerService extends Service implements ScannerCallBack,AVChatStateObserverLite {
-    private boolean isMaster;//是否为主播
+    private static boolean isMeJoin;//是否为主播
 
     @Override
     public void onCreate() {
@@ -75,6 +80,7 @@ public class ScannerService extends Service implements ScannerCallBack,AVChatSta
         super.onDestroy();
         ScannerManager.removeFloatWindowManager();
         AVChatManager.getInstance().observeAVChatState(this,false);
+        isMeJoin = false;
     }
 
     /************************* ScannerCallBack *****************************/
@@ -85,8 +91,8 @@ public class ScannerService extends Service implements ScannerCallBack,AVChatSta
     }
 
     @Override
-    public void joinRoom(String roomId) {
-        ScannerManager.joinRoom(this,roomId);
+    public void joinRoom(String roomId,String comId) {
+        ScannerManager.joinRoom(this,roomId,comId);
     }
 
     @Override
@@ -96,34 +102,49 @@ public class ScannerService extends Service implements ScannerCallBack,AVChatSta
 
     @Override
     public AVChatSurfaceViewRenderer getBypassRender() {
-        return ScannerManager.getmBypassRender();
+        return ScannerManager.getmRemoteRender();
     }
 
     @Override
     public void show() {
-        ScannerManager.show();
+        ScannerManager.show(this);
     }
 
     @Override
-    public void closeScanner(boolean isReleaseRtc, boolean isLeaveRoom) {
-        releaseRtc(isReleaseRtc, isLeaveRoom);
+    public void closeScanner(Activity activity , boolean isReleaseRtc, boolean isLeaveRoom) {
+        releaseRtc(activity,isReleaseRtc, isLeaveRoom);
     }
 
     @Override
     public void closeConnection() {
         AVChatManager.getInstance().observeAVChatState(this, false);
+        ScannerManager.closeConnection();
     }
 
 
     /************************* AVChatStateObserverLite *****************************/
     @Override
     public void onJoinedChannel(int i, String s, String s1, int i1) {
-
+        if (i == AVChatResCode.JoinChannelCode.OK ) {
+            Log.e(TAG,"onJoinedChannel");
+            AVChatManager.getInstance().setSpeaker(true);
+        }
     }
 
     @Override
     public void onUserJoined(String s) {
-
+        if (Const.getGender()==1){
+            //男
+            if (!isMeJoin){
+                isMeJoin=true;
+                AVChatManager.getInstance().setupRemoteVideoRender(ScannerManager.comID,ScannerManager.getmLocalRender(),false,AVChatVideoScalingType.SCALE_ASPECT_BALANCED);
+            }
+        } else {
+            //女
+            if (ScannerManager.comID!=null && ScannerManager.comID.equals(s)){
+                AVChatManager.getInstance().setupRemoteVideoRender(s,ScannerManager.getmRemoteRender(),false,AVChatVideoScalingType.SCALE_ASPECT_BALANCED);
+            }
+        }
     }
 
     @Override
@@ -143,7 +164,7 @@ public class ScannerService extends Service implements ScannerCallBack,AVChatSta
 
     @Override
     public void onDisconnectServer(int i) {
-        releaseRtc(true, true);
+        releaseRtc(null,true, true);
     }
 
     @Override
@@ -216,7 +237,7 @@ public class ScannerService extends Service implements ScannerCallBack,AVChatSta
 
     }
 
-    private void releaseRtc(boolean isReleaseRtc, boolean isLeaveRoom){
+    private void releaseRtc(final Activity activity , boolean isReleaseRtc, boolean isLeaveRoom){
 //        if (mVideoEffect != null) {
 //            mVideoEffectHandler.post(new Runnable() {
 //                @Override
@@ -227,10 +248,12 @@ public class ScannerService extends Service implements ScannerCallBack,AVChatSta
 //                }
 //            });
 //        }
+
         if (isReleaseRtc) {
             AVChatManager.getInstance().setupLocalVideoRender(null, false, AVChatVideoScalingType.SCALE_ASPECT_BALANCED);
             AVChatManager.getInstance().stopVideoPreview();
             AVChatManager.getInstance().disableVideo();
+            AVChatManager.getInstance().disableRtc();
 
         }
         if (isLeaveRoom){
@@ -239,6 +262,9 @@ public class ScannerService extends Service implements ScannerCallBack,AVChatSta
                 public void onSuccess(Void aVoid) {
                     Log.e("@#","leave channel success");
                     ScannerManager.mMeetingName = "";
+                    if (activity!=null){
+                        activity.finish();
+                    }
                 }
 
                 @Override
@@ -252,6 +278,9 @@ public class ScannerService extends Service implements ScannerCallBack,AVChatSta
                 }
             });
         }
-        AVChatManager.getInstance().disableRtc();
+
+
+
+
     }
 }

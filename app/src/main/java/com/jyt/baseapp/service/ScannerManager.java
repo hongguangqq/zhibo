@@ -8,6 +8,7 @@ import android.os.Build;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.Gravity;
+import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
 
@@ -33,6 +34,8 @@ import com.netease.nimlib.sdk.avchat.model.AVChatVideoCapturerFactory;
 
 import java.util.UUID;
 
+import static com.netease.nimlib.sdk.media.player.AudioPlayer.TAG;
+
 /**
  * @author LinWei on 2018/6/25 10:39
  */
@@ -43,6 +46,7 @@ public class ScannerManager  {
     public static String mMeetingName;//房间名
     public static boolean isStartLive;//是否在连线
     public static boolean isBigScreen = true;//是否处于大屏状态
+    public static String comID;//聊天对象ID
 
     private static WindowManager mWindowManager;
     private static WindowManager.LayoutParams wmParams;
@@ -55,9 +59,25 @@ public class ScannerManager  {
         mBypassRender = new AVChatSurfaceViewRenderer(context);
         mLocalRender.setZOrderMediaOverlay(false);
         mBypassRender.setZOrderMediaOverlay(true);
+        ViewGroup parent1 = (ViewGroup) mLocalRender.getParent();
+        if (parent1!=null){
+            parent1.removeView(mLocalRender);
+        }
+        ViewGroup parent2 = (ViewGroup) mBypassRender.getParent();
+        if (parent2!=null){
+            parent2.removeView(mBypassRender);
+        }
         startPreview(context);
         //设置完毕
-        setWindowType(context);
+        mBypassRender.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (mHasShown){
+                    removeFloatWindowManager();
+                }
+            }
+        });
+
     }
 
     /**
@@ -79,8 +99,10 @@ public class ScannerManager  {
             PackageManager pm = context.getPackageManager();
             boolean permission = (PackageManager.PERMISSION_GRANTED == pm.checkPermission("android.permission.SYSTEM_ALERT_WINDOW", packname));
             if (permission) {
+                Log.e("@#","TYPE_PHONE");
                 wmParams.type = WindowManager.LayoutParams.TYPE_PHONE;
             } else {
+                Log.e("@#","TYPE_TOAST");
                 wmParams.type = WindowManager.LayoutParams.TYPE_TOAST;
             }
         }
@@ -106,7 +128,7 @@ public class ScannerManager  {
         //设置悬浮窗口长宽数据
         wmParams.width = BaseUtil.dip2px(101);
         wmParams.height = BaseUtil.dip2px(151);
-        mLocalRender.setLayoutParams(wmParams);
+//        mLocalRender.setLayoutParams(wmParams);
 //        mHasShown = true;
 //        windowManager.addView(mLocalRender, wmParams);
     }
@@ -154,12 +176,41 @@ public class ScannerManager  {
     }
 
 
-    public static void joinRoom(Context context,String roomId){
+    public static void joinRoom(Context context, String roomId, final String comId){
+        AVChatManager.getInstance().joinRoom2(roomId, AVChatType.VIDEO, new AVChatCallback<AVChatData>() {
+            @Override
+            public void onSuccess(AVChatData avChatData) {
+                Log.e(TAG , "join channel success");
+                AVChatManager.getInstance().setupLocalVideoRender(mLocalRender, false, AVChatVideoScalingType.SCALE_ASPECT_BALANCED);
+                AVChatManager.getInstance().setupRemoteVideoRender(comId,mBypassRender,false,AVChatVideoScalingType.SCALE_ASPECT_BALANCED);
+            }
 
+            @Override
+            public void onFailed(int i) {
+                Log.e(TAG , "join channel failed, code:" + i);
+            }
+
+            @Override
+            public void onException(Throwable throwable) {
+                Log.e(TAG , "join channel exception, throwable:" + throwable.getMessage());
+            }
+        });
     }
 
-    public static void clearRoom(Context context,String roomId){
 
+
+
+    public static void closeConnection(){
+        ViewGroup parent1 = (ViewGroup) mLocalRender.getParent();
+        if (parent1!=null){
+            parent1.removeView(mLocalRender);
+        }
+        ViewGroup parent2 = (ViewGroup) mBypassRender.getParent();
+        if (parent2!=null){
+            parent2.removeView(mBypassRender);
+        }
+        mLocalRender = null;
+        mBypassRender = null;
     }
 
 
@@ -168,7 +219,7 @@ public class ScannerManager  {
         return mLocalRender;
     }
 
-    public static AVChatSurfaceViewRenderer getmBypassRender(){
+    public static AVChatSurfaceViewRenderer getmRemoteRender(){
         return mBypassRender;
     }
 
@@ -178,15 +229,16 @@ public class ScannerManager  {
         mHasShown = false;
     }
 
-    public static void show() {
+    public static void show(Context context) {
         if (!mHasShown)
-            Log.e("@#","show");
+            mHasShown = true;
+            setWindowType(context);
             ViewGroup parent = (ViewGroup) mLocalRender.getParent();
             if (parent!=null){
                 parent.removeView(mLocalRender);
             }
             mWindowManager.addView(mLocalRender, wmParams);
-        mHasShown = true;
+
     }
 
     /**
@@ -196,10 +248,13 @@ public class ScannerManager  {
         //移除悬浮窗口
         boolean isAttach = true;
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-            isAttach = mLocalRender.isAttachedToWindow();
+            if (!isBigScreen){
+                isAttach = mLocalRender.isAttachedToWindow();
+            }
         }
         if (mHasShown && isAttach && mWindowManager != null)
             mWindowManager.removeView(mLocalRender);
+            mHasShown = false;
     }
 
 

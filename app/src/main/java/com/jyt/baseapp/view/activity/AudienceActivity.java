@@ -329,28 +329,7 @@ public class AudienceActivity extends BaseMCVActivity implements AVChatStateObse
     protected void onDestroy() {
         super.onDestroy();
         AVChatManager.getInstance().observeAVChatState(this,false);
-//        AVChatManager.getInstance().stopVideoPreview();
-//        //关闭音视频引擎
-//        AVChatManager.getInstance().disableRtc();
-//        // 如果是视频通话，关闭视频模块
-//        AVChatManager.getInstance().disableVideo();
-//        //离开房间
-//        AVChatManager.getInstance().leaveRoom2(roomName, new AVChatCallback<Void>() {
-//            @Override
-//            public void onSuccess(Void aVoid) {
-//
-//            }
-//
-//            @Override
-//            public void onFailed(int i) {
-//
-//            }
-//
-//            @Override
-//            public void onException(Throwable throwable) {
-//
-//            }
-//        });
+
 
     }
 

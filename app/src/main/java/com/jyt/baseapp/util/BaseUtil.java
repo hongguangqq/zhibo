@@ -1,6 +1,7 @@
 package com.jyt.baseapp.util;
 
 import android.app.Activity;
+import android.app.ActivityManager;
 import android.content.ContentResolver;
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -36,6 +37,7 @@ import java.io.IOException;
 import java.lang.reflect.Field;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.regex.Matcher;
@@ -127,6 +129,28 @@ public class BaseUtil {
         }else {
             getHandle().post(r);//在子线程，借助handle，运行在主线程
         }
+    }
+
+    /**
+     * 判断服务是否开启
+     * @param context
+     * @param ServiceName
+     * @return
+     */
+    public static boolean isServiceRunning(Context context, String ServiceName) {
+        if (("").equals(ServiceName) || ServiceName == null)
+            return false;
+        ActivityManager myManager = (ActivityManager) context
+                .getSystemService(Context.ACTIVITY_SERVICE);
+        ArrayList<ActivityManager.RunningServiceInfo> runningService = (ArrayList<ActivityManager.RunningServiceInfo>) myManager
+                .getRunningServices(30);
+        for (int i = 0; i < runningService.size(); i++) {
+            if (runningService.get(i).service.getClassName().toString()
+                    .equals(ServiceName)) {
+                return true;
+            }
+        }
+        return false;
     }
 
     public static int currentapiVersion=android.os.Build.VERSION.SDK_INT;//获取api版本好

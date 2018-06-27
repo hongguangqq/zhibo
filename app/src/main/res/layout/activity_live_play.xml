@@ -7,7 +7,7 @@
     android:layout_height="match_parent"
     tools:context="com.jyt.baseapp.view.activity.LivePlayActivity">
     <FrameLayout
-        android:id="@+id/fl_localRender"
+        android:id="@+id/fl_remoteRender"
         android:layout_width="match_parent"
         android:layout_height="match_parent"/>
     <Button
@@ -17,7 +17,7 @@
         android:layout_centerInParent="true"
         android:text="开始直播"/>
     <FrameLayout
-        android:id="@+id/fl_remoteRender"
+        android:id="@+id/fl_localRender"
         android:layout_width="101dp"
         android:layout_height="151dp"
         android:layout_marginBottom="84dp"

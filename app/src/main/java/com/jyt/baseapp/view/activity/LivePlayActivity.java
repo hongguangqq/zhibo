@@ -11,6 +11,7 @@ import android.widget.FrameLayout;
 import com.jyt.baseapp.R;
 import com.jyt.baseapp.service.ScannerController;
 import com.jyt.baseapp.service.ScannerManager;
+import com.jyt.baseapp.util.BaseUtil;
 import com.jyt.baseapp.view.dialog.IPhoneDialog;
 
 import java.util.UUID;
@@ -58,29 +59,39 @@ public class LivePlayActivity extends BaseMCVActivity {
     }
 
     private void initStting(){
-        ScannerController.getInstance().startMonkServer(LivePlayActivity.this);
+
+        if (!BaseUtil.isServiceRunning(this,"com.jyt.baseapp.service.ScannerService")){
+            ScannerController.getInstance().startMonkServer(this);
+        }
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
                 FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
-                mFlLocalRender.addView(ScannerController.getInstance().getLocalRender(),params);
+                mFlRemoterRender.addView(ScannerController.getInstance().getLocalRender(),params);
+                //                    ScannerController.getInstance().show();
             }
         },1000);
+
+
     }
 
     private void initListener(){
         mBtnStar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+//                ScannerManager.isBigScreen=false;
+                mFlRemoterRender.removeAllViews();
                 new Handler().postDelayed(new Runnable() {
                     @Override
                     public void run() {
                         if (null != ScannerController.getInstance().getLocalRender()){
-
-
-//                            mll.addView(ScannerController.getInstance().getLocalRender());
-//                            ScannerController.getInstance().createAndJoinRoom();
+                            FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
+                            //创建房间
+                            ScannerController.getInstance().createAndJoinRoom();
+                            mFlLocalRender.addView(ScannerController.getInstance().getLocalRender(),params);
+                            mFlRemoterRender.addView(ScannerController.getInstance().getRemoteRender(),params);
 //                            ScannerController.getInstance().show();
+//                            finish();
                         }
 
                     }
@@ -117,8 +128,7 @@ public class LivePlayActivity extends BaseMCVActivity {
         getHandler().postDelayed(new Runnable() {
             @Override
             public void run() {
-                ScannerController.getInstance().closeScanner(true,true);
-                finish();
+                ScannerController.getInstance().closeScanner(LivePlayActivity.this,true,true);
             }
         }, 50);
     }
@@ -128,11 +138,17 @@ public class LivePlayActivity extends BaseMCVActivity {
         if (ScannerManager.isBigScreen){
             if (ScannerManager.isStartLive){
                 logoutChatRoom();
+
             }else {
-                ScannerController.getInstance().closeScanner(true,false);
-                finish();
+                ScannerController.getInstance().closeScanner(LivePlayActivity.this,true,false);
+                Log.e("@#","finish");
             }
+            finish();
+        }else {
+
+            finish();
         }
+
 
     }
 
@@ -141,7 +157,11 @@ public class LivePlayActivity extends BaseMCVActivity {
     @Override
     protected void onDestroy() {
         if (ScannerManager.isBigScreen){
+            ScannerController.getInstance().stopMonkServer(this);
             ScannerController.getInstance().closeConnection();
+            if (ScannerManager.isStartLive){
+
+            }
         }else {
 
         }
