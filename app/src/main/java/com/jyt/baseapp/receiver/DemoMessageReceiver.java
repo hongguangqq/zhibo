@@ -3,6 +3,7 @@ package com.jyt.baseapp.receiver;
 import android.content.Context;
 import android.util.Log;
 
+import com.jyt.baseapp.util.BaseUtil;
 import com.xiaomi.mipush.sdk.ErrorCode;
 import com.xiaomi.mipush.sdk.MiPushClient;
 import com.xiaomi.mipush.sdk.MiPushCommandMessage;
@@ -23,8 +24,8 @@ public class DemoMessageReceiver extends PushMessageReceiver {
     public void onReceivePassThroughMessage(Context context, MiPushMessage message) {
 
         //打印消息方便测试
-        System.out.println("透传消息到达了");
-        System.out.println("透传消息是"+message.toString());
+        BaseUtil.e("透传消息到达了");
+        BaseUtil.e("透传消息是"+message.toString());
 
     }
 
@@ -36,8 +37,8 @@ public class DemoMessageReceiver extends PushMessageReceiver {
     @Override
     public void onNotificationMessageArrived(Context context, MiPushMessage message) {
         //打印消息方便测试
-        System.out.println("通知消息到达了");
-        System.out.println("通知消息是"+message.toString());
+        BaseUtil.e("通知消息到达了");
+        BaseUtil.e("通知消息是"+message.toString());
 //        Map<String,String> map = message.getExtra();
 //        Log.e("@#",map.get("bili"));
     }
@@ -51,9 +52,9 @@ public class DemoMessageReceiver extends PushMessageReceiver {
     public void onNotificationMessageClicked(Context context, MiPushMessage message) {
 
         //打印消息方便测试
-        System.out.println("用户点击了通知消息");
-        System.out.println("通知消息是" + message.toString());
-        System.out.println("点击后,会进入应用" );
+        BaseUtil.e("用户点击了通知消息");
+        BaseUtil.e("通知消息是" + message.toString());
+        BaseUtil.e("点击后,会进入应用" );
 
     }
 

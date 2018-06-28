@@ -14,8 +14,6 @@ import com.jyt.baseapp.service.ScannerManager;
 import com.jyt.baseapp.util.BaseUtil;
 import com.jyt.baseapp.view.dialog.IPhoneDialog;
 
-import java.util.UUID;
-
 import static com.jyt.baseapp.App.getHandler;
 
 
@@ -51,15 +49,12 @@ public class LivePlayActivity extends BaseMCVActivity {
         mFlLocalRender = findViewById(R.id.fl_localRender);
         mFlRemoterRender = findViewById(R.id.fl_remoteRender);
         mBtnStar = findViewById(R.id.btn_star);
-
-        mMeetingName = UUID.randomUUID().toString();
-        Log.e("@#","room--"+ mMeetingName);
         mExitDialog = new IPhoneDialog(this);
         mExitDialog.setTitle("确认退出吗？");
     }
 
     private void initStting(){
-
+        ScannerManager.isBigScreen = true;
         if (!BaseUtil.isServiceRunning(this,"com.jyt.baseapp.service.ScannerService")){
             ScannerController.getInstance().startMonkServer(this);
         }
@@ -79,7 +74,6 @@ public class LivePlayActivity extends BaseMCVActivity {
         mBtnStar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-//                ScannerManager.isBigScreen=false;
                 mFlRemoterRender.removeAllViews();
                 new Handler().postDelayed(new Runnable() {
                     @Override
@@ -87,11 +81,12 @@ public class LivePlayActivity extends BaseMCVActivity {
                         if (null != ScannerController.getInstance().getLocalRender()){
                             FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
                             //创建房间
-                            ScannerController.getInstance().createAndJoinRoom();
+                            if (!ScannerManager.isStartLive){
+                                ScannerController.getInstance().createAndJoinRoom();
+                            }
                             mFlLocalRender.addView(ScannerController.getInstance().getLocalRender(),params);
                             mFlRemoterRender.addView(ScannerController.getInstance().getRemoteRender(),params);
-//                            ScannerController.getInstance().show();
-//                            finish();
+                            mBtnStar.setVisibility(View.GONE);//隐藏直播开启按钮
                         }
 
                     }
@@ -136,16 +131,16 @@ public class LivePlayActivity extends BaseMCVActivity {
     @Override
     public void onBackPressed() {
         if (ScannerManager.isBigScreen){
+            //未处于悬浮窗状态
             if (ScannerManager.isStartLive){
                 logoutChatRoom();
-
             }else {
                 ScannerController.getInstance().closeScanner(LivePlayActivity.this,true,false);
                 Log.e("@#","finish");
             }
             finish();
         }else {
-
+            //处于悬浮窗状态
             finish();
         }
 
@@ -157,12 +152,10 @@ public class LivePlayActivity extends BaseMCVActivity {
     @Override
     protected void onDestroy() {
         if (ScannerManager.isBigScreen){
+            //未处于悬浮窗状态
             ScannerController.getInstance().stopMonkServer(this);
-            ScannerController.getInstance().closeConnection();
-            if (ScannerManager.isStartLive){
-
-            }
         }else {
+            //处于悬浮窗状态
 
         }
         super.onDestroy();

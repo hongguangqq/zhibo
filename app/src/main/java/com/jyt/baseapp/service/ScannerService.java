@@ -7,7 +7,6 @@ import android.os.IBinder;
 import android.support.annotation.Nullable;
 import android.util.Log;
 
-import com.jyt.baseapp.api.Const;
 import com.netease.nimlib.sdk.avchat.AVChatCallback;
 import com.netease.nimlib.sdk.avchat.AVChatManager;
 import com.netease.nimlib.sdk.avchat.AVChatStateObserverLite;
@@ -52,7 +51,6 @@ import static com.netease.nimlib.sdk.media.player.AudioPlayer.TAG;
  * #####################################################
  */
 public class ScannerService extends Service implements ScannerCallBack,AVChatStateObserverLite {
-    private static boolean isMeJoin;//是否为主播
 
     @Override
     public void onCreate() {
@@ -78,9 +76,9 @@ public class ScannerService extends Service implements ScannerCallBack,AVChatSta
     @Override
     public void onDestroy() {
         super.onDestroy();
-        ScannerManager.removeFloatWindowManager();
         AVChatManager.getInstance().observeAVChatState(this,false);
-        isMeJoin = false;
+        ScannerManager.removeFloatWindowManager();
+        ScannerManager.closeConnection();
     }
 
     /************************* ScannerCallBack *****************************/
@@ -133,18 +131,7 @@ public class ScannerService extends Service implements ScannerCallBack,AVChatSta
 
     @Override
     public void onUserJoined(String s) {
-        if (Const.getGender()==1){
-            //男
-            if (!isMeJoin){
-                isMeJoin=true;
-                AVChatManager.getInstance().setupRemoteVideoRender(ScannerManager.comID,ScannerManager.getmLocalRender(),false,AVChatVideoScalingType.SCALE_ASPECT_BALANCED);
-            }
-        } else {
-            //女
-            if (ScannerManager.comID!=null && ScannerManager.comID.equals(s)){
-                AVChatManager.getInstance().setupRemoteVideoRender(s,ScannerManager.getmRemoteRender(),false,AVChatVideoScalingType.SCALE_ASPECT_BALANCED);
-            }
-        }
+        ScannerManager.onUserJoin(s);
     }
 
     @Override

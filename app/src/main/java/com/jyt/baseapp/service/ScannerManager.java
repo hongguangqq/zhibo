@@ -12,6 +12,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
 
+import com.jyt.baseapp.api.Const;
 import com.jyt.baseapp.util.BaseUtil;
 import com.netease.nimlib.sdk.ResponseCode;
 import com.netease.nimlib.sdk.avchat.AVChatCallback;
@@ -46,6 +47,7 @@ public class ScannerManager  {
     public static String mMeetingName;//房间名
     public static boolean isStartLive;//是否在连线
     public static boolean isBigScreen = true;//是否处于大屏状态
+    public static boolean isMeJoin;//是否初次进入
     public static String comID;//聊天对象ID
 
     private static WindowManager mWindowManager;
@@ -181,6 +183,7 @@ public class ScannerManager  {
             @Override
             public void onSuccess(AVChatData avChatData) {
                 Log.e(TAG , "join channel success");
+                isStartLive = true;
                 AVChatManager.getInstance().setupLocalVideoRender(mLocalRender, false, AVChatVideoScalingType.SCALE_ASPECT_BALANCED);
                 AVChatManager.getInstance().setupRemoteVideoRender(comId,mBypassRender,false,AVChatVideoScalingType.SCALE_ASPECT_BALANCED);
             }
@@ -211,6 +214,9 @@ public class ScannerManager  {
         }
         mLocalRender = null;
         mBypassRender = null;
+        isMeJoin = false;
+        isStartLive = false;
+        mMeetingName = null;
     }
 
 
@@ -225,7 +231,7 @@ public class ScannerManager  {
 
     public static void hide() {
         if (mHasShown)
-            mWindowManager.removeViewImmediate(mLocalRender);
+            mWindowManager.removeViewImmediate(mBypassRender);
         mHasShown = false;
     }
 
@@ -233,11 +239,11 @@ public class ScannerManager  {
         if (!mHasShown)
             mHasShown = true;
             setWindowType(context);
-            ViewGroup parent = (ViewGroup) mLocalRender.getParent();
+            ViewGroup parent = (ViewGroup) mBypassRender.getParent();
             if (parent!=null){
-                parent.removeView(mLocalRender);
+                parent.removeView(mBypassRender);
             }
-            mWindowManager.addView(mLocalRender, wmParams);
+            mWindowManager.addView(mBypassRender, wmParams);
 
     }
 
@@ -253,7 +259,7 @@ public class ScannerManager  {
             }
         }
         if (mHasShown && isAttach && mWindowManager != null)
-            mWindowManager.removeView(mLocalRender);
+            mWindowManager.removeView(mBypassRender);
             mHasShown = false;
     }
 
@@ -296,6 +302,21 @@ public class ScannerManager  {
         AVChatManager.getInstance().setParameters(parameters);
         if (true){
             AVChatManager.getInstance().startVideoPreview();
+        }
+    }
+
+    public static void onUserJoin(String s){
+        if (Const.getGender()==1){
+            //男
+            if (!isMeJoin){
+                isMeJoin=true;
+                AVChatManager.getInstance().setupRemoteVideoRender(ScannerManager.comID,ScannerManager.getmLocalRender(),false,AVChatVideoScalingType.SCALE_ASPECT_BALANCED);
+            }
+        } else {
+            //女
+            if (ScannerManager.comID!=null && ScannerManager.comID.equals(s)){
+                AVChatManager.getInstance().setupRemoteVideoRender(s,ScannerManager.getmRemoteRender(),false,AVChatVideoScalingType.SCALE_ASPECT_BALANCED);
+            }
         }
     }
 

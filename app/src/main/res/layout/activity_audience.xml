@@ -6,8 +6,8 @@
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context="com.jyt.baseapp.view.activity.LivePlayActivity">
-    <com.netease.nimlib.sdk.avchat.model.AVChatSurfaceViewRenderer
-        android:id="@+id/video_render"
+    <FrameLayout
+        android:id="@+id/fl_RemoteRender"
         android:layout_width="match_parent"
         android:layout_height="match_parent"/>
     <LinearLayout
@@ -50,8 +50,8 @@
                 android:textColor="#F5F5F5"/>
         </LinearLayout>
     </LinearLayout>
-    <com.netease.nimlib.sdk.avchat.model.AVChatSurfaceViewRenderer
-        android:id="@+id/video_local_render"
+    <FrameLayout
+        android:id="@+id/fl_LocalRender"
         android:layout_width="101dp"
         android:layout_height="151dp"
         android:layout_marginBottom="84dp"
