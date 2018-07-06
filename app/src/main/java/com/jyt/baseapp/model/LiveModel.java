@@ -8,5 +8,10 @@ import com.zhy.http.okhttp.callback.Callback;
 public interface LiveModel extends BaseModel{
 
     void MakeCall(int id ,int type ,Callback callback);
-    void HangUp(int id ,int trid ,Callback callback);
+
+    void HangUp(int id ,int trId ,Callback callback);
+
+    void AnchorAnswer(String trId , String roomName , String accId , Callback callback);
+
+
 }

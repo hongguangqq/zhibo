@@ -96,7 +96,8 @@ public class LaunchActivity extends BaseMCVActivity {
         Bitmap blurBitmap = FastBlurUtil.toBlur(scaledBitmap, 5);
         mIvBg.setScaleType(ImageView.ScaleType.CENTER_CROP);
         mIvBg.setImageBitmap(blurBitmap);
-        mValueAnimator = ValueAnimator.ofInt(0,400);
+        mValueAnimator = ValueAnimator.ofInt(0,300);
+        mValueAnimator.setDuration(30000);
         mValueAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
             @Override
             public void onAnimationUpdate(ValueAnimator animation) {
@@ -106,7 +107,19 @@ public class LaunchActivity extends BaseMCVActivity {
         mValueAnimator.addListener(new Animator.AnimatorListener() {
             @Override
             public void onAnimationStart(Animator animation) {
+                mPbProgress.setVisibility(View.VISIBLE);
+                mLiveModel.MakeCall(id, type, new BeanCallback<BaseJson>() {
+                    @Override
+                    public void response(boolean success, BaseJson response, int id) {
+                        if (success && response.getCode()==200){
+                            mPbProgress.setVisibility(View.VISIBLE);
 
+                        }else if (success && response.getCode()==500){
+                            BaseUtil.makeText(response.getMessage());
+                            isLaunch=false;
+                        }
+                    }
+                });
             }
 
             @Override
@@ -116,12 +129,12 @@ public class LaunchActivity extends BaseMCVActivity {
                 BaseUtil.makeText("无人接听");
                 mPbProgress.setVisibility(View.GONE);
                 mPbProgress.setProgress(0);
-                mLiveModel.HangUp(id, trid, new BeanCallback() {
-                    @Override
-                    public void response(boolean success, Object response, int id) {
-
-                    }
-                });
+//                mLiveModel.HangUp(id, trid, new BeanCallback() {
+//                    @Override
+//                    public void response(boolean success, Object response, int id) {
+//
+//                    }
+//                });
             }
 
             @Override
@@ -134,18 +147,8 @@ public class LaunchActivity extends BaseMCVActivity {
 
             }
         });
-        mLiveModel.MakeCall(id, type, new BeanCallback<BaseJson>() {
-            @Override
-            public void response(boolean success, BaseJson response, int id) {
-                if (success && response.getCode()==200){
-                    mPbProgress.setVisibility(View.VISIBLE);
-                    mValueAnimator.start();
-                }else if (success && response.getCode()==500){
-                    BaseUtil.makeText(response.getMessage());
-                    isLaunch=false;
-                }
-            }
-        });
+        mValueAnimator.start();
+
 
     }
 

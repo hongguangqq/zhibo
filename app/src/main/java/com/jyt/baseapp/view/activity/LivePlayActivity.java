@@ -5,6 +5,7 @@ import android.os.Handler;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.FrameLayout;
 
@@ -46,11 +47,16 @@ public class LivePlayActivity extends BaseMCVActivity {
     }
 
     private void init(){
+        HideActionBar();
+        getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);   //应用运行时，保持屏幕高亮，不锁屏
         mFlLocalRender = findViewById(R.id.fl_localRender);
         mFlRemoterRender = findViewById(R.id.fl_remoteRender);
         mBtnStar = findViewById(R.id.btn_star);
         mExitDialog = new IPhoneDialog(this);
         mExitDialog.setTitle("确认退出吗？");
+        if (ScannerManager.isStartLive){
+            mBtnStar.setVisibility(View.GONE);//隐藏直播开启按钮
+        }
     }
 
     private void initStting(){
@@ -124,6 +130,7 @@ public class LivePlayActivity extends BaseMCVActivity {
             @Override
             public void run() {
                 ScannerController.getInstance().closeScanner(LivePlayActivity.this,true,true);
+                finish();
             }
         }, 50);
     }
@@ -138,7 +145,7 @@ public class LivePlayActivity extends BaseMCVActivity {
                 ScannerController.getInstance().closeScanner(LivePlayActivity.this,true,false);
                 Log.e("@#","finish");
             }
-            finish();
+
         }else {
             //处于悬浮窗状态
             finish();

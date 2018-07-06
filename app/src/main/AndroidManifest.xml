@@ -125,7 +125,7 @@
             </intent-filter>
         </receiver>
         <receiver
-            android:name="io.rong.push.platform.MiMessageReceiver"
+            android:name=".receiver.DemoMessageReceiver"
             android:exported="true">
             <intent-filter>
                 <action android:name="com.xiaomi.mipush.RECEIVE_MESSAGE"/>
@@ -137,8 +137,9 @@
                 <action android:name="com.xiaomi.mipush.ERROR"/>
             </intent-filter>
         </receiver>
+
         <receiver
-            android:name=".receiver.DemoMessageReceiver"
+            android:name="io.rong.push.platform.MiMessageReceiver"
             android:exported="true">
             <intent-filter>
                 <action android:name="com.xiaomi.mipush.RECEIVE_MESSAGE"/>

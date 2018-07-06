@@ -41,6 +41,12 @@ public class LiveModelImpl implements LiveModel {
                 .execute(callback);
     }
 
+    /**
+     * 用户进入房间，开始计费
+     * @param id
+     * @param trId
+     * @param callback
+     */
     @Override
     public void HangUp(int id, int trId, Callback callback) {
         OkHttpUtils.post()
@@ -49,6 +55,26 @@ public class LiveModelImpl implements LiveModel {
                 .addHeader("token", Const.getUserToken())
                 .addParams("userId",String.valueOf(id))
                 .addParams("trId",String.valueOf(trId))
+                .build()
+                .execute(callback);
+    }
+
+    /**
+     * 主播创建房间
+     * @param trId
+     * @param roomName
+     * @param accId
+     * @param callback
+     */
+    @Override
+    public void AnchorAnswer(String trId, String roomName, String accId, Callback callback) {
+        OkHttpUtils.post()
+                .url(Path.AnchorAnswer)
+                .tag(mContext)
+                .addHeader("token", Const.getUserToken())
+                .addParams("trId",String.valueOf(trId))
+                .addParams("roomName",roomName)
+                .addParams("accId",accId)
                 .build()
                 .execute(callback);
     }

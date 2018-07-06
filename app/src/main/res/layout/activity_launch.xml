@@ -70,7 +70,7 @@
             android:layout_marginLeft="9dp"
             android:layout_marginRight="9dp"
             android:layout_marginTop="11dp"
-            android:max="400"
+            android:max="300"
             android:progress="0"
             android:progressDrawable="@drawable/progress_bar_drawable"
             android:visibility="gone"/>

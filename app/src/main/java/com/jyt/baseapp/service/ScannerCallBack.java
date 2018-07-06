@@ -14,7 +14,7 @@ public interface ScannerCallBack {
 
     AVChatSurfaceViewRenderer getLocalRender();
 
-    AVChatSurfaceViewRenderer getBypassRender();
+    AVChatSurfaceViewRenderer getRemoterRender();
 
     void show();
 

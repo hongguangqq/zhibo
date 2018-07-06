@@ -56,6 +56,7 @@ public class ScannerService extends Service implements ScannerCallBack,AVChatSta
     public void onCreate() {
         super.onCreate();
         ScannerController.getInstance().registerCallLittleMonk(this);
+        AVChatManager.getInstance().observeAVChatState(this, true);
         //初始化悬浮窗UI
         initWindowData();
     }
@@ -99,7 +100,7 @@ public class ScannerService extends Service implements ScannerCallBack,AVChatSta
     }
 
     @Override
-    public AVChatSurfaceViewRenderer getBypassRender() {
+    public AVChatSurfaceViewRenderer getRemoterRender() {
         return ScannerManager.getmRemoteRender();
     }
 
@@ -125,7 +126,12 @@ public class ScannerService extends Service implements ScannerCallBack,AVChatSta
     public void onJoinedChannel(int i, String s, String s1, int i1) {
         if (i == AVChatResCode.JoinChannelCode.OK ) {
             Log.e(TAG,"onJoinedChannel");
-            AVChatManager.getInstance().setSpeaker(true);
+            if (ScannerManager.isEavesdrop){
+                AVChatManager.getInstance().setSpeaker(false);
+            }else {
+                AVChatManager.getInstance().setSpeaker(true);
+            }
+
         }
     }
 

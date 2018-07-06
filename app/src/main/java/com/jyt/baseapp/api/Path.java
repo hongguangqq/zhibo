@@ -51,5 +51,6 @@ public class Path {
     public static final String DeleteAppoint = BasePath + "/chat/sub/deleteAppoint";
     public static final String MakeCall = BasePath + "/chat/user/makeCall";
     public static final String HangUp = BasePath + "/chat/user/hangUp";
+    public static final String AnchorAnswer = BasePath + "/chat/user/anchorAnswer";
 
 }

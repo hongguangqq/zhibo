@@ -175,7 +175,7 @@ public class App  extends MultiDexApplication {
                 intent.setAction(Const.Reciver_Message);
                 intent.putExtra(Const.Rong_Message,message);
                 sendBroadcast(intent);
-                return false;
+                return true;
             }
         });
 

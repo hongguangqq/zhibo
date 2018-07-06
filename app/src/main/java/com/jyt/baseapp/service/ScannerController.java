@@ -26,7 +26,7 @@ public class ScannerController {
     private ScannerCallBack mScannerCallBack;
 
     /**
-     * 开启服务悬浮窗
+     * 开启服务
      */
     public void startMonkServer(Context context ) {
         Intent intent = new Intent(context, ScannerService.class);
@@ -34,7 +34,7 @@ public class ScannerController {
     }
 
     /**
-     * 关闭悬浮窗
+     * 关闭服务
      */
     public void stopMonkServer(Context context) {
         Intent intent = new Intent(context, ScannerService.class);
@@ -70,7 +70,7 @@ public class ScannerController {
 
     public AVChatSurfaceViewRenderer getRemoteRender(){
         if (mScannerCallBack == null) return null;
-        return mScannerCallBack.getBypassRender();
+        return mScannerCallBack.getRemoterRender();
     }
 
     public void closeScanner(Activity activity,boolean isReleaseRtc, boolean isLeaveRoom ){

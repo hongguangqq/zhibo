@@ -12,7 +12,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
 
+import com.jyt.baseapp.api.BeanCallback;
 import com.jyt.baseapp.api.Const;
+import com.jyt.baseapp.model.LiveModel;
+import com.jyt.baseapp.model.impl.LiveModelImpl;
 import com.jyt.baseapp.util.BaseUtil;
 import com.netease.nimlib.sdk.ResponseCode;
 import com.netease.nimlib.sdk.avchat.AVChatCallback;
@@ -35,43 +38,46 @@ import com.netease.nimlib.sdk.avchat.model.AVChatVideoCapturerFactory;
 
 import java.util.UUID;
 
-import static com.netease.nimlib.sdk.media.player.AudioPlayer.TAG;
-
 /**
  * @author LinWei on 2018/6/25 10:39
  */
 public class ScannerManager  {
+    private static final String TAG = "@#";
     private static AVChatCameraCapturer mVideoCapturer;
     private static AVChatSurfaceViewRenderer mLocalRender;//大屏显示的video
-    private static AVChatSurfaceViewRenderer mBypassRender;//小屏显示的video
+    private static AVChatSurfaceViewRenderer mRemoterRender;//小屏显示的video
     public static String mMeetingName;//房间名
+    public static boolean isEavesdrop;//是否为偷听者
     public static boolean isStartLive;//是否在连线
     public static boolean isBigScreen = true;//是否处于大屏状态
     public static boolean isMeJoin;//是否初次进入
-    public static String comID;//聊天对象ID
+    public static String comID = "96c372c5d70978f1239aac722c75080d";//聊天对象ID
 
     private static WindowManager mWindowManager;
     private static WindowManager.LayoutParams wmParams;
     private static boolean mHasShown;
+    private static LiveModel mLiveModel;
 
     public static void init(Context context) {
+        mLiveModel = new LiveModelImpl();
+        mLiveModel.onStart(context);
         wmParams = new WindowManager.LayoutParams();
         //设置Render
         mLocalRender = new AVChatSurfaceViewRenderer(context);
-        mBypassRender = new AVChatSurfaceViewRenderer(context);
-        mLocalRender.setZOrderMediaOverlay(false);
-        mBypassRender.setZOrderMediaOverlay(true);
+        mRemoterRender = new AVChatSurfaceViewRenderer(context);
+        mLocalRender.setZOrderMediaOverlay(true);
+        mRemoterRender.setZOrderMediaOverlay(false);
         ViewGroup parent1 = (ViewGroup) mLocalRender.getParent();
         if (parent1!=null){
             parent1.removeView(mLocalRender);
         }
-        ViewGroup parent2 = (ViewGroup) mBypassRender.getParent();
+        ViewGroup parent2 = (ViewGroup) mRemoterRender.getParent();
         if (parent2!=null){
-            parent2.removeView(mBypassRender);
+            parent2.removeView(mRemoterRender);
         }
         startPreview(context);
         //设置完毕
-        mBypassRender.setOnClickListener(new View.OnClickListener() {
+        mRemoterRender.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 if (mHasShown){
@@ -135,6 +141,10 @@ public class ScannerManager  {
 //        windowManager.addView(mLocalRender, wmParams);
     }
 
+    /**
+     * 主播创建房间并加入
+     * @param context
+     */
     public static void createAndJoinRoom(Context context){
         mMeetingName = UUID.randomUUID().toString();
         AVChatManager.getInstance().createRoom(mMeetingName, null, new AVChatCallback<AVChatChannelInfo>() {
@@ -146,6 +156,12 @@ public class ScannerManager  {
                     public void onSuccess(AVChatData avChatData) {
                         Log.e("@#", "Live join channel success");
                         isStartLive = true;
+                        mLiveModel.AnchorAnswer("", mMeetingName, Const.getWyAccount(), new BeanCallback() {
+                            @Override
+                            public void response(boolean success, Object response, int id) {
+
+                            }
+                        });
 
                     }
 
@@ -177,15 +193,20 @@ public class ScannerManager  {
         });
     }
 
-
+    /**
+     * 观众加入
+     * @param context
+     * @param roomId
+     * @param comId
+     */
     public static void joinRoom(Context context, String roomId, final String comId){
         AVChatManager.getInstance().joinRoom2(roomId, AVChatType.VIDEO, new AVChatCallback<AVChatData>() {
             @Override
             public void onSuccess(AVChatData avChatData) {
-                Log.e(TAG , "join channel success");
+                Log.e(TAG , "join channel success"+"/comid="+comId);
                 isStartLive = true;
                 AVChatManager.getInstance().setupLocalVideoRender(mLocalRender, false, AVChatVideoScalingType.SCALE_ASPECT_BALANCED);
-                AVChatManager.getInstance().setupRemoteVideoRender(comId,mBypassRender,false,AVChatVideoScalingType.SCALE_ASPECT_BALANCED);
+
             }
 
             @Override
@@ -204,16 +225,17 @@ public class ScannerManager  {
 
 
     public static void closeConnection(){
+        mLiveModel.onDestroy();
         ViewGroup parent1 = (ViewGroup) mLocalRender.getParent();
         if (parent1!=null){
             parent1.removeView(mLocalRender);
         }
-        ViewGroup parent2 = (ViewGroup) mBypassRender.getParent();
+        ViewGroup parent2 = (ViewGroup) mRemoterRender.getParent();
         if (parent2!=null){
-            parent2.removeView(mBypassRender);
+            parent2.removeView(mRemoterRender);
         }
         mLocalRender = null;
-        mBypassRender = null;
+        mRemoterRender = null;
         isMeJoin = false;
         isStartLive = false;
         mMeetingName = null;
@@ -226,12 +248,12 @@ public class ScannerManager  {
     }
 
     public static AVChatSurfaceViewRenderer getmRemoteRender(){
-        return mBypassRender;
+        return mRemoterRender;
     }
 
     public static void hide() {
         if (mHasShown)
-            mWindowManager.removeViewImmediate(mBypassRender);
+            mWindowManager.removeViewImmediate(mRemoterRender);
         mHasShown = false;
     }
 
@@ -239,11 +261,11 @@ public class ScannerManager  {
         if (!mHasShown)
             mHasShown = true;
             setWindowType(context);
-            ViewGroup parent = (ViewGroup) mBypassRender.getParent();
+            ViewGroup parent = (ViewGroup) mRemoterRender.getParent();
             if (parent!=null){
-                parent.removeView(mBypassRender);
+                parent.removeView(mRemoterRender);
             }
-            mWindowManager.addView(mBypassRender, wmParams);
+            mWindowManager.addView(mRemoterRender, wmParams);
 
     }
 
@@ -259,7 +281,7 @@ public class ScannerManager  {
             }
         }
         if (mHasShown && isAttach && mWindowManager != null)
-            mWindowManager.removeView(mBypassRender);
+            mWindowManager.removeView(mRemoterRender);
             mHasShown = false;
     }
 
@@ -308,14 +330,18 @@ public class ScannerManager  {
     public static void onUserJoin(String s){
         if (Const.getGender()==1){
             //男
+            if (Const.getWyAccount().equals(s)){
+                Log.e("@#","男用户进入房间，连接主播视屏");
+                AVChatManager.getInstance().setupRemoteVideoRender(ScannerManager.comID, mRemoterRender,false,AVChatVideoScalingType.SCALE_ASPECT_BALANCED);
+            }
             if (!isMeJoin){
                 isMeJoin=true;
-                AVChatManager.getInstance().setupRemoteVideoRender(ScannerManager.comID,ScannerManager.getmLocalRender(),false,AVChatVideoScalingType.SCALE_ASPECT_BALANCED);
+
             }
         } else {
             //女
             if (ScannerManager.comID!=null && ScannerManager.comID.equals(s)){
-                AVChatManager.getInstance().setupRemoteVideoRender(s,ScannerManager.getmRemoteRender(),false,AVChatVideoScalingType.SCALE_ASPECT_BALANCED);
+                AVChatManager.getInstance().setupRemoteVideoRender(s,mRemoterRender,false,AVChatVideoScalingType.SCALE_ASPECT_BALANCED);
             }
         }
     }

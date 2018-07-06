@@ -5,6 +5,7 @@ import android.os.Handler;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.FrameLayout;
 
 import com.jyt.baseapp.R;
@@ -22,10 +23,6 @@ public class AudienceActivity extends BaseMCVActivity {
     private FrameLayout mFlLocalRender;
     private IPhoneDialog mExitDialog;
 
-    // state
-    private boolean isStartVoice = true;//声音是否开启
-    private boolean isStartVideo = true;//画面是否开启
-    private boolean isStartLive = false; // 推流是否开始
 
     private String comId = "96c372c5d70978f1239aac722c75080d";//主播的accid
     private String roomName;
@@ -52,7 +49,8 @@ public class AudienceActivity extends BaseMCVActivity {
 
     private void init(){
         HideActionBar();
-        roomName = "83cc601b-f0de-4179-89d9-8695e94ca495";
+        getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);   //应用运行时，保持屏幕高亮，不锁屏
+        roomName = "7ef2377f-eed3-4ae3-91f9-850cfb142d00";
         mFlLocalRender = findViewById(R.id.fl_LocalRender);
         mFlRemoterRender = findViewById(R.id.fl_RemoteRender);
         mExitDialog = new IPhoneDialog(this);
@@ -67,6 +65,7 @@ public class AudienceActivity extends BaseMCVActivity {
         if (!BaseUtil.isServiceRunning(this,"com.jyt.baseapp.service.ScannerService")){
             ScannerController.getInstance().startMonkServer(this);
         }
+//        ScannerManager.isStartLive = true;
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
@@ -98,15 +97,16 @@ public class AudienceActivity extends BaseMCVActivity {
         }else {
             mExitDialog.show();
         }
+
     }
 
     private void doCompletelyFinish() {
-        ScannerManager.isStartLive = false;
         //        showLiveFinishLayout();
         getHandler().postDelayed(new Runnable() {
             @Override
             public void run() {
                 ScannerController.getInstance().closeScanner(AudienceActivity.this,true,true);
+                finish();
             }
         }, 50);
     }
@@ -116,13 +116,12 @@ public class AudienceActivity extends BaseMCVActivity {
         if (ScannerManager.isBigScreen){
             //未处于悬浮窗状态
             if (ScannerManager.isStartLive){
+                ScannerManager.isStartLive = false;
                 logoutChatRoom();
-
             }else {
                 ScannerController.getInstance().closeScanner(AudienceActivity.this,true,false);
                 Log.e("@#","finish");
             }
-            finish();
         }else {
             //处于悬浮窗状态
             finish();

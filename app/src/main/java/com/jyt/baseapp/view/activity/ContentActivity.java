@@ -120,7 +120,6 @@ public class ContentActivity extends BaseMCVActivity implements View.OnClickList
         HideActionBar();
         mAnim_in = AnimationUtils.loadAnimation(this,R.anim.button_alpha_in);
         mAnim_out = AnimationUtils.loadAnimation(this,R.anim.button_alpha_out);
-        MiPushClient.setAlias(this, Const.getUserID(),null);
         mPersonModel = new PersonModelImpl();
         mPersonModel.onStart(this);
         mLoginModel = new LoginModelImpl();
@@ -159,6 +158,8 @@ public class ContentActivity extends BaseMCVActivity implements View.OnClickList
         mVpContent.setAdapter(mViewPagerAdapter);
         mVpContent.setOffscreenPageLimit(4);
 //        mVpContent.setAdapter(mFactoryPageAdapter);
+        //小米登录
+        MiPushClient.setAlias(this, Const.getUserID(),null);
         //融云登录
         mLoginModel.GetRongID(new BeanCallback<String>() {
             @Override
@@ -196,6 +197,7 @@ public class ContentActivity extends BaseMCVActivity implements View.OnClickList
             @Override
             public void onSuccess(Object param) {
                 Log.e("@#","Wy-onSuccess");
+                Log.e("@#","WY-accId："+Const.getWyAccount());
             }
 
             @Override
