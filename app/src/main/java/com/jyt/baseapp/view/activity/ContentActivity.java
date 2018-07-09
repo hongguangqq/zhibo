@@ -305,8 +305,7 @@ public class ContentActivity extends BaseMCVActivity implements View.OnClickList
         super.onActivityResult(requestCode, resultCode, data);
 
         if (requestCode == IntentRequestCode.CODE_MODIFY){
-            Log.e("@#","ASD");
-           FragmentTab4 fragmentTab4 = (FragmentTab4) mFragmentList.get(3);
+            FragmentTab4 fragmentTab4 = (FragmentTab4) mFragmentList.get(3);
             fragmentTab4.setConstData();
         }
     }
@@ -323,7 +322,7 @@ public class ContentActivity extends BaseMCVActivity implements View.OnClickList
             mPressedTime = mNowTime;
         }
         else{//退出程序
-
+            RongIMClient.getInstance().disconnect();
             this.finish();
             System.exit(0);
         }

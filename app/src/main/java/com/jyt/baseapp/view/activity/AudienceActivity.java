@@ -24,9 +24,6 @@ public class AudienceActivity extends BaseMCVActivity {
     private IPhoneDialog mExitDialog;
 
 
-    private String comId = "96c372c5d70978f1239aac722c75080d";//主播的accid
-    private String roomName;
-
     @Override
     protected int getLayoutId() {
         return R.layout.activity_audience;
@@ -50,7 +47,6 @@ public class AudienceActivity extends BaseMCVActivity {
     private void init(){
         HideActionBar();
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);   //应用运行时，保持屏幕高亮，不锁屏
-        roomName = "7ef2377f-eed3-4ae3-91f9-850cfb142d00";
         mFlLocalRender = findViewById(R.id.fl_LocalRender);
         mFlRemoterRender = findViewById(R.id.fl_RemoteRender);
         mExitDialog = new IPhoneDialog(this);
@@ -70,7 +66,7 @@ public class AudienceActivity extends BaseMCVActivity {
             @Override
             public void run() {
                 if (!ScannerManager.isStartLive){
-                    ScannerController.getInstance().joinRoom(roomName,comId);
+                    ScannerController.getInstance().joinRoom(ScannerManager.mMeetingName,ScannerManager.comID);
                 }
                 FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
                 mFlLocalRender.addView(ScannerController.getInstance().getLocalRender(),params);

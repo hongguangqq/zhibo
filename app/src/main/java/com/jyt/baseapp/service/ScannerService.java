@@ -111,7 +111,7 @@ public class ScannerService extends Service implements ScannerCallBack,AVChatSta
 
     @Override
     public void closeScanner(Activity activity , boolean isReleaseRtc, boolean isLeaveRoom) {
-        releaseRtc(activity,isReleaseRtc, isLeaveRoom);
+        ScannerManager.releaseRtc(activity,isReleaseRtc, isLeaveRoom);
     }
 
     @Override
@@ -157,7 +157,7 @@ public class ScannerService extends Service implements ScannerCallBack,AVChatSta
 
     @Override
     public void onDisconnectServer(int i) {
-        releaseRtc(null,true, true);
+        ScannerManager.releaseRtc(null,true, true);
     }
 
     @Override

@@ -435,7 +435,7 @@ public class IntentHelper {
      * 跳转到直播界面
      * @param activity
      */
-    public static void OpenLivePlayActivity(Activity activity){
+    public static void OpenLivePlayActivity(Context activity){
         Intent intent =getIntent(activity, LivePlayActivity.class);
         activity.startActivity(intent);
     }
@@ -443,18 +443,13 @@ public class IntentHelper {
     /**
      * 跳转到直播界面
      * @param activity
-     * @param id
      */
-    public static void OpenAudienceActivity(Activity activity , int id){
+    public static void OpenAudienceActivity(Context activity){
         Intent intent =getIntent(activity, AudienceActivity.class);
-        intent.putExtra(IntentKey.User_ID,id);
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         activity.startActivity(intent);
     }
 
-    public static Tuple AudienceActivityGetPara(Intent intent){
-        int page = intent.getIntExtra(IntentKey.User_ID,0);
-        return new Tuple(page);
-    }
 
     public static void OpenLaunchActivity(Activity activity , int id ,int type,String nick ,String hpic){
         Intent intent =getIntent(activity, LaunchActivity.class);

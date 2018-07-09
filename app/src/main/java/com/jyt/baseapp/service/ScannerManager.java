@@ -1,10 +1,12 @@
 package com.jyt.baseapp.service;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.pm.PackageManager;
 import android.content.res.Configuration;
 import android.graphics.PixelFormat;
 import android.os.Build;
+import android.text.TextUtils;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.Gravity;
@@ -51,7 +53,9 @@ public class ScannerManager  {
     public static boolean isStartLive;//是否在连线
     public static boolean isBigScreen = true;//是否处于大屏状态
     public static boolean isMeJoin;//是否初次进入
-    public static String comID = "96c372c5d70978f1239aac722c75080d";//聊天对象ID
+    public static String trId;//聊天对象的ID
+//    public static String comID = "96c372c5d70978f1239aac722c75080d";//聊天对象网易云ID
+    public static String comID;//聊天对象网易云ID
 
     private static WindowManager mWindowManager;
     private static WindowManager.LayoutParams wmParams;
@@ -65,6 +69,7 @@ public class ScannerManager  {
         //设置Render
         mLocalRender = new AVChatSurfaceViewRenderer(context);
         mRemoterRender = new AVChatSurfaceViewRenderer(context);
+        //false true主播可行  true false观众可行
         mLocalRender.setZOrderMediaOverlay(true);
         mRemoterRender.setZOrderMediaOverlay(false);
         ViewGroup parent1 = (ViewGroup) mLocalRender.getParent();
@@ -156,7 +161,7 @@ public class ScannerManager  {
                     public void onSuccess(AVChatData avChatData) {
                         Log.e("@#", "Live join channel success");
                         isStartLive = true;
-                        mLiveModel.AnchorAnswer("", mMeetingName, Const.getWyAccount(), new BeanCallback() {
+                        mLiveModel.AnchorAnswer(trId, mMeetingName, Const.getWyAccount(), new BeanCallback() {
                             @Override
                             public void response(boolean success, Object response, int id) {
 
@@ -239,6 +244,8 @@ public class ScannerManager  {
         isMeJoin = false;
         isStartLive = false;
         mMeetingName = null;
+        comID = "";
+        trId = "";
     }
 
 
@@ -330,8 +337,8 @@ public class ScannerManager  {
     public static void onUserJoin(String s){
         if (Const.getGender()==1){
             //男
-            if (Const.getWyAccount().equals(s)){
-                Log.e("@#","男用户进入房间，连接主播视屏");
+            if (!TextUtils.isEmpty(ScannerManager.comID) && ScannerManager.comID.equals(s)){
+                Log.e("@#","观众：男用户进入房间，连接主播视屏");
                 AVChatManager.getInstance().setupRemoteVideoRender(ScannerManager.comID, mRemoterRender,false,AVChatVideoScalingType.SCALE_ASPECT_BALANCED);
             }
             if (!isMeJoin){
@@ -340,9 +347,53 @@ public class ScannerManager  {
             }
         } else {
             //女
-            if (ScannerManager.comID!=null && ScannerManager.comID.equals(s)){
+            if (!TextUtils.isEmpty(ScannerManager.comID) && ScannerManager.comID.equals(s)){
+                Log.e("@#","主播：男用户进入房间，连接用户视屏");
                 AVChatManager.getInstance().setupRemoteVideoRender(s,mRemoterRender,false,AVChatVideoScalingType.SCALE_ASPECT_BALANCED);
             }
+        }
+    }
+
+    public static void releaseRtc(final Activity activity , boolean isReleaseRtc, boolean isLeaveRoom) {
+        //        if (mVideoEffect != null) {
+        //            mVideoEffectHandler.post(new Runnable() {
+        //                @Override
+        //                public void run() {
+        //                    Log.e("@#", "releaseRtc unInit");
+        //                    mVideoEffect.unInit();
+        //                    mVideoEffect = null;
+        //                }
+        //            });
+        //        }
+
+        if (isReleaseRtc) {
+            AVChatManager.getInstance().setupLocalVideoRender(null, false, AVChatVideoScalingType.SCALE_ASPECT_BALANCED);
+            AVChatManager.getInstance().stopVideoPreview();
+            AVChatManager.getInstance().disableVideo();
+            AVChatManager.getInstance().disableRtc();
+
+        }
+        if (isLeaveRoom) {
+            AVChatManager.getInstance().leaveRoom2(ScannerManager.mMeetingName, new AVChatCallback<Void>() {
+                @Override
+                public void onSuccess(Void aVoid) {
+                    Log.e("@#", "leave channel success");
+                    ScannerManager.mMeetingName = "";
+                    if (activity != null) {
+                        activity.finish();
+                    }
+                }
+
+                @Override
+                public void onFailed(int i) {
+                    Log.e("@#", "leave channel failed, code:" + i);
+                }
+
+                @Override
+                public void onException(Throwable throwable) {
+                    Log.e("@#", "leave channel exception, throwable:" + throwable.getMessage());
+                }
+            });
         }
     }
 

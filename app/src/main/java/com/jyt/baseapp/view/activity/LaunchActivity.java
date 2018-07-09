@@ -16,6 +16,7 @@ import com.bumptech.glide.Glide;
 import com.jyt.baseapp.R;
 import com.jyt.baseapp.api.BeanCallback;
 import com.jyt.baseapp.bean.BaseJson;
+import com.jyt.baseapp.bean.EventBean;
 import com.jyt.baseapp.bean.Tuple;
 import com.jyt.baseapp.helper.IntentHelper;
 import com.jyt.baseapp.model.LiveModel;
@@ -23,6 +24,10 @@ import com.jyt.baseapp.model.impl.LiveModelImpl;
 import com.jyt.baseapp.util.BaseUtil;
 import com.jyt.baseapp.util.FastBlurUtil;
 import com.jyt.baseapp.view.widget.CircleImageView;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import java.io.BufferedInputStream;
 import java.io.IOException;
@@ -81,6 +86,7 @@ public class LaunchActivity extends BaseMCVActivity {
         HideActionBar();
         setvMainBackground(R.mipmap.bg_entrance);
         Tuple tuple = IntentHelper.LaunchActivityGetPara(getIntent());
+        EventBus.getDefault().register(this);
         mLiveModel = new LiveModelImpl();
         id = (int) tuple.getItem1();
         type = (int) tuple.getItem2();
@@ -91,6 +97,7 @@ public class LaunchActivity extends BaseMCVActivity {
     }
 
     private void initSetting(){
+        //背景高斯模糊处理
         Resources rs = getResources();
         Bitmap scaledBitmap = BitmapFactory.decodeResource(rs, R.mipmap.timg);
         Bitmap blurBitmap = FastBlurUtil.toBlur(scaledBitmap, 5);
@@ -107,6 +114,7 @@ public class LaunchActivity extends BaseMCVActivity {
         mValueAnimator.addListener(new Animator.AnimatorListener() {
             @Override
             public void onAnimationStart(Animator animation) {
+                //拨打主播，视频聊天
                 mPbProgress.setVisibility(View.VISIBLE);
                 mLiveModel.MakeCall(id, type, new BeanCallback<BaseJson>() {
                     @Override
@@ -126,15 +134,14 @@ public class LaunchActivity extends BaseMCVActivity {
             public void onAnimationEnd(Animator animation) {
                 isLaunch=false;
                 mBtnStar.setText("拨号");
-                BaseUtil.makeText("无人接听");
                 mPbProgress.setVisibility(View.GONE);
                 mPbProgress.setProgress(0);
-//                mLiveModel.HangUp(id, trid, new BeanCallback() {
-//                    @Override
-//                    public void response(boolean success, Object response, int id) {
-//
-//                    }
-//                });
+                mLiveModel.HangUp(id, trid, new BeanCallback() {
+                    @Override
+                    public void response(boolean success, Object response, int id) {
+
+                    }
+                });
             }
 
             @Override
@@ -189,6 +196,24 @@ public class LaunchActivity extends BaseMCVActivity {
         }
         return bm;
     }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void Event(EventBean bean) {
+       if ("over".equals(bean.getCode())){
+           finish();
+       }
+    }
+
+
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if(EventBus.getDefault().isRegistered(this)) {
+            EventBus.getDefault().unregister(this);
+        }
+    }
+
 
 
 }

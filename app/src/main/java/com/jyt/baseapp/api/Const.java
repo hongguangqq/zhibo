@@ -8,6 +8,7 @@ import com.jyt.baseapp.helper.IntentHelper;
 import com.jyt.baseapp.util.BaseUtil;
 import com.netease.nimlib.sdk.NIMClient;
 import com.netease.nimlib.sdk.auth.AuthService;
+import com.xiaomi.mipush.sdk.MiPushClient;
 
 import java.io.File;
 
@@ -104,6 +105,7 @@ public class Const {
         BaseUtil.setSpString(RongToken,"");
         BaseUtil.setSpString(WyAccount,"");
         BaseUtil.setSpString(WyToken,"");
+        MiPushClient.unsetAlias(BaseUtil.getContext(),Const.getUserID(),null);
 //        MiPushClient.unregisterPush(BaseUtil.getContext());
         BaseUtil.makeText("退出登录成功");
         RongIMClient.getInstance().logout();

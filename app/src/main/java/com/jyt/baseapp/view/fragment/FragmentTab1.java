@@ -401,7 +401,7 @@ public class FragmentTab1 extends BaseFragment {
     public void OpenListActivity(View v){
 //        int code = (int) v.getTag();
 //        IntentHelper.OpenListActivity(getActivity(),code);
-        IntentHelper.OpenAudienceActivity(getActivity(),0);
+        IntentHelper.OpenAudienceActivity(getActivity());
     }
 
     @OnClick(R.id.ll_tab1_theme)

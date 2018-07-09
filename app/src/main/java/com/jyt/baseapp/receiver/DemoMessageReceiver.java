@@ -3,12 +3,19 @@ package com.jyt.baseapp.receiver;
 import android.content.Context;
 import android.util.Log;
 
+import com.jyt.baseapp.helper.IntentHelper;
+import com.jyt.baseapp.service.ScannerManager;
 import com.jyt.baseapp.util.BaseUtil;
 import com.xiaomi.mipush.sdk.ErrorCode;
 import com.xiaomi.mipush.sdk.MiPushClient;
 import com.xiaomi.mipush.sdk.MiPushCommandMessage;
 import com.xiaomi.mipush.sdk.MiPushMessage;
 import com.xiaomi.mipush.sdk.PushMessageReceiver;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.Map;
 
 /**
  * @author LinWei on 2018/6/1 14:56
@@ -18,6 +25,9 @@ public class DemoMessageReceiver extends PushMessageReceiver {
     private String mTopic;
     private String mAlias;
     private String mUserAccount;
+    private static final String MSG_Live = "1";
+    private static final String MSG_Audience = "2";
+
     //透传消息到达客户端时调用
     //作用：可通过参数message从而获得透传消息，具体请看官方SDK文档
     @Override
@@ -26,6 +36,20 @@ public class DemoMessageReceiver extends PushMessageReceiver {
         //打印消息方便测试
         BaseUtil.e("透传消息到达了");
         BaseUtil.e("透传消息是"+message.toString());
+        Map<String,String> map = message.getExtra();
+        String code = map.get("code");
+        if (MSG_Audience.equals(code)){
+            String jobjStr = map.get("message");
+            try {
+                JSONObject jobj = new JSONObject(jobjStr);
+                ScannerManager.comID = jobj.getString("accid");
+                ScannerManager.mMeetingName = jobj.getString("roomName");
+                IntentHelper.OpenAudienceActivity(context);
+//                EventBus.getDefault().post(new EventBean("over"));//拨打电话界面销毁
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
 
     }
 
@@ -55,6 +79,23 @@ public class DemoMessageReceiver extends PushMessageReceiver {
         BaseUtil.e("用户点击了通知消息");
         BaseUtil.e("通知消息是" + message.toString());
         BaseUtil.e("点击后,会进入应用" );
+        Map<String,String> map = message.getExtra();
+        String code = map.get("code");
+        if (MSG_Live.equals(code)){
+            //主播点击推送，创建房间
+            String jobjStr = map.get("message");
+            try {
+                JSONObject jobj = new JSONObject(jobjStr);
+                ScannerManager.comID = jobj.getString("userAccid");
+                ScannerManager.trId = jobj.getString("trId");
+                IntentHelper.OpenLivePlayActivity(context);
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
+
+
+
 
     }
 
