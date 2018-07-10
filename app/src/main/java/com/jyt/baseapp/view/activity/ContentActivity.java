@@ -18,6 +18,7 @@ import com.jyt.baseapp.adapter.FactoryPageAdapter;
 import com.jyt.baseapp.adapter.FragmentViewPagerAdapter;
 import com.jyt.baseapp.api.BeanCallback;
 import com.jyt.baseapp.api.Const;
+import com.jyt.baseapp.helper.IntentHelper;
 import com.jyt.baseapp.helper.IntentRequestCode;
 import com.jyt.baseapp.model.LoginModel;
 import com.jyt.baseapp.model.PersonModel;
@@ -242,7 +243,7 @@ public class ContentActivity extends BaseMCVActivity implements View.OnClickList
                 }
                 break;
             case R.id.btn_random:
-                Log.e("@#","click");
+                IntentHelper.OpenMateActivity(this);
                 break;
             case R.id.ll_tab1:
                 ChangeTab(1);

@@ -116,8 +116,13 @@ public class ScannerService extends Service implements ScannerCallBack,AVChatSta
 
     @Override
     public void closeConnection() {
-        AVChatManager.getInstance().observeAVChatState(this, false);
-        ScannerManager.closeConnection();
+//        AVChatManager.getInstance().observeAVChatState(this, false);
+//        ScannerManager.closeConnection();
+    }
+
+    @Override
+    public void SwitchLive(boolean isLive) {
+        ScannerManager.SwitchLive(isLive);
     }
 
 
@@ -142,7 +147,7 @@ public class ScannerService extends Service implements ScannerCallBack,AVChatSta
 
     @Override
     public void onUserLeave(String s, int i) {
-
+        ScannerManager.onUserLeave(s,i);
     }
 
     @Override

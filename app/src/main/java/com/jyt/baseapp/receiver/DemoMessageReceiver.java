@@ -3,6 +3,8 @@ package com.jyt.baseapp.receiver;
 import android.content.Context;
 import android.util.Log;
 
+import com.jyt.baseapp.api.Const;
+import com.jyt.baseapp.bean.EventBean;
 import com.jyt.baseapp.helper.IntentHelper;
 import com.jyt.baseapp.service.ScannerManager;
 import com.jyt.baseapp.util.BaseUtil;
@@ -12,6 +14,7 @@ import com.xiaomi.mipush.sdk.MiPushCommandMessage;
 import com.xiaomi.mipush.sdk.MiPushMessage;
 import com.xiaomi.mipush.sdk.PushMessageReceiver;
 
+import org.greenrobot.eventbus.EventBus;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -38,14 +41,28 @@ public class DemoMessageReceiver extends PushMessageReceiver {
         BaseUtil.e("透传消息是"+message.toString());
         Map<String,String> map = message.getExtra();
         String code = map.get("code");
-        if (MSG_Audience.equals(code)){
+        if (MSG_Live.equals(code)){
+            //主播点击接听，进入直播界面，创建房间
+            String jobjStr = map.get("message");
+            try {
+                JSONObject jobj = new JSONObject(jobjStr);
+                ScannerManager.comID = jobj.getString("userAccid");
+                ScannerManager.trId = jobj.getString("trId");
+                String name = jobj.getString("userName");
+                String hpic = jobj.getString("img");
+                IntentHelper.OpenAnswerActivity(context,name,hpic);
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        } else if (MSG_Audience.equals(code)){
+            //观众拨打电话给主播，主播同意后进入直播界面
             String jobjStr = map.get("message");
             try {
                 JSONObject jobj = new JSONObject(jobjStr);
                 ScannerManager.comID = jobj.getString("accid");
                 ScannerManager.mMeetingName = jobj.getString("roomName");
                 IntentHelper.OpenAudienceActivity(context);
-//                EventBus.getDefault().post(new EventBean("over"));//拨打电话界面销毁
+                EventBus.getDefault().post(new EventBean(Const.Event_Launch));//拨打电话界面销毁
             } catch (JSONException e) {
                 e.printStackTrace();
             }
@@ -81,18 +98,18 @@ public class DemoMessageReceiver extends PushMessageReceiver {
         BaseUtil.e("点击后,会进入应用" );
         Map<String,String> map = message.getExtra();
         String code = map.get("code");
-        if (MSG_Live.equals(code)){
-            //主播点击推送，创建房间
-            String jobjStr = map.get("message");
-            try {
-                JSONObject jobj = new JSONObject(jobjStr);
-                ScannerManager.comID = jobj.getString("userAccid");
-                ScannerManager.trId = jobj.getString("trId");
-                IntentHelper.OpenLivePlayActivity(context);
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
-        }
+//        if (MSG_Live.equals(code)){
+//            //主播点击推送，创建房间
+//            String jobjStr = map.get("message");
+//            try {
+//                JSONObject jobj = new JSONObject(jobjStr);
+//                ScannerManager.comID = jobj.getString("userAccid");
+//                ScannerManager.trId = jobj.getString("trId");
+//                IntentHelper.OpenLivePlayActivity(context);
+//            } catch (JSONException e) {
+//                e.printStackTrace();
+//            }
+//        }
 
 
 

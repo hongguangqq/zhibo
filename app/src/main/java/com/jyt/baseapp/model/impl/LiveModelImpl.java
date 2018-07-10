@@ -78,4 +78,18 @@ public class LiveModelImpl implements LiveModel {
                 .build()
                 .execute(callback);
     }
+
+    /**
+     * 随机拨号
+     * @param callback
+     */
+    @Override
+    public void RandomDialing(Callback callback) {
+        OkHttpUtils.get()
+                .url(Path.RandomRing)
+                .tag(mContext)
+                .addHeader("token",Const.getUserToken())
+                .build()
+                .execute(callback);
+    }
 }

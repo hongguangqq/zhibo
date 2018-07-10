@@ -365,7 +365,7 @@ public class SearchActivity extends BaseMCVActivity {
     }
 
     @OnClick(R.id.tv_search_clear)
-    public void Claer(){
+    public void ClaerHistory(){
         mHistoryList.clear();
         mFlowHistory.removeAllViews();
         HawkUtil.clearHistory();

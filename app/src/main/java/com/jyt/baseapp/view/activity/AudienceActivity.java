@@ -2,17 +2,23 @@ package com.jyt.baseapp.view.activity;
 
 import android.os.Bundle;
 import android.os.Handler;
-import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.FrameLayout;
 
 import com.jyt.baseapp.R;
+import com.jyt.baseapp.api.Const;
+import com.jyt.baseapp.bean.EventBean;
+import com.jyt.baseapp.helper.IntentHelper;
 import com.jyt.baseapp.service.ScannerController;
 import com.jyt.baseapp.service.ScannerManager;
 import com.jyt.baseapp.util.BaseUtil;
 import com.jyt.baseapp.view.dialog.IPhoneDialog;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import static com.jyt.baseapp.App.getHandler;
 
@@ -46,6 +52,7 @@ public class AudienceActivity extends BaseMCVActivity {
 
     private void init(){
         HideActionBar();
+        EventBus.getDefault().register(this);
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);   //应用运行时，保持屏幕高亮，不锁屏
         mFlLocalRender = findViewById(R.id.fl_LocalRender);
         mFlRemoterRender = findViewById(R.id.fl_RemoteRender);
@@ -68,6 +75,7 @@ public class AudienceActivity extends BaseMCVActivity {
                 if (!ScannerManager.isStartLive){
                     ScannerController.getInstance().joinRoom(ScannerManager.mMeetingName,ScannerManager.comID);
                 }
+                ScannerController.getInstance().SwitchLive(false);
                 FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
                 mFlLocalRender.addView(ScannerController.getInstance().getLocalRender(),params);
                 mFlRemoterRender.addView(ScannerController.getInstance().getRemoteRender(),params);
@@ -102,6 +110,7 @@ public class AudienceActivity extends BaseMCVActivity {
             @Override
             public void run() {
                 ScannerController.getInstance().closeScanner(AudienceActivity.this,true,true);
+                IntentHelper.OpenEndCallActivity(AudienceActivity.this,false);
                 finish();
             }
         }, 50);
@@ -116,7 +125,7 @@ public class AudienceActivity extends BaseMCVActivity {
                 logoutChatRoom();
             }else {
                 ScannerController.getInstance().closeScanner(AudienceActivity.this,true,false);
-                Log.e("@#","finish");
+                finish();
             }
         }else {
             //处于悬浮窗状态
@@ -124,6 +133,14 @@ public class AudienceActivity extends BaseMCVActivity {
         }
 
 
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void EventOver(EventBean bean) {
+        if (Const.Event_Audience.equals(bean.getCode())){
+            IntentHelper.OpenEndCallActivity(this,true);
+            finish();
+        }
     }
 
 
@@ -138,6 +155,9 @@ public class AudienceActivity extends BaseMCVActivity {
 
         }
         super.onDestroy();
+        if(EventBus.getDefault().isRegistered(this)) {
+            EventBus.getDefault().unregister(this);
+        }
 
     }
 

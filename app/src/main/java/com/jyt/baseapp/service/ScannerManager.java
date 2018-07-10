@@ -16,6 +16,7 @@ import android.view.WindowManager;
 
 import com.jyt.baseapp.api.BeanCallback;
 import com.jyt.baseapp.api.Const;
+import com.jyt.baseapp.bean.EventBean;
 import com.jyt.baseapp.model.LiveModel;
 import com.jyt.baseapp.model.impl.LiveModelImpl;
 import com.jyt.baseapp.util.BaseUtil;
@@ -38,6 +39,8 @@ import com.netease.nimlib.sdk.avchat.model.AVChatParameters;
 import com.netease.nimlib.sdk.avchat.model.AVChatSurfaceViewRenderer;
 import com.netease.nimlib.sdk.avchat.model.AVChatVideoCapturerFactory;
 
+import org.greenrobot.eventbus.EventBus;
+
 import java.util.UUID;
 
 /**
@@ -49,6 +52,8 @@ public class ScannerManager  {
     private static AVChatSurfaceViewRenderer mLocalRender;//大屏显示的video
     private static AVChatSurfaceViewRenderer mRemoterRender;//小屏显示的video
     public static String mMeetingName;//房间名
+    public static long starComTime;//聊天开始时间
+    public static long endComTome;//聊天结束时间
     public static boolean isEavesdrop;//是否为偷听者
     public static boolean isStartLive;//是否在连线
     public static boolean isBigScreen = true;//是否处于大屏状态
@@ -161,6 +166,7 @@ public class ScannerManager  {
                     public void onSuccess(AVChatData avChatData) {
                         Log.e("@#", "Live join channel success");
                         isStartLive = true;
+                        starComTime = System.currentTimeMillis();//主播进入房间，记录开始时间
                         mLiveModel.AnchorAnswer(trId, mMeetingName, Const.getWyAccount(), new BeanCallback() {
                             @Override
                             public void response(boolean success, Object response, int id) {
@@ -211,7 +217,7 @@ public class ScannerManager  {
                 Log.e(TAG , "join channel success"+"/comid="+comId);
                 isStartLive = true;
                 AVChatManager.getInstance().setupLocalVideoRender(mLocalRender, false, AVChatVideoScalingType.SCALE_ASPECT_BALANCED);
-
+                starComTime = System.currentTimeMillis();//观众进入房间，记录开始时间
             }
 
             @Override
@@ -338,6 +344,9 @@ public class ScannerManager  {
         if (Const.getGender()==1){
             //男
             if (!TextUtils.isEmpty(ScannerManager.comID) && ScannerManager.comID.equals(s)){
+                if (AVChatManager.getInstance().isAudienceRole()){
+                    AVChatManager.getInstance().enableAudienceRole(false);
+                }
                 Log.e("@#","观众：男用户进入房间，连接主播视屏");
                 AVChatManager.getInstance().setupRemoteVideoRender(ScannerManager.comID, mRemoterRender,false,AVChatVideoScalingType.SCALE_ASPECT_BALANCED);
             }
@@ -348,11 +357,31 @@ public class ScannerManager  {
         } else {
             //女
             if (!TextUtils.isEmpty(ScannerManager.comID) && ScannerManager.comID.equals(s)){
+                if (AVChatManager.getInstance().isAudienceRole()){
+                    AVChatManager.getInstance().enableAudienceRole(false);
+                }
                 Log.e("@#","主播：男用户进入房间，连接用户视屏");
                 AVChatManager.getInstance().setupRemoteVideoRender(s,mRemoterRender,false,AVChatVideoScalingType.SCALE_ASPECT_BALANCED);
             }
         }
     }
+
+    public static void onUserLeave(String s, int i) {
+        //当聊天对象退出时，同时退出房间
+        if (!TextUtils.isEmpty(comID) && s.equals(comID)){
+            releaseRtc(null,true,true);//退出操作
+            endComTome = System.currentTimeMillis();//记录退出时间
+            if (Const.getGender()==1){
+                //男
+                EventBus.getDefault().post(new EventBean(Const.Event_Audience));
+                //挂断电话
+            }else {
+                //女
+                EventBus.getDefault().post(new EventBean(Const.Event_Live));
+            }
+        }
+    }
+
 
     public static void releaseRtc(final Activity activity , boolean isReleaseRtc, boolean isLeaveRoom) {
         //        if (mVideoEffect != null) {
@@ -374,13 +403,16 @@ public class ScannerManager  {
 
         }
         if (isLeaveRoom) {
+            //挂断电话
+
+            //离开房间
             AVChatManager.getInstance().leaveRoom2(ScannerManager.mMeetingName, new AVChatCallback<Void>() {
                 @Override
                 public void onSuccess(Void aVoid) {
                     Log.e("@#", "leave channel success");
                     ScannerManager.mMeetingName = "";
                     if (activity != null) {
-                        activity.finish();
+//                        activity.finish();
                     }
                 }
 
@@ -394,6 +426,16 @@ public class ScannerManager  {
                     Log.e("@#", "leave channel exception, throwable:" + throwable.getMessage());
                 }
             });
+        }
+    }
+
+    public static void SwitchLive(boolean isLive){
+        if (isLive){
+            mLocalRender.setZOrderMediaOverlay(true);
+            mRemoterRender.setZOrderMediaOverlay(false);
+        }else {
+            mLocalRender.setZOrderMediaOverlay(true);
+            mRemoterRender.setZOrderMediaOverlay(false);
         }
     }
 

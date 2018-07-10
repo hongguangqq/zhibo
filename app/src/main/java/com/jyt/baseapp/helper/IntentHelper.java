@@ -6,22 +6,26 @@ import android.content.Intent;
 import android.net.Uri;
 import android.support.v4.app.Fragment;
 
+import com.jyt.baseapp.api.Const;
 import com.jyt.baseapp.bean.SearchBean;
 import com.jyt.baseapp.bean.SearchConditionBean;
 import com.jyt.baseapp.bean.Tuple;
 import com.jyt.baseapp.util.FinishActivityManager;
 import com.jyt.baseapp.view.activity.AccountActivity;
+import com.jyt.baseapp.view.activity.AnswerActivity;
 import com.jyt.baseapp.view.activity.AudienceActivity;
 import com.jyt.baseapp.view.activity.BlackActivity;
 import com.jyt.baseapp.view.activity.BrowseImagesActivity;
 import com.jyt.baseapp.view.activity.CommunicationActivity;
 import com.jyt.baseapp.view.activity.ContentActivity;
 import com.jyt.baseapp.view.activity.DynamicActivity;
+import com.jyt.baseapp.view.activity.EndCallActivity;
 import com.jyt.baseapp.view.activity.FFActivity;
 import com.jyt.baseapp.view.activity.FeedbackActivity;
 import com.jyt.baseapp.view.activity.LaunchActivity;
 import com.jyt.baseapp.view.activity.ListActivity;
 import com.jyt.baseapp.view.activity.LivePlayActivity;
+import com.jyt.baseapp.view.activity.MateActivity;
 import com.jyt.baseapp.view.activity.ModifyActivity;
 import com.jyt.baseapp.view.activity.NewsActivity;
 import com.jyt.baseapp.view.activity.PersonActivity;
@@ -406,6 +410,23 @@ public class IntentHelper {
         activity.startActivityForResult(intent,IntentRequestCode.CODE_MODIFY);
     }
 
+    /**
+     * 主播收到观众电话，跳转接听界面
+     * @param activity
+     */
+    public static void OpenAnswerActivity(Context activity,String name ,String hpic){
+        Intent intent =getIntent(activity, AnswerActivity.class);
+        intent.putExtra(IntentKey.Answer_Name,name);
+        intent.putExtra(IntentKey.Answer_Hpic,hpic);
+        activity.startActivity(intent);
+    }
+
+    public static Tuple AnswerActivityGetPara(Intent intent){
+        String name = intent.getStringExtra(IntentKey.Answer_Name);
+        String hpic = intent.getStringExtra(IntentKey.Answer_Hpic);
+        return new Tuple(name,hpic);
+    }
+
 
     /**
      * 跳转黑名单
@@ -435,7 +456,7 @@ public class IntentHelper {
      * 跳转到直播界面
      * @param activity
      */
-    public static void OpenLivePlayActivity(Context activity){
+    public static void OpenLivePlayActivity(Activity activity){
         Intent intent =getIntent(activity, LivePlayActivity.class);
         activity.startActivity(intent);
     }
@@ -451,6 +472,14 @@ public class IntentHelper {
     }
 
 
+    /**
+     * 打开拨打电话界面
+     * @param activity
+     * @param id
+     * @param type
+     * @param nick
+     * @param hpic
+     */
     public static void OpenLaunchActivity(Activity activity , int id ,int type,String nick ,String hpic){
         Intent intent =getIntent(activity, LaunchActivity.class);
         intent.putExtra(IntentKey.ComId,id);
@@ -466,6 +495,20 @@ public class IntentHelper {
         String nick  = intent.getStringExtra(IntentKey.RegisterNick);
         String hpic  = intent.getStringExtra(IntentKey.IMAGES);
         return new Tuple(id,type,nick,hpic);
+    }
+
+    /**
+     * 打开随机拨打电话界面
+     * @param activity
+     */
+    public static void OpenMateActivity(Activity activity){
+        Intent intent = getIntent(activity, MateActivity.class);
+        activity.startActivity(intent);
+    }
+
+    public static void OpenEndCallActivity(Activity activity , boolean isLive){
+        Intent intent = getIntent(activity, EndCallActivity.class);
+        intent.putExtra(Const.IsLive,isLive);
     }
 
 

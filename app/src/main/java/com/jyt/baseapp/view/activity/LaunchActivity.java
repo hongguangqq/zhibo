@@ -15,6 +15,7 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.jyt.baseapp.R;
 import com.jyt.baseapp.api.BeanCallback;
+import com.jyt.baseapp.api.Const;
 import com.jyt.baseapp.bean.BaseJson;
 import com.jyt.baseapp.bean.EventBean;
 import com.jyt.baseapp.bean.Tuple;
@@ -167,6 +168,15 @@ public class LaunchActivity extends BaseMCVActivity {
             mPbProgress.setVisibility(View.VISIBLE);
             mBtnStar.setText("挂断");
             mValueAnimator.start();
+        }else {
+            isLaunch = false;
+            mLiveModel.HangUp(id, trid, new BeanCallback() {
+                @Override
+                public void response(boolean success, Object response, int id) {
+                    finish();
+                }
+            });
+
         }
     }
 
@@ -198,8 +208,8 @@ public class LaunchActivity extends BaseMCVActivity {
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
-    public void Event(EventBean bean) {
-       if ("over".equals(bean.getCode())){
+    public void EventOver(EventBean bean) {
+       if (Const.Event_Launch.equals(bean.getCode())){
            finish();
        }
     }

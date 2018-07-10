@@ -16,7 +16,7 @@
     <uses-permission android:name="android.permission.MANAGE_ACCOUNTS"/>
     <uses-permission android:name="android.permission.GET_ACCOUNTS"/>
     <uses-permission android:name="android.permission.RECORD_AUDIO"/>
-    <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
+    <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW"/>
     <!-- 蓝牙分享所需的权限 -->
     <uses-permission android:name="android.permission.BLUETOOTH"/>
     <uses-permission android:name="android.permission.BLUETOOTH_ADMIN"/>
@@ -137,7 +137,6 @@
                 <action android:name="com.xiaomi.mipush.ERROR"/>
             </intent-filter>
         </receiver>
-
         <receiver
             android:name="io.rong.push.platform.MiMessageReceiver"
             android:exported="true">
@@ -323,7 +322,8 @@
         <activity android:name=".view.activity.AudienceActivity">
         </activity>
         <activity android:name=".view.activity.TestActivity">
-
+        </activity>
+        <activity android:name=".view.activity.EavesdropActivity">
         </activity>
     </application>
 

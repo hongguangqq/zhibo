@@ -21,4 +21,6 @@ public interface ScannerCallBack {
     void closeScanner(Activity activity,boolean isReleaseRtc, boolean isLeaveRoom);
 
     void closeConnection();
+
+    void SwitchLive(boolean isLive);
 }

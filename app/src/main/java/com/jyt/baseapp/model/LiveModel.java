@@ -13,5 +13,7 @@ public interface LiveModel extends BaseModel{
 
     void AnchorAnswer(String trId , String roomName , String accId , Callback callback);
 
+    void RandomDialing(Callback callback);
+
 
 }

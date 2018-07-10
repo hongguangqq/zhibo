@@ -78,6 +78,12 @@ public class ScannerController {
         mScannerCallBack.closeScanner(activity,isReleaseRtc,isLeaveRoom);
     }
 
+    public void SwitchLive(boolean isLive){
+        if (mScannerCallBack!=null){
+            mScannerCallBack.SwitchLive(isLive);
+        }
+    }
+
     public void closeConnection(){
         if (mScannerCallBack == null) return;
         mScannerCallBack.closeConnection();

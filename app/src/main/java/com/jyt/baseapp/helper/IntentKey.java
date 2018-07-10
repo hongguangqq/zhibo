@@ -32,6 +32,8 @@ public class IntentKey {
     public static final String FFPage = "FFPage";
     public static final String ComId = "ComId";
     public static final String Type = "Type";
+    public static final String Answer_Name = "Answer_Name";
+    public static final String Answer_Hpic = "Answer_Hpic";
 
 
 

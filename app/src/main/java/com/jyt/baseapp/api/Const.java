@@ -77,7 +77,11 @@ public class Const {
 
     public static final String WyAccount = "WyAccount";
     public static final String WyToken = "WyToken";
-    public static final String IsMaster = "IsMaster";
+
+    public static final String IsLive = "IsLive";//endcall界面判断是否为主播
+    public static final String Event_Launch = "LaunchActivity";
+    public static final String Event_Live = "LivePlayActivity";
+    public static final String Event_Audience = "AudienceActivity";
 
 
     public static void SaveUser(UserBean user){

@@ -2,7 +2,6 @@ package com.jyt.baseapp.view.activity;
 
 import android.os.Bundle;
 import android.os.Handler;
-import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
@@ -10,10 +9,17 @@ import android.widget.Button;
 import android.widget.FrameLayout;
 
 import com.jyt.baseapp.R;
+import com.jyt.baseapp.api.Const;
+import com.jyt.baseapp.bean.EventBean;
+import com.jyt.baseapp.helper.IntentHelper;
 import com.jyt.baseapp.service.ScannerController;
 import com.jyt.baseapp.service.ScannerManager;
 import com.jyt.baseapp.util.BaseUtil;
 import com.jyt.baseapp.view.dialog.IPhoneDialog;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import static com.jyt.baseapp.App.getHandler;
 
@@ -49,6 +55,7 @@ public class LivePlayActivity extends BaseMCVActivity {
     private void init(){
         HideActionBar();
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);   //应用运行时，保持屏幕高亮，不锁屏
+        EventBus.getDefault().register(this);
         mFlLocalRender = findViewById(R.id.fl_localRender);
         mFlRemoterRender = findViewById(R.id.fl_remoteRender);
         mBtnStar = findViewById(R.id.btn_star);
@@ -67,6 +74,7 @@ public class LivePlayActivity extends BaseMCVActivity {
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
+                ScannerController.getInstance().SwitchLive(true);
                 FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
                 mFlRemoterRender.addView(ScannerController.getInstance().getLocalRender(),params);
                 //                    ScannerController.getInstance().show();
@@ -130,6 +138,7 @@ public class LivePlayActivity extends BaseMCVActivity {
             @Override
             public void run() {
                 ScannerController.getInstance().closeScanner(LivePlayActivity.this,true,true);
+                IntentHelper.OpenEndCallActivity(LivePlayActivity.this,true);
                 finish();
             }
         }, 50);
@@ -143,7 +152,7 @@ public class LivePlayActivity extends BaseMCVActivity {
                 logoutChatRoom();
             }else {
                 ScannerController.getInstance().closeScanner(LivePlayActivity.this,true,false);
-                Log.e("@#","finish");
+                finish();
             }
 
         }else {
@@ -152,6 +161,14 @@ public class LivePlayActivity extends BaseMCVActivity {
         }
 
 
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void EventOver(EventBean bean) {
+        if (Const.Event_Live.equals(bean.getCode())){
+            IntentHelper.OpenEndCallActivity(this,true);
+            finish();
+        }
     }
 
 
@@ -166,6 +183,8 @@ public class LivePlayActivity extends BaseMCVActivity {
 
         }
         super.onDestroy();
-
+        if(EventBus.getDefault().isRegistered(this)) {
+            EventBus.getDefault().unregister(this);
+        }
     }
 }
