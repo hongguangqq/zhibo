@@ -82,6 +82,7 @@ public class Const {
     public static final String Event_Launch = "LaunchActivity";
     public static final String Event_Live = "LivePlayActivity";
     public static final String Event_Audience = "AudienceActivity";
+    public static final String Event_Project = "AudienceProjectActivity";
 
 
     public static void SaveUser(UserBean user){

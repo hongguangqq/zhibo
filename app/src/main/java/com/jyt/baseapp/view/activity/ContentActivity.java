@@ -160,6 +160,7 @@ public class ContentActivity extends BaseMCVActivity implements View.OnClickList
         mVpContent.setOffscreenPageLimit(4);
 //        mVpContent.setAdapter(mFactoryPageAdapter);
         //小米登录
+
         MiPushClient.setAlias(this, Const.getUserID(),null);
         //融云登录
         mLoginModel.GetRongID(new BeanCallback<String>() {
@@ -218,6 +219,7 @@ public class ContentActivity extends BaseMCVActivity implements View.OnClickList
     private void initListener(){
         mIvTabAdd.setOnClickListener(this);
         mBtnRandom.setOnClickListener(this);
+        mBtnEavesdrop.setOnClickListener(this);
         mLlTab1.setOnClickListener(this);
         mLlTab2.setOnClickListener(this);
         mLlTab3.setOnClickListener(this);
@@ -244,6 +246,9 @@ public class ContentActivity extends BaseMCVActivity implements View.OnClickList
                 break;
             case R.id.btn_random:
                 IntentHelper.OpenMateActivity(this);
+                break;
+            case R.id.btn_eavesdrop:
+                IntentHelper.OpenEavesdropActivity(this);
                 break;
             case R.id.ll_tab1:
                 ChangeTab(1);

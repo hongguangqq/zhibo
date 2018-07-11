@@ -42,6 +42,7 @@
             </LinearLayout>
 
             <RelativeLayout
+                android:id="@+id/rl_tab1_search"
                 android:layout_width="62dp"
                 android:layout_height="24dp"
                 android:layout_marginLeft="5dp"

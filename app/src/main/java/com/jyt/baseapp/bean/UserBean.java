@@ -38,6 +38,7 @@ public class UserBean implements Serializable{
     private int age;
     private String easyId;
     private String easyToken;
+    private String roomName;
 
 
     public int getId() {
@@ -264,6 +265,13 @@ public class UserBean implements Serializable{
         return imgsList;
     }
 
+    public String getRoomName() {
+        return roomName;
+    }
+
+    public void setRoomName(String roomName) {
+        this.roomName = roomName;
+    }
 
     @Override
     public String toString() {

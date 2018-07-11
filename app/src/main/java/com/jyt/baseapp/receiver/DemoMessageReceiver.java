@@ -8,6 +8,8 @@ import com.jyt.baseapp.bean.EventBean;
 import com.jyt.baseapp.helper.IntentHelper;
 import com.jyt.baseapp.service.ScannerManager;
 import com.jyt.baseapp.util.BaseUtil;
+import com.jyt.baseapp.util.FinishActivityManager;
+import com.jyt.baseapp.view.activity.LivePlayActivity;
 import com.xiaomi.mipush.sdk.ErrorCode;
 import com.xiaomi.mipush.sdk.MiPushClient;
 import com.xiaomi.mipush.sdk.MiPushCommandMessage;
@@ -30,6 +32,7 @@ public class DemoMessageReceiver extends PushMessageReceiver {
     private String mUserAccount;
     private static final String MSG_Live = "1";
     private static final String MSG_Audience = "2";
+    private static final String MSG_Project = "3";
 
     //透传消息到达客户端时调用
     //作用：可通过参数message从而获得透传消息，具体请看官方SDK文档
@@ -42,7 +45,7 @@ public class DemoMessageReceiver extends PushMessageReceiver {
         Map<String,String> map = message.getExtra();
         String code = map.get("code");
         if (MSG_Live.equals(code)){
-            //主播点击接听，进入直播界面，创建房间
+            //主播收到观众开播请求，进入直播界面，创建房间
             String jobjStr = map.get("message");
             try {
                 JSONObject jobj = new JSONObject(jobjStr);
@@ -66,6 +69,11 @@ public class DemoMessageReceiver extends PushMessageReceiver {
             } catch (JSONException e) {
                 e.printStackTrace();
             }
+        } else if (MSG_Project.equals(code)){
+            if (FinishActivityManager.getManager().IsActivityExist(LivePlayActivity.class)){
+                EventBus.getDefault().post(new EventBean(Const.Event_Project));
+            }
+
         }
 
     }

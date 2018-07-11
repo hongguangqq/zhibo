@@ -5,6 +5,7 @@ import android.content.Context;
 import com.jyt.baseapp.api.Const;
 import com.jyt.baseapp.api.Path;
 import com.jyt.baseapp.model.LiveModel;
+import com.jyt.baseapp.service.ScannerManager;
 import com.zhy.http.okhttp.OkHttpUtils;
 import com.zhy.http.okhttp.callback.Callback;
 
@@ -92,4 +93,66 @@ public class LiveModelImpl implements LiveModel {
                 .build()
                 .execute(callback);
     }
+
+    /**
+     * 偷听直播
+     * @param callback
+     */
+    @Override
+    public void EavesdropLive(Callback callback) {
+        OkHttpUtils.get()
+                .url(Path.EavesdropLive)
+                .tag(mContext)
+                .addHeader("token",Const.getUserToken())
+                .build()
+                .execute(callback);
+    }
+
+    @Override
+    public void DoneHangUp(Callback callback) {
+        OkHttpUtils.post()
+                .url(Path.DongHangUp)
+                .tag(mContext)
+                .addParams("trId", ScannerManager.trId)
+                .addHeader("token",Const.getUserToken())
+                .build()
+                .execute(callback);
+    }
+
+
+    /**
+     * 获取偷听人数
+     * @param id
+     * @param callback
+     */
+    @Override
+    public void getEavesdropNum(int id, Callback callback) {
+        OkHttpUtils.get()
+                .url(Path.GetEavesdropNum)
+                .tag(mContext)
+                .addHeader("token",Const.getUserToken())
+                .addParams("userId",String.valueOf(id))
+                .build()
+                .execute(callback);
+    }
+
+    /**
+     * 获取直播结束后的金额
+     * @param isLive
+     * @param callback
+     */
+    @Override
+    public void getComFinishMoney(boolean isLive, Callback callback) {
+        String code = isLive? "1":"0";
+        OkHttpUtils.get()
+                .url(Path.GetComMoney)
+                .tag(mContext)
+                .addHeader("token",Const.getUserToken())
+                .addParams("isAnchor",code)
+                .addParams("trId",ScannerManager.trId)
+                .build()
+                .execute(callback);
+    }
+
+
 }

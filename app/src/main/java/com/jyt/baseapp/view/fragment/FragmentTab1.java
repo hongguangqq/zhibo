@@ -62,6 +62,8 @@ public class FragmentTab1 extends BaseFragment {
     SlFlowLayout mFlowRecommend;
     @BindView(R.id.flow_tab1_theme)
     SlFlowLayout mFlowTheme;
+    @BindView(R.id.rl_tab1_search)
+    RelativeLayout mRlSearch;
     @BindView(R.id.ll_tab1_search)
     LinearLayout mLlSearch;
     @BindView(R.id.ll_tab1_focus)
@@ -235,6 +237,8 @@ public class FragmentTab1 extends BaseFragment {
             mTvStateOff.setVisibility(View.GONE);
         }
         if (Const.getGender()==1){
+            //男用户隐藏在线状态
+            mRlSearch.setVisibility(View.GONE);
             mTvUser.setText("女用户列表");
             mIvUser.setImageResource(R.mipmap.icon_liebiao_suren);
         }else {
@@ -253,12 +257,6 @@ public class FragmentTab1 extends BaseFragment {
         mLlHot.setTag(2);
         mLlUser.setTag(3);
         mLlRecommend.setTag(4);
-        if (Const.getGender()==1){
-            //男用户隐藏在线状态
-            mSvState.setVisibility(View.GONE);
-            mTvStateOn.setVisibility(View.GONE);
-            mTvStateOff.setVisibility(View.GONE);
-        }
         //在线状态切换
         mSvState.onChangeListener(new SwitchView.OnChangeListener() {
             @Override
@@ -399,15 +397,15 @@ public class FragmentTab1 extends BaseFragment {
 
     @OnClick({R.id.ll_tab1_focus,R.id.ll_tab1_hot,R.id.ll_tab1_user,R.id.ll_tab1_recommend})
     public void OpenListActivity(View v){
-//        int code = (int) v.getTag();
-//        IntentHelper.OpenListActivity(getActivity(),code);
-        IntentHelper.OpenAudienceActivity(getActivity());
+        int code = (int) v.getTag();
+        IntentHelper.OpenListActivity(getActivity(),code);
+//        IntentHelper.OpenAudienceActivity(getActivity());
     }
 
     @OnClick(R.id.ll_tab1_theme)
     public void OpenThemeActivity(){
-//        IntentHelper.OpenThemeActivity(getActivity());
-        IntentHelper.OpenLivePlayActivity(getActivity());
+        IntentHelper.OpenThemeActivity(getActivity());
+//        IntentHelper.OpenLivePlayActivity(getActivity());
     }
 
 

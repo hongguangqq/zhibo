@@ -57,7 +57,6 @@ public class ScannerManager  {
     public static boolean isEavesdrop;//是否为偷听者
     public static boolean isStartLive;//是否在连线
     public static boolean isBigScreen = true;//是否处于大屏状态
-    public static boolean isMeJoin;//是否初次进入
     public static String trId;//聊天对象的ID
 //    public static String comID = "96c372c5d70978f1239aac722c75080d";//聊天对象网易云ID
     public static String comID;//聊天对象网易云ID
@@ -233,8 +232,9 @@ public class ScannerManager  {
     }
 
 
-
-
+    /**
+     * 服务关闭时启动
+     */
     public static void closeConnection(){
         mLiveModel.onDestroy();
         ViewGroup parent1 = (ViewGroup) mLocalRender.getParent();
@@ -247,11 +247,10 @@ public class ScannerManager  {
         }
         mLocalRender = null;
         mRemoterRender = null;
-        isMeJoin = false;
         isStartLive = false;
-        mMeetingName = null;
+        mMeetingName = "";
         comID = "";
-        trId = "";
+//        trId = "";
     }
 
 
@@ -350,10 +349,6 @@ public class ScannerManager  {
                 Log.e("@#","观众：男用户进入房间，连接主播视屏");
                 AVChatManager.getInstance().setupRemoteVideoRender(ScannerManager.comID, mRemoterRender,false,AVChatVideoScalingType.SCALE_ASPECT_BALANCED);
             }
-            if (!isMeJoin){
-                isMeJoin=true;
-
-            }
         } else {
             //女
             if (!TextUtils.isEmpty(ScannerManager.comID) && ScannerManager.comID.equals(s)){
@@ -369,16 +364,9 @@ public class ScannerManager  {
     public static void onUserLeave(String s, int i) {
         //当聊天对象退出时，同时退出房间
         if (!TextUtils.isEmpty(comID) && s.equals(comID)){
+            isStartLive = false;
             releaseRtc(null,true,true);//退出操作
-            endComTome = System.currentTimeMillis();//记录退出时间
-            if (Const.getGender()==1){
-                //男
-                EventBus.getDefault().post(new EventBean(Const.Event_Audience));
-                //挂断电话
-            }else {
-                //女
-                EventBus.getDefault().post(new EventBean(Const.Event_Live));
-            }
+
         }
     }
 
@@ -404,7 +392,12 @@ public class ScannerManager  {
         }
         if (isLeaveRoom) {
             //挂断电话
+            mLiveModel.DoneHangUp(new BeanCallback() {
+                @Override
+                public void response(boolean success, Object response, int id) {
 
+                }
+            });
             //离开房间
             AVChatManager.getInstance().leaveRoom2(ScannerManager.mMeetingName, new AVChatCallback<Void>() {
                 @Override
@@ -426,17 +419,25 @@ public class ScannerManager  {
                     Log.e("@#", "leave channel exception, throwable:" + throwable.getMessage());
                 }
             });
+            endComTome = System.currentTimeMillis();//记录退出时间
+            if (Const.getGender()==1){
+                //男
+                EventBus.getDefault().post(new EventBean(Const.Event_Audience));
+            }else {
+                //女
+                EventBus.getDefault().post(new EventBean(Const.Event_Live));
+            }
         }
     }
 
     public static void SwitchLive(boolean isLive){
-        if (isLive){
-            mLocalRender.setZOrderMediaOverlay(true);
-            mRemoterRender.setZOrderMediaOverlay(false);
-        }else {
-            mLocalRender.setZOrderMediaOverlay(true);
-            mRemoterRender.setZOrderMediaOverlay(false);
-        }
+//        if (isLive){
+//            mLocalRender.setZOrderMediaOverlay(true);
+//            mRemoterRender.setZOrderMediaOverlay(false);
+//        }else {
+//            mLocalRender.setZOrderMediaOverlay(true);
+//            mRemoterRender.setZOrderMediaOverlay(false);
+//        }
     }
 
 }

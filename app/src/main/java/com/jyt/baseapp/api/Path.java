@@ -51,7 +51,11 @@ public class Path {
     public static final String DeleteAppoint = BasePath + "/chat/sub/deleteAppoint";
     public static final String MakeCall = BasePath + "/chat/user/makeCall";
     public static final String HangUp = BasePath + "/chat/user/hangUp";
+    public static final String DongHangUp = BasePath + "/chat/user/doneHangUp";
     public static final String AnchorAnswer = BasePath + "/chat/user/anchorAnswer";
     public static final String RandomRing = BasePath + "/chat/user/randomRing";
+    public static final String EavesdropLive = BasePath + "/chat/user/eavesdrop";
+    public static final String GetEavesdropNum = BasePath + "/chat/user/nowListen";
+    public static final String GetComMoney = BasePath + "/chat/user/finishTalk";
 
 }

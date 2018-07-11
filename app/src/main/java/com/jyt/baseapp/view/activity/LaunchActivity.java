@@ -6,6 +6,7 @@ import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -17,14 +18,18 @@ import com.jyt.baseapp.R;
 import com.jyt.baseapp.api.BeanCallback;
 import com.jyt.baseapp.api.Const;
 import com.jyt.baseapp.bean.BaseJson;
+import com.jyt.baseapp.bean.CallBean;
 import com.jyt.baseapp.bean.EventBean;
 import com.jyt.baseapp.bean.Tuple;
 import com.jyt.baseapp.helper.IntentHelper;
 import com.jyt.baseapp.model.LiveModel;
 import com.jyt.baseapp.model.impl.LiveModelImpl;
+import com.jyt.baseapp.service.ScannerManager;
 import com.jyt.baseapp.util.BaseUtil;
 import com.jyt.baseapp.util.FastBlurUtil;
+import com.jyt.baseapp.util.FinishActivityManager;
 import com.jyt.baseapp.view.widget.CircleImageView;
+import com.xiaomi.mipush.sdk.MiPushClient;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -64,6 +69,7 @@ public class LaunchActivity extends BaseMCVActivity {
     private int type;
     private int trid;
     private LiveModel mLiveModel;
+    private CallBean mCallBean;
 
 
     @Override
@@ -88,6 +94,7 @@ public class LaunchActivity extends BaseMCVActivity {
         setvMainBackground(R.mipmap.bg_entrance);
         Tuple tuple = IntentHelper.LaunchActivityGetPara(getIntent());
         EventBus.getDefault().register(this);
+        MiPushClient.setAlias(this, Const.getUserID(),null);//设置别名
         mLiveModel = new LiveModelImpl();
         id = (int) tuple.getItem1();
         type = (int) tuple.getItem2();
@@ -117,15 +124,16 @@ public class LaunchActivity extends BaseMCVActivity {
             public void onAnimationStart(Animator animation) {
                 //拨打主播，视频聊天
                 mPbProgress.setVisibility(View.VISIBLE);
-                mLiveModel.MakeCall(id, type, new BeanCallback<BaseJson>() {
+                mLiveModel.MakeCall(id, type, new BeanCallback<BaseJson<CallBean>>() {
                     @Override
-                    public void response(boolean success, BaseJson response, int id) {
+                    public void response(boolean success, BaseJson<CallBean> response, int id) {
                         if (success && response.getCode()==200){
                             mPbProgress.setVisibility(View.VISIBLE);
-
+                            mCallBean = response.getData();
+                            trid = mCallBean.getId();
+                            ScannerManager.trId = trid+"";
                         }else if (success && response.getCode()==500){
                             BaseUtil.makeText(response.getMessage());
-                            isLaunch=false;
                         }
                     }
                 });
@@ -136,13 +144,16 @@ public class LaunchActivity extends BaseMCVActivity {
                 isLaunch=false;
                 mBtnStar.setText("拨号");
                 mPbProgress.setVisibility(View.GONE);
+                mTvStar.setVisibility(View.GONE);
                 mPbProgress.setProgress(0);
-                mLiveModel.HangUp(id, trid, new BeanCallback() {
-                    @Override
-                    public void response(boolean success, Object response, int id) {
+                if (FinishActivityManager.getManager().IsActivityExist(LaunchActivity.class)){
+                    mLiveModel.HangUp(id, trid, new BeanCallback() {
+                        @Override
+                        public void response(boolean success, Object response, int id) {
 
-                    }
-                });
+                        }
+                    });
+                }
             }
 
             @Override
@@ -170,6 +181,9 @@ public class LaunchActivity extends BaseMCVActivity {
             mValueAnimator.start();
         }else {
             isLaunch = false;
+            mTvStar.setVisibility(View.GONE);
+            mPbProgress.setVisibility(View.GONE);
+            mBtnStar.setText("重拨");
             mLiveModel.HangUp(id, trid, new BeanCallback() {
                 @Override
                 public void response(boolean success, Object response, int id) {
@@ -210,6 +224,7 @@ public class LaunchActivity extends BaseMCVActivity {
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void EventOver(EventBean bean) {
        if (Const.Event_Launch.equals(bean.getCode())){
+           Log.e("@#","销毁拨打电话界面");
            finish();
        }
     }
@@ -221,6 +236,14 @@ public class LaunchActivity extends BaseMCVActivity {
         super.onDestroy();
         if(EventBus.getDefault().isRegistered(this)) {
             EventBus.getDefault().unregister(this);
+        }
+        if (isLaunch){
+//            mLiveModel.HangUp(id, trid, new BeanCallback() {
+//                @Override
+//                public void response(boolean success, Object response, int id) {
+//
+//                }
+//            });
         }
     }
 

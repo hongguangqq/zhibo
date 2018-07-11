@@ -19,6 +19,7 @@ import com.jyt.baseapp.view.activity.BrowseImagesActivity;
 import com.jyt.baseapp.view.activity.CommunicationActivity;
 import com.jyt.baseapp.view.activity.ContentActivity;
 import com.jyt.baseapp.view.activity.DynamicActivity;
+import com.jyt.baseapp.view.activity.EavesdropActivity;
 import com.jyt.baseapp.view.activity.EndCallActivity;
 import com.jyt.baseapp.view.activity.FFActivity;
 import com.jyt.baseapp.view.activity.FeedbackActivity;
@@ -498,6 +499,15 @@ public class IntentHelper {
     }
 
     /**
+     * 跳转偷听界面
+     * @param activity
+     */
+    public static void OpenEavesdropActivity(Activity activity){
+        Intent intent = getIntent(activity, EavesdropActivity.class);
+        activity.startActivity(intent);
+    }
+
+    /**
      * 打开随机拨打电话界面
      * @param activity
      */
@@ -509,6 +519,12 @@ public class IntentHelper {
     public static void OpenEndCallActivity(Activity activity , boolean isLive){
         Intent intent = getIntent(activity, EndCallActivity.class);
         intent.putExtra(Const.IsLive,isLive);
+        activity.startActivity(intent);
+    }
+
+    public static Tuple EndCallActivityGetPara(Intent intent){
+        boolean isLive = intent.getBooleanExtra(Const.IsLive,false);
+        return new Tuple(isLive);
     }
 
 

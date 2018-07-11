@@ -101,6 +101,7 @@ public class SearchResultActivity extends BaseMCVActivity {
             public void onClick(BaseViewHolder holder) {
                 UserBean user = (UserBean) holder.getData();
                 IntentHelper.OpenPersonActivity(SearchResultActivity.this,user.getId());
+                finish();
             }
         });
 

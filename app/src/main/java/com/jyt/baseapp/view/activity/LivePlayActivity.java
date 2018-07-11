@@ -2,6 +2,7 @@ package com.jyt.baseapp.view.activity;
 
 import android.os.Bundle;
 import android.os.Handler;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
@@ -31,6 +32,7 @@ public class LivePlayActivity extends BaseMCVActivity {
     private String mMeetingName;
     private IPhoneDialog mExitDialog;
     private Handler mVideoEffectHandler = new Handler();
+    private boolean isMeLeave;//是否为自己主动发起离开
 
 
     @Override
@@ -133,10 +135,10 @@ public class LivePlayActivity extends BaseMCVActivity {
 
     private void doCompletelyFinish() {
         ScannerManager.isStartLive = false;
-        //        showLiveFinishLayout();
         getHandler().postDelayed(new Runnable() {
             @Override
             public void run() {
+                isMeLeave = true;
                 ScannerController.getInstance().closeScanner(LivePlayActivity.this,true,true);
                 IntentHelper.OpenEndCallActivity(LivePlayActivity.this,true);
                 finish();
@@ -166,7 +168,13 @@ public class LivePlayActivity extends BaseMCVActivity {
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void EventOver(EventBean bean) {
         if (Const.Event_Live.equals(bean.getCode())){
+            if (isMeLeave){
+                return;
+            }
             IntentHelper.OpenEndCallActivity(this,true);
+            finish();
+        }else if (Const.Event_Project.equals(bean.getCode())){
+            Log.e("@#","ASDDD");
             finish();
         }
     }
@@ -178,6 +186,9 @@ public class LivePlayActivity extends BaseMCVActivity {
         if (ScannerManager.isBigScreen){
             //未处于悬浮窗状态
             ScannerController.getInstance().stopMonkServer(this);
+            if (ScannerManager.isStartLive){
+                ScannerController.getInstance().closeScanner(LivePlayActivity.this,true,true);
+            }
         }else {
             //处于悬浮窗状态
 

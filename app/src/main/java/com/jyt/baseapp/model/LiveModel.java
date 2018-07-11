@@ -15,5 +15,13 @@ public interface LiveModel extends BaseModel{
 
     void RandomDialing(Callback callback);
 
+    void EavesdropLive(Callback callback);
+
+    void DoneHangUp(Callback callback);
+
+    void getEavesdropNum(int id ,Callback callback);
+
+    void getComFinishMoney(boolean isLive , Callback callback);
+
 
 }

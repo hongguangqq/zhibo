@@ -316,7 +316,7 @@ public class ModifyActivity extends BaseMCVActivity {
                 .setCallBack(new OnDateSetListener() {
                     @Override
                     public void onDateSet(TimePickerDialog timePickerView, long millseconds) {
-                        mUserData.setBirthday(BaseUtil.TransTime(millseconds));
+                        mUserData.setBirthday(BaseUtil.TransTime(millseconds,"yyyy-MM-dd"));
                         UpDateMyData();
 
                     }

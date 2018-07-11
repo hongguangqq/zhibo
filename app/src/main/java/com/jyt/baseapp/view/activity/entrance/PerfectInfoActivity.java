@@ -110,7 +110,7 @@ public class PerfectInfoActivity extends BaseMCVActivity  {
                 .setCallBack(new OnDateSetListener() {
                     @Override
                     public void onDateSet(TimePickerDialog timePickerView, long millseconds) {
-                        mBirthday = BaseUtil.TransTime(millseconds);
+                        mBirthday = BaseUtil.TransTime(millseconds,"yyyy-MM-dd");
                         mTvBirthday.setText(mBirthday);
 
                     }

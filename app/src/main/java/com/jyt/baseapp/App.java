@@ -160,7 +160,9 @@ public class App  extends MultiDexApplication {
     }
 
     private void initRY(){
-        RongPushClient.registerMiPush(this,Const.MiAppID,Const.MiAppKey);
+        if (shouldInit()){
+            RongPushClient.registerMiPush(this,Const.MiAppID,Const.MiAppKey);
+        }
         RongIMClient.init(this);
         try {
             RongPushClient.checkManifest(this);

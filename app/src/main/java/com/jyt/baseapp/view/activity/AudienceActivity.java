@@ -2,6 +2,7 @@ package com.jyt.baseapp.view.activity;
 
 import android.os.Bundle;
 import android.os.Handler;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
@@ -28,6 +29,8 @@ public class AudienceActivity extends BaseMCVActivity {
     private FrameLayout mFlRemoterRender;
     private FrameLayout mFlLocalRender;
     private IPhoneDialog mExitDialog;
+
+    private boolean isMeLeave;//是否为自己主动发起离开
 
 
     @Override
@@ -94,6 +97,18 @@ public class AudienceActivity extends BaseMCVActivity {
         });
     }
 
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void EventOver(EventBean bean) {
+        if (Const.Event_Audience.equals(bean.getCode())){
+            if (isMeLeave){
+                return;
+            }
+            Log.e("@#","主播离开房间，直播结束");
+            IntentHelper.OpenEndCallActivity(this,true);
+            finish();
+        }
+    }
+
     // 退出聊天室
     private void logoutChatRoom() {
         if (mExitDialog.isShowing()){
@@ -105,10 +120,11 @@ public class AudienceActivity extends BaseMCVActivity {
     }
 
     private void doCompletelyFinish() {
-        //        showLiveFinishLayout();
+        ScannerManager.isStartLive = false;
         getHandler().postDelayed(new Runnable() {
             @Override
             public void run() {
+                isMeLeave = true;
                 ScannerController.getInstance().closeScanner(AudienceActivity.this,true,true);
                 IntentHelper.OpenEndCallActivity(AudienceActivity.this,false);
                 finish();
@@ -121,7 +137,7 @@ public class AudienceActivity extends BaseMCVActivity {
         if (ScannerManager.isBigScreen){
             //未处于悬浮窗状态
             if (ScannerManager.isStartLive){
-                ScannerManager.isStartLive = false;
+
                 logoutChatRoom();
             }else {
                 ScannerController.getInstance().closeScanner(AudienceActivity.this,true,false);
@@ -135,14 +151,6 @@ public class AudienceActivity extends BaseMCVActivity {
 
     }
 
-    @Subscribe(threadMode = ThreadMode.MAIN)
-    public void EventOver(EventBean bean) {
-        if (Const.Event_Audience.equals(bean.getCode())){
-            IntentHelper.OpenEndCallActivity(this,true);
-            finish();
-        }
-    }
-
 
 
     @Override
@@ -150,6 +158,9 @@ public class AudienceActivity extends BaseMCVActivity {
         if (ScannerManager.isBigScreen){
             //未处于悬浮窗状态
             ScannerController.getInstance().stopMonkServer(this);
+            if (ScannerManager.isStartLive){
+
+            }
         }else {
             //处于悬浮窗状态
 

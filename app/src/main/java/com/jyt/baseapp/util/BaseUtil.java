@@ -188,8 +188,8 @@ public class BaseUtil {
     }
 
 
-    public static String TransTime(long time){
-        SimpleDateFormat format=new SimpleDateFormat("yyyy-MM-dd");//"yyyy-MM-dd HH:mm:ss"
+    public static String TransTime(long time,String type){
+        SimpleDateFormat format=new SimpleDateFormat(type);//"yyyy-MM-dd HH:mm:ss"
         return format.format(time);
 
     }
