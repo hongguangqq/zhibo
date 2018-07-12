@@ -79,6 +79,7 @@ public class Const {
     public static final String WyToken = "WyToken";
 
     public static final String IsLive = "IsLive";//endcall界面判断是否为主播
+    public static final String FinishTime = "FinishTime";//结束时间
     public static final String Event_Launch = "LaunchActivity";
     public static final String Event_Live = "LivePlayActivity";
     public static final String Event_Audience = "AudienceActivity";
@@ -112,6 +113,7 @@ public class Const {
         BaseUtil.setSpString(WyToken,"");
         MiPushClient.unsetAlias(BaseUtil.getContext(),Const.getUserID(),null);
 //        MiPushClient.unregisterPush(BaseUtil.getContext());
+        MiPushClient.pausePush(BaseUtil.getContext(),null);
         BaseUtil.makeText("退出登录成功");
         RongIMClient.getInstance().logout();
         NIMClient.getService(AuthService.class).logout();

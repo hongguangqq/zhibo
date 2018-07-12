@@ -516,16 +516,39 @@ public class IntentHelper {
         activity.startActivity(intent);
     }
 
+    /**
+     * 跳转通话结束界面 用于聊天双方使用
+     * @param activity
+     * @param isLive
+     */
     public static void OpenEndCallActivity(Activity activity , boolean isLive){
         Intent intent = getIntent(activity, EndCallActivity.class);
         intent.putExtra(Const.IsLive,isLive);
+        intent.putExtra(Const.FinishTime,"");
+        activity.startActivity(intent);
+    }
+
+    /**
+     * 舔砖通话结束界面，用于偷听观众使用
+     * @param activity
+     * @param time
+     */
+    public static void OpenEndCallActivity(Activity activity ,String time){
+        Intent intent = getIntent(activity, EndCallActivity.class);
+        intent.putExtra(Const.IsLive,false);
+        intent.putExtra(Const.FinishTime,time);
         activity.startActivity(intent);
     }
 
     public static Tuple EndCallActivityGetPara(Intent intent){
         boolean isLive = intent.getBooleanExtra(Const.IsLive,false);
-        return new Tuple(isLive);
+        String time = intent.getStringExtra(Const.FinishTime);
+        return new Tuple(isLive,time);
     }
+
+
+
+
 
 
 

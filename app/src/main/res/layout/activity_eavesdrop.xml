@@ -38,7 +38,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="11dp"
             android:layout_centerHorizontal="true"
-            android:text="10:00"
+            android:text=""
             android:textSize="25dp"
             android:textColor="@color/white"/>
         <TextView

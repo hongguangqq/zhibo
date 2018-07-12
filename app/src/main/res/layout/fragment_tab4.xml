@@ -65,20 +65,22 @@
             android:drawableLeft="@mipmap/icon_edit"/>
     </RelativeLayout>
 
-    <RelativeLayout
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp">
         <LinearLayout
-            android:layout_width="wrap_content"
+            android:layout_weight="1"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="49dp"
+
             android:orientation="vertical"
             android:gravity="center_horizontal">
             <TextView
                 android:id="@+id/tv_tab4_balance"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:singleLine="true"
                 android:text="---"
                 android:textSize="24dp"
                 android:textColor="@color/white"/>
@@ -93,7 +95,8 @@
 
         <LinearLayout
             android:id="@+id/ll_tab4_follow"
-            android:layout_width="wrap_content"
+            android:layout_weight="1"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"
             android:orientation="vertical"
@@ -116,10 +119,10 @@
 
         <LinearLayout
             android:id="@+id/ll_tab4_fans"
-            android:layout_width="wrap_content"
+            android:layout_weight="1"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
-            android:layout_marginRight="49dp"
             android:orientation="vertical"
             android:gravity="center_horizontal">
             <TextView
@@ -137,7 +140,7 @@
                 android:textSize="14dp"
                 android:textColor="#81FFFFFF"/>
         </LinearLayout>
-    </RelativeLayout>
+    </LinearLayout>
 
     <LinearLayout
         android:layout_marginTop="21dp"

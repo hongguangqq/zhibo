@@ -428,6 +428,10 @@ public class PersonActivity extends BaseMCVActivity {
 
     @OnClick(R.id.ll_person4)
     public void OpenLaunchActivityByVideo(){
+        if (mUser.getAnchorState()!=2){
+            BaseUtil.makeText("当前用户未认证");
+            return;
+        }
         IntentHelper.OpenLaunchActivity(this,mUser.getId(),2,mUser.getNickname(),mUser.getHeadImg());
     }
 

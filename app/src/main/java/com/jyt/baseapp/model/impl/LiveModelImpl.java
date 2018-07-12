@@ -26,8 +26,8 @@ public class LiveModelImpl implements LiveModel {
 
     /**
      * 用户拨打视频/音频给主播
-     * @param id
-     * @param type
+     * @param id 用户ID
+     * @param type 通话类型 1偷听 2视频 3语音
      * @param callback
      */
     @Override
@@ -150,6 +150,22 @@ public class LiveModelImpl implements LiveModel {
                 .addHeader("token",Const.getUserToken())
                 .addParams("isAnchor",code)
                 .addParams("trId",ScannerManager.trId)
+                .build()
+                .execute(callback);
+    }
+
+    /**
+     * 每隔一分钟报告进度
+     * @param trId
+     * @param callback
+     */
+    @Override
+    public void ReportProgressTime(String trId, Callback callback) {
+        OkHttpUtils.get()
+                .url(Path.ReportProgressTime)
+                .tag(mContext)
+                .addHeader("token",Const.getUserToken())
+                .addParams("trId",trId)
                 .build()
                 .execute(callback);
     }

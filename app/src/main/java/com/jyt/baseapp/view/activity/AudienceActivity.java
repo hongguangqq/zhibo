@@ -104,7 +104,7 @@ public class AudienceActivity extends BaseMCVActivity {
                 return;
             }
             Log.e("@#","主播离开房间，直播结束");
-            IntentHelper.OpenEndCallActivity(this,true);
+            IntentHelper.OpenEndCallActivity(this,false);
             finish();
         }
     }

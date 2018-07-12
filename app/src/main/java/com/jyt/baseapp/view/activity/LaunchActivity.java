@@ -131,9 +131,10 @@ public class LaunchActivity extends BaseMCVActivity {
                             mPbProgress.setVisibility(View.VISIBLE);
                             mCallBean = response.getData();
                             trid = mCallBean.getId();
-                            ScannerManager.trId = trid+"";
+                            ScannerManager.trId = String.valueOf(trid);
                         }else if (success && response.getCode()==500){
                             BaseUtil.makeText(response.getMessage());
+                            finish();
                         }
                     }
                 });
@@ -146,6 +147,7 @@ public class LaunchActivity extends BaseMCVActivity {
                 mPbProgress.setVisibility(View.GONE);
                 mTvStar.setVisibility(View.GONE);
                 mPbProgress.setProgress(0);
+                //Activity被销毁，动画播放仍然存在，会导致30秒后用户端发起挂断。加上当前Activity是否存在的判断，防止该状况发生。
                 if (FinishActivityManager.getManager().IsActivityExist(LaunchActivity.class)){
                     mLiveModel.HangUp(id, trid, new BeanCallback() {
                         @Override

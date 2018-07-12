@@ -131,11 +131,12 @@ public class ScannerService extends Service implements ScannerCallBack,AVChatSta
     public void onJoinedChannel(int i, String s, String s1, int i1) {
         if (i == AVChatResCode.JoinChannelCode.OK ) {
             Log.e(TAG,"onJoinedChannel");
-            if (ScannerManager.isEavesdrop){
-                AVChatManager.getInstance().setSpeaker(false);
-            }else {
-                AVChatManager.getInstance().setSpeaker(true);
-            }
+            AVChatManager.getInstance().setSpeaker(true);
+//            if (ScannerManager.isEavesdrop){
+//                AVChatManager.getInstance().setSpeaker(false);
+//            }else {
+//                AVChatManager.getInstance().setSpeaker(true);
+//            }
 
         }
     }

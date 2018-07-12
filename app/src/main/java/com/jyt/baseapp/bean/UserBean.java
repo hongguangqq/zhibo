@@ -36,7 +36,7 @@ public class UserBean implements Serializable{
     private String miPush;
     private List<String> imgsList;
     private int age;
-    private String easyId;
+    private String easyId;//网易的AccessID
     private String easyToken;
     private String roomName;
 

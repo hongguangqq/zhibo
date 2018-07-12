@@ -100,7 +100,7 @@ public class App  extends MultiDexApplication {
 //        initMiPush();
         initRY();
         initNimLib();
-        refWatcher= setupLeakCanary();
+//        refWatcher= setupLeakCanary();
 
 
     }

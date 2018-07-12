@@ -23,5 +23,7 @@ public interface LiveModel extends BaseModel{
 
     void getComFinishMoney(boolean isLive , Callback callback);
 
+    void ReportProgressTime(String trId , Callback callback);
+
 
 }

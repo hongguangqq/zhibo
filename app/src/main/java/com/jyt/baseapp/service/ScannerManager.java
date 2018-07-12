@@ -6,6 +6,7 @@ import android.content.pm.PackageManager;
 import android.content.res.Configuration;
 import android.graphics.PixelFormat;
 import android.os.Build;
+import android.os.Handler;
 import android.text.TextUtils;
 import android.util.DisplayMetrics;
 import android.util.Log;
@@ -20,6 +21,9 @@ import com.jyt.baseapp.bean.EventBean;
 import com.jyt.baseapp.model.LiveModel;
 import com.jyt.baseapp.model.impl.LiveModelImpl;
 import com.jyt.baseapp.util.BaseUtil;
+import com.jyt.baseapp.util.FinishActivityManager;
+import com.jyt.baseapp.view.activity.AudienceActivity;
+import com.jyt.baseapp.view.activity.LivePlayActivity;
 import com.netease.nimlib.sdk.ResponseCode;
 import com.netease.nimlib.sdk.avchat.AVChatCallback;
 import com.netease.nimlib.sdk.avchat.AVChatManager;
@@ -57,8 +61,7 @@ public class ScannerManager  {
     public static boolean isEavesdrop;//是否为偷听者
     public static boolean isStartLive;//是否在连线
     public static boolean isBigScreen = true;//是否处于大屏状态
-    public static String trId;//聊天对象的ID
-//    public static String comID = "96c372c5d70978f1239aac722c75080d";//聊天对象网易云ID
+    public static String trId;//通话记录的ID
     public static String comID;//聊天对象网易云ID
 
     private static WindowManager mWindowManager;
@@ -204,7 +207,7 @@ public class ScannerManager  {
     }
 
     /**
-     * 观众加入
+     * 通话对象加入
      * @param context
      * @param roomId
      * @param comId
@@ -215,8 +218,11 @@ public class ScannerManager  {
             public void onSuccess(AVChatData avChatData) {
                 Log.e(TAG , "join channel success"+"/comid="+comId);
                 isStartLive = true;
+                isPause = false;
                 AVChatManager.getInstance().setupLocalVideoRender(mLocalRender, false, AVChatVideoScalingType.SCALE_ASPECT_BALANCED);
                 starComTime = System.currentTimeMillis();//观众进入房间，记录开始时间
+                //每分钟连接服务器报告通话状况
+                mhandle.postDelayed(timeRunable,60*1000);
             }
 
             @Override
@@ -248,6 +254,7 @@ public class ScannerManager  {
         mLocalRender = null;
         mRemoterRender = null;
         isStartLive = false;
+        isPause = true;
         mMeetingName = "";
         comID = "";
 //        trId = "";
@@ -324,9 +331,9 @@ public class ScannerManager  {
         parameters.setString(AVChatParameters.KEY_VIDEO_ENCODER_MODE, AVChatMediaCodecMode.MEDIA_CODEC_SOFTWARE);
         parameters.setInteger(AVChatParameters.KEY_VIDEO_QUALITY, AVChatVideoQuality.QUALITY_720P);
         //如果用到美颜功能，建议这里设为15帧
-        parameters.setInteger(AVChatParameters.KEY_VIDEO_FRAME_RATE, AVChatVideoFrameRate.FRAME_RATE_15);
+//        parameters.setInteger(AVChatParameters.KEY_VIDEO_FRAME_RATE, AVChatVideoFrameRate.FRAME_RATE_15);
         //如果不用美颜功能，这里可以设为25帧
-        //parameters.setInteger(AVChatParameters.KEY_VIDEO_FRAME_RATE, AVChatVideoFrameRate.FRAME_RATE_25);
+        parameters.setInteger(AVChatParameters.KEY_VIDEO_FRAME_RATE, AVChatVideoFrameRate.FRAME_RATE_25);
         parameters.set(AVChatParameters.KEY_SESSION_LIVE_COMPOSITING_LAYOUT, new AVChatLiveCompositingLayout(AVChatLiveCompositingLayout.Mode.LAYOUT_FLOATING_RIGHT_VERTICAL));
         parameters.setInteger(AVChatParameters.KEY_VIDEO_FIXED_CROP_RATIO, AVChatVideoCropRatio.CROP_RATIO_16_9);
         parameters.setBoolean(AVChatParameters.KEY_VIDEO_ROTATE_IN_RENDING, true);
@@ -348,6 +355,7 @@ public class ScannerManager  {
                 }
                 Log.e("@#","观众：男用户进入房间，连接主播视屏");
                 AVChatManager.getInstance().setupRemoteVideoRender(ScannerManager.comID, mRemoterRender,false,AVChatVideoScalingType.SCALE_ASPECT_BALANCED);
+
             }
         } else {
             //女
@@ -392,12 +400,15 @@ public class ScannerManager  {
         }
         if (isLeaveRoom) {
             //挂断电话
-            mLiveModel.DoneHangUp(new BeanCallback() {
-                @Override
-                public void response(boolean success, Object response, int id) {
+           if (Const.getGender()==1){
+               //男性挂断电话
+               mLiveModel.DoneHangUp(new BeanCallback() {
+                   @Override
+                   public void response(boolean success, Object response, int id) {
 
-                }
-            });
+                   }
+               });
+           }
             //离开房间
             AVChatManager.getInstance().leaveRoom2(ScannerManager.mMeetingName, new AVChatCallback<Void>() {
                 @Override
@@ -422,13 +433,38 @@ public class ScannerManager  {
             endComTome = System.currentTimeMillis();//记录退出时间
             if (Const.getGender()==1){
                 //男
-                EventBus.getDefault().post(new EventBean(Const.Event_Audience));
+                if (FinishActivityManager.getManager().IsActivityExist(AudienceActivity.class)){
+                    EventBus.getDefault().post(new EventBean(Const.Event_Audience));
+                }
             }else {
                 //女
-                EventBus.getDefault().post(new EventBean(Const.Event_Live));
+                if (FinishActivityManager.getManager().IsActivityExist(LivePlayActivity.class)){
+                    EventBus.getDefault().post(new EventBean(Const.Event_Live));
+                }
             }
         }
     }
+
+    //计时器
+    private static Handler mhandle = new Handler();
+    private static boolean isPause = false;//是否暂停
+    private static Runnable timeRunable = new Runnable() {
+        @Override
+        public void run() {
+            if (!isPause) {
+                //联网报告
+                mLiveModel.ReportProgressTime(ScannerManager.trId, new BeanCallback() {
+                    @Override
+                    public void response(boolean success, Object response, int id) {
+                        //金额不足，主动离开房间
+                    }
+                });
+                //递归调用本runable对象，实现每隔60秒一次执行任务
+                mhandle.postDelayed(this, 60*1000);
+
+            }
+        }
+    };
 
     public static void SwitchLive(boolean isLive){
 //        if (isLive){

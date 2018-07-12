@@ -110,11 +110,11 @@ public abstract class BeanCallback<T> extends Callback<T> {
     @Override
     public void onError(Call call, Exception e, int id) {
         L.e("error",e.getMessage());
-        Object object = createReturnResultByTemplate();
-        if (object instanceof BaseJson){
-            ((BaseJson) object).setForUser(e.getMessage());
-        }
-        response(false, (T) object,id);
+//        Object object = createReturnResultByTemplate();
+//        if (object instanceof BaseJson){
+//            ((BaseJson) object).setForUser(e.getMessage());
+//        }
+        response(false, (T) new BaseJson<>(),id);
     }
 
     /**
@@ -122,14 +122,17 @@ public abstract class BeanCallback<T> extends Callback<T> {
      * @return
      */
     private T createReturnResultByTemplate(){
-        Type type = this.getClass().getGenericSuperclass();
-        ParameterizedType parameterizedType = (ParameterizedType) type;
-        Type beanType = parameterizedType.getActualTypeArguments()[0];
-        L.e(beanType.getClass().getName());
-        while (!(beanType instanceof Class)){
-            beanType = ((ParameterizedType) beanType).getRawType();
-        }
-        Class c = (Class) beanType;
+
+//        Type type = this.getClass().getGenericSuperclass();
+//        ParameterizedType parameterizedType = (ParameterizedType) type;
+//        Type beanType = parameterizedType.getActualTypeArguments()[0];
+//        L.e(beanType.getClass().getName());
+//        while (!(beanType instanceof Class)){
+//            beanType = ((ParameterizedType) beanType).getRawType();
+//        }
+//        Class c = (Class) beanType;
+        Class<T> c = (Class<T>)((ParameterizedType)getClass().getGenericSuperclass()).getActualTypeArguments()[0];
+
         try {
             return (T) c.newInstance();
         } catch (Exception e) {

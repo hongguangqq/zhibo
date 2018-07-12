@@ -160,8 +160,8 @@ public class ContentActivity extends BaseMCVActivity implements View.OnClickList
         mVpContent.setOffscreenPageLimit(4);
 //        mVpContent.setAdapter(mFactoryPageAdapter);
         //小米登录
-
-        MiPushClient.setAlias(this, Const.getUserID(),null);
+        MiPushClient.setAlias(BaseUtil.getContext(), Const.getUserID(),null);
+        MiPushClient.resumePush(BaseUtil.getContext(),null);
         //融云登录
         mLoginModel.GetRongID(new BeanCallback<String>() {
             @Override

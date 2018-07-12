@@ -133,6 +133,20 @@ public class LivePlayActivity extends BaseMCVActivity {
         }
     }
 
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void EventOver(EventBean bean) {
+        if (Const.Event_Live.equals(bean.getCode())){
+            if (isMeLeave){
+                return;
+            }
+            finish();
+            IntentHelper.OpenEndCallActivity(this,true);
+        }else if (Const.Event_Project.equals(bean.getCode())){
+            Log.e("@#","ASDDD");
+            finish();
+        }
+    }
+
     private void doCompletelyFinish() {
         ScannerManager.isStartLive = false;
         getHandler().postDelayed(new Runnable() {
@@ -163,20 +177,6 @@ public class LivePlayActivity extends BaseMCVActivity {
         }
 
 
-    }
-
-    @Subscribe(threadMode = ThreadMode.MAIN)
-    public void EventOver(EventBean bean) {
-        if (Const.Event_Live.equals(bean.getCode())){
-            if (isMeLeave){
-                return;
-            }
-            IntentHelper.OpenEndCallActivity(this,true);
-            finish();
-        }else if (Const.Event_Project.equals(bean.getCode())){
-            Log.e("@#","ASDDD");
-            finish();
-        }
     }
 
 
