@@ -27,7 +27,6 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.jyt.baseapp.App;
 import com.jyt.baseapp.R;
 import com.jyt.baseapp.adapter.ComAdapter;
 import com.jyt.baseapp.api.Const;
@@ -39,7 +38,6 @@ import com.jyt.baseapp.view.dialog.RecordDialog;
 import com.jyt.baseapp.view.viewholder.ComMeViewHolder;
 import com.jyt.baseapp.view.viewholder.ComOtherViewHolder;
 import com.linchaolong.android.imagepicker.ImagePicker;
-import com.squareup.leakcanary.RefWatcher;
 
 import java.io.File;
 import java.io.IOException;
@@ -62,7 +60,6 @@ import io.rong.message.ImageMessage;
 import io.rong.message.TextMessage;
 import io.rong.message.VoiceMessage;
 
-import static android.R.attr.path;
 import static com.jyt.baseapp.api.Const.PERMISSIONS_REQUEST_FOR_AUDIO;
 
 
@@ -721,8 +718,8 @@ public class CommunicationActivity extends BaseMCVActivity {
             mediaPlayer.release();
             mediaPlayer=null;
         }
-        RefWatcher refWatcher = App.getRefWatcher(this);//1
-        refWatcher.watch(this);
+//        RefWatcher refWatcher = App.getRefWatcher(this);//1
+//        refWatcher.watch(this);
     }
 
 }

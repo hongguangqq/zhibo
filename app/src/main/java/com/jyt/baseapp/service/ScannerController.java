@@ -88,4 +88,19 @@ public class ScannerController {
         if (mScannerCallBack == null) return;
         mScannerCallBack.closeConnection();
     }
+
+    public void hide(){
+        if (mScannerCallBack == null) return;
+        mScannerCallBack.hide();
+    }
+
+    public void muteLocalAudio(){
+        if (mScannerCallBack == null) return;
+        mScannerCallBack.muteLocalAudio();
+    }
+
+    public void muteLocalVideo(){
+        if (mScannerCallBack == null) return;
+        mScannerCallBack.muteLocalVideo();
+    }
 }

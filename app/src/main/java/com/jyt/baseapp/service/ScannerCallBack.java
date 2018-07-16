@@ -18,6 +18,12 @@ public interface ScannerCallBack {
 
     void show();
 
+    void hide();
+
+    void muteLocalVideo();
+
+    void muteLocalAudio();
+
     void closeScanner(Activity activity,boolean isReleaseRtc, boolean isLeaveRoom);
 
     void closeConnection();

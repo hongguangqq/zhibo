@@ -101,7 +101,7 @@ public class AnswerActivity extends BaseMCVActivity {
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void EventOver(EventBean bean) {
-        if (Const.Event_Project.equals(bean.getCode())){
+        if (Const.Event_HangUp.equals(bean.getCode())){
             finish();
         }
     }

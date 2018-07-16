@@ -8,6 +8,7 @@ import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.FrameLayout;
+import android.widget.ImageView;
 
 import com.jyt.baseapp.R;
 import com.jyt.baseapp.api.Const;
@@ -28,11 +29,16 @@ import static com.jyt.baseapp.App.getHandler;
 public class LivePlayActivity extends BaseMCVActivity {
     private FrameLayout mFlLocalRender;
     private FrameLayout mFlRemoterRender;
+    private ImageView mIvHorn;//音频开关
+    private ImageView mIvCamera;//视频开关
+    private ImageView mIvNarrow;//窗口模式开关
     private Button mBtnStar;
     private String mMeetingName;
     private IPhoneDialog mExitDialog;
     private Handler mVideoEffectHandler = new Handler();
     private boolean isMeLeave;//是否为自己主动发起离开
+
+
 
 
     @Override
@@ -61,6 +67,9 @@ public class LivePlayActivity extends BaseMCVActivity {
         mFlLocalRender = findViewById(R.id.fl_localRender);
         mFlRemoterRender = findViewById(R.id.fl_remoteRender);
         mBtnStar = findViewById(R.id.btn_star);
+        mIvHorn = findViewById(R.id.iv_live_horn);
+        mIvCamera = findViewById(R.id.iv_live_camera);
+        mIvNarrow = findViewById(R.id.iv_live_narrow);
         mExitDialog = new IPhoneDialog(this);
         mExitDialog.setTitle("确认退出吗？");
         if (ScannerManager.isStartLive){
@@ -69,7 +78,7 @@ public class LivePlayActivity extends BaseMCVActivity {
     }
 
     private void initStting(){
-        ScannerManager.isBigScreen = true;
+        ScannerManager.isBigScreen = true;//进入该界面默认为大屏显示
         if (!BaseUtil.isServiceRunning(this,"com.jyt.baseapp.service.ScannerService")){
             ScannerController.getInstance().startMonkServer(this);
         }
@@ -120,6 +129,33 @@ public class LivePlayActivity extends BaseMCVActivity {
 
             }
         });
+
+        mIvHorn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                ScannerController.getInstance().muteLocalAudio();
+            }
+        });
+
+        mIvCamera.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                ScannerController.getInstance().muteLocalVideo();
+            }
+        });
+
+        mIvNarrow.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (ScannerManager.isAudienceJoin){
+                    ScannerController.getInstance().show();
+                    finish();
+                }else {
+                    BaseUtil.makeText("当前无用户进入，不可使用该功能");
+                }
+
+            }
+        });
     }
 
 
@@ -141,8 +177,9 @@ public class LivePlayActivity extends BaseMCVActivity {
             }
             finish();
             IntentHelper.OpenEndCallActivity(this,true);
-        }else if (Const.Event_Project.equals(bean.getCode())){
-            Log.e("@#","ASDDD");
+        }else if (Const.Event_HangUp.equals(bean.getCode())){
+            Log.e("@#","观众挂断");
+            BaseUtil.makeText("观众已挂断");
             finish();
         }
     }
@@ -173,7 +210,6 @@ public class LivePlayActivity extends BaseMCVActivity {
 
         }else {
             //处于悬浮窗状态
-            finish();
         }
 
 
@@ -185,10 +221,10 @@ public class LivePlayActivity extends BaseMCVActivity {
     protected void onDestroy() {
         if (ScannerManager.isBigScreen){
             //未处于悬浮窗状态
-            ScannerController.getInstance().stopMonkServer(this);
             if (ScannerManager.isStartLive){
                 ScannerController.getInstance().closeScanner(LivePlayActivity.this,true,true);
             }
+            ScannerController.getInstance().stopMonkServer(this);
         }else {
             //处于悬浮窗状态
 

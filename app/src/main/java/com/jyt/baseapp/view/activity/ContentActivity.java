@@ -35,7 +35,6 @@ import com.netease.nimlib.sdk.NIMClient;
 import com.netease.nimlib.sdk.RequestCallback;
 import com.netease.nimlib.sdk.auth.AuthService;
 import com.netease.nimlib.sdk.auth.LoginInfo;
-import com.xiaomi.mipush.sdk.MiPushClient;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -159,9 +158,7 @@ public class ContentActivity extends BaseMCVActivity implements View.OnClickList
         mVpContent.setAdapter(mViewPagerAdapter);
         mVpContent.setOffscreenPageLimit(4);
 //        mVpContent.setAdapter(mFactoryPageAdapter);
-        //小米登录
-        MiPushClient.setAlias(BaseUtil.getContext(), Const.getUserID(),null);
-        MiPushClient.resumePush(BaseUtil.getContext(),null);
+
         //融云登录
         mLoginModel.GetRongID(new BeanCallback<String>() {
             @Override

@@ -15,9 +15,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
 
+import com.jyt.baseapp.App;
 import com.jyt.baseapp.api.BeanCallback;
 import com.jyt.baseapp.api.Const;
 import com.jyt.baseapp.bean.EventBean;
+import com.jyt.baseapp.helper.IntentHelper;
 import com.jyt.baseapp.model.LiveModel;
 import com.jyt.baseapp.model.impl.LiveModelImpl;
 import com.jyt.baseapp.util.BaseUtil;
@@ -52,24 +54,31 @@ import java.util.UUID;
  */
 public class ScannerManager  {
     private static final String TAG = "@#";
-    private static AVChatCameraCapturer mVideoCapturer;
-    private static AVChatSurfaceViewRenderer mLocalRender;//大屏显示的video
-    private static AVChatSurfaceViewRenderer mRemoterRender;//小屏显示的video
+    private static AVChatCameraCapturer mVideoCapturer;//美颜设置
+    private static AVChatSurfaceViewRenderer mLocalRender;//大屏显示的video-远程
+    private static AVChatSurfaceViewRenderer mRemoterRender;//小屏显示的video-本地
     public static String mMeetingName;//房间名
     public static long starComTime;//聊天开始时间
     public static long endComTome;//聊天结束时间
     public static boolean isEavesdrop;//是否为偷听者
     public static boolean isStartLive;//是否在连线
-    public static boolean isBigScreen = true;//是否处于大屏状态
-    public static String trId;//通话记录的ID
-    public static String comID;//聊天对象网易云ID
+    public static boolean isBigScreen;//是否处于大屏状态
+    private static boolean isOpenAudio;//是否开启音频
+    private static boolean isOpenVideo;//是否开启视频
+    public static boolean isAudienceJoin;//聊天对象是否已进入
+    public static String trId ="";//通话记录的ID
+    public static String comID = "";//聊天对象网易云ID
+
 
     private static WindowManager mWindowManager;
     private static WindowManager.LayoutParams wmParams;
     private static boolean mHasShown;
     private static LiveModel mLiveModel;
 
-    public static void init(Context context) {
+    public static void init(final Context context) {
+        mhandle = new Handler();
+        isOpenAudio = true;
+        isOpenVideo = true;
         mLiveModel = new LiveModelImpl();
         mLiveModel.onStart(context);
         wmParams = new WindowManager.LayoutParams();
@@ -92,11 +101,22 @@ public class ScannerManager  {
         mRemoterRender.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (mHasShown){
-                    removeFloatWindowManager();
+                Log.e("@#","点击事件触发");
+                if (!isBigScreen){
+                    if (Const.getGender() == 1){
+                        //男性
+                        hide();
+                        IntentHelper.OpenAudienceActivity(context);
+                    }else {
+                        //女性
+                        hide();
+                        IntentHelper.OpenLivePlayActivity((Activity) context);
+                    }
                 }
             }
         });
+
+
 
     }
 
@@ -110,7 +130,7 @@ public class ScannerManager  {
         return mWindowManager;
     }
 
-    public static void setWindowType(Context context){
+    public static void setWindowType(final Context context){
         WindowManager windowManager = getWindowManager(context);
         if (Build.VERSION.SDK_INT >= 24) { /*android7.0不能用TYPE_TOAST*/
             wmParams.type = WindowManager.LayoutParams.TYPE_PHONE;
@@ -128,10 +148,9 @@ public class ScannerManager  {
         }
         wmParams.format = PixelFormat.RGBA_8888;
         //设置浮动窗口不可聚焦（实现操作除浮动窗口外的其他可见窗口的操作）
-        wmParams.flags = WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE;
-        //调整悬浮窗显示的停靠位置为左侧置顶
-        wmParams.gravity = Gravity.START | Gravity.TOP;
-
+        wmParams.flags =  WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE;
+        //调整悬浮窗显示的停靠位置为右侧置顶
+        wmParams.gravity = Gravity.LEFT | Gravity.TOP;
         DisplayMetrics dm = new DisplayMetrics();
         //取得窗口属性
         mWindowManager.getDefaultDisplay().getMetrics(dm);
@@ -142,15 +161,17 @@ public class ScannerManager  {
         //以屏幕左上角为原点，设置x、y初始值，相对于gravity
 //        wmParams.x = screenWidth;
 //        wmParams.y = screenHeight;
-        wmParams.x = screenWidth-20;
-        wmParams.y = 20;
-
         //设置悬浮窗口长宽数据
         wmParams.width = BaseUtil.dip2px(101);
         wmParams.height = BaseUtil.dip2px(151);
+        wmParams.x = screenWidth- wmParams.width-BaseUtil.dip2px(30);
+        wmParams.y = 20;
+
+
 //        mLocalRender.setLayoutParams(wmParams);
 //        mHasShown = true;
 //        windowManager.addView(mLocalRender, wmParams);
+
     }
 
     /**
@@ -217,6 +238,8 @@ public class ScannerManager  {
             @Override
             public void onSuccess(AVChatData avChatData) {
                 Log.e(TAG , "join channel success"+"/comid="+comId);
+                isOpenAudio = true;
+                isOpenVideo = true;
                 isStartLive = true;
                 isPause = false;
                 AVChatManager.getInstance().setupLocalVideoRender(mLocalRender, false, AVChatVideoScalingType.SCALE_ASPECT_BALANCED);
@@ -247,17 +270,20 @@ public class ScannerManager  {
         if (parent1!=null){
             parent1.removeView(mLocalRender);
         }
-        ViewGroup parent2 = (ViewGroup) mRemoterRender.getParent();
-        if (parent2!=null){
-            parent2.removeView(mRemoterRender);
+        if (isBigScreen){
+            ViewGroup parent2 = (ViewGroup) mRemoterRender.getParent();
+            if (parent2!=null){
+                parent2.removeView(mRemoterRender);
+            }
         }
+
         mLocalRender = null;
         mRemoterRender = null;
+        isAudienceJoin = false;
         isStartLive = false;
         isPause = true;
         mMeetingName = "";
         comID = "";
-//        trId = "";
     }
 
 
@@ -278,13 +304,15 @@ public class ScannerManager  {
 
     public static void show(Context context) {
         if (!mHasShown)
+
             mHasShown = true;
+            isBigScreen = false;//切换为窗口模式
             setWindowType(context);
             ViewGroup parent = (ViewGroup) mRemoterRender.getParent();
             if (parent!=null){
                 parent.removeView(mRemoterRender);
             }
-            mWindowManager.addView(mRemoterRender, wmParams);
+        mWindowManager.addView(mRemoterRender , wmParams);
 
     }
 
@@ -322,6 +350,8 @@ public class ScannerManager  {
         AVChatCameraCapturer videoCapturer = AVChatVideoCapturerFactory.createCameraCapturer();
         AVChatManager.getInstance().setupVideoCapturer(videoCapturer);
         if (true) {
+            AVChatManager.getInstance().muteLocalVideo(true);//开启视频
+            AVChatManager.getInstance().muteLocalAudio(true);//开启音频
             AVChatManager.getInstance().setupLocalVideoRender(mLocalRender, false, AVChatVideoScalingType.SCALE_ASPECT_BALANCED);
         }
         //parameters
@@ -350,6 +380,7 @@ public class ScannerManager  {
         if (Const.getGender()==1){
             //男
             if (!TextUtils.isEmpty(ScannerManager.comID) && ScannerManager.comID.equals(s)){
+                isAudienceJoin = true;
                 if (AVChatManager.getInstance().isAudienceRole()){
                     AVChatManager.getInstance().enableAudienceRole(false);
                 }
@@ -360,6 +391,7 @@ public class ScannerManager  {
         } else {
             //女
             if (!TextUtils.isEmpty(ScannerManager.comID) && ScannerManager.comID.equals(s)){
+                isAudienceJoin = true;
                 if (AVChatManager.getInstance().isAudienceRole()){
                     AVChatManager.getInstance().enableAudienceRole(false);
                 }
@@ -373,8 +405,29 @@ public class ScannerManager  {
         //当聊天对象退出时，同时退出房间
         if (!TextUtils.isEmpty(comID) && s.equals(comID)){
             isStartLive = false;
+            isAudienceJoin = false;
             releaseRtc(null,true,true);//退出操作
+        }
+    }
 
+    public static void muteLocalVideo(){
+        if (isOpenVideo){
+            isOpenVideo = false;
+            AVChatManager.getInstance().muteLocalVideo(false);
+        } else {
+            isOpenVideo = true;
+            AVChatManager.getInstance().muteLocalVideo(true);
+        }
+
+    }
+
+    public static void muteLocalAudio(){
+        if (isOpenAudio){
+            isOpenAudio = false;
+            AVChatManager.getInstance().muteLocalAudio(false);
+        }else {
+            isOpenAudio = true;
+            AVChatManager.getInstance().muteLocalAudio(true);
         }
     }
 
@@ -442,11 +495,17 @@ public class ScannerManager  {
                     EventBus.getDefault().post(new EventBean(Const.Event_Live));
                 }
             }
+            if (!ScannerManager.isBigScreen){
+                Log.e("@#","窗口模式下触发离开");
+                hide();
+                //窗口模式触发离开需要关闭服务
+                ScannerController.getInstance().stopMonkServer(App.getContext());
+            }
         }
     }
 
     //计时器
-    private static Handler mhandle = new Handler();
+    private static Handler mhandle;
     private static boolean isPause = false;//是否暂停
     private static Runnable timeRunable = new Runnable() {
         @Override

@@ -85,9 +85,9 @@
          4个后台服务
         -->
         <service
-            android:name="com.xiaomi.push.service.XMPushService"
             android:enabled="true"
-            android:process=":pushservice"/>
+            android:process=":pushservice"
+            android:name="com.xiaomi.push.service.XMPushService"/>
 
         <!-- 此service必须在3.0.1版本以后（包括3.0.1版本）加入 -->
         <service

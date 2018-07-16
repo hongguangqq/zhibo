@@ -29,7 +29,6 @@ import com.jyt.baseapp.util.BaseUtil;
 import com.jyt.baseapp.util.FastBlurUtil;
 import com.jyt.baseapp.util.FinishActivityManager;
 import com.jyt.baseapp.view.widget.CircleImageView;
-import com.xiaomi.mipush.sdk.MiPushClient;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -94,7 +93,7 @@ public class LaunchActivity extends BaseMCVActivity {
         setvMainBackground(R.mipmap.bg_entrance);
         Tuple tuple = IntentHelper.LaunchActivityGetPara(getIntent());
         EventBus.getDefault().register(this);
-        MiPushClient.setAlias(this, Const.getUserID(),null);//设置别名
+//        MiPushClient.setAlias(this, Const.getUserID(),null);//设置别名
         mLiveModel = new LiveModelImpl();
         id = (int) tuple.getItem1();
         type = (int) tuple.getItem2();

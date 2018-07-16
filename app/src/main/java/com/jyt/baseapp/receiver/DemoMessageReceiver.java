@@ -32,7 +32,7 @@ public class DemoMessageReceiver extends PushMessageReceiver {
     private String mUserAccount;
     private static final String MSG_Live = "1";
     private static final String MSG_Audience = "2";
-    private static final String MSG_Project = "3";
+    private static final String MSG_HangUp = "3";
 
     //透传消息到达客户端时调用
     //作用：可通过参数message从而获得透传消息，具体请看官方SDK文档
@@ -69,10 +69,15 @@ public class DemoMessageReceiver extends PushMessageReceiver {
             } catch (JSONException e) {
                 e.printStackTrace();
             }
-        } else if (MSG_Project.equals(code)){
+        } else if (MSG_HangUp.equals(code)){
+            //挂电话
             if (FinishActivityManager.getManager().IsActivityExist(LivePlayActivity.class)){
-                EventBus.getDefault().post(new EventBean(Const.Event_Project));
+                EventBus.getDefault().post(new EventBean(Const.Event_HangUp));
             }
+//            if (!ScannerManager.isBigScreen){
+//                //处于窗口模式
+//                ScannerManager.releaseRtc(null,true,true);
+//            }
 
         }
 
@@ -105,19 +110,7 @@ public class DemoMessageReceiver extends PushMessageReceiver {
         BaseUtil.e("通知消息是" + message.toString());
         BaseUtil.e("点击后,会进入应用" );
         Map<String,String> map = message.getExtra();
-        String code = map.get("code");
-//        if (MSG_Live.equals(code)){
-//            //主播点击推送，创建房间
-//            String jobjStr = map.get("message");
-//            try {
-//                JSONObject jobj = new JSONObject(jobjStr);
-//                ScannerManager.comID = jobj.getString("userAccid");
-//                ScannerManager.trId = jobj.getString("trId");
-//                IntentHelper.OpenLivePlayActivity(context);
-//            } catch (JSONException e) {
-//                e.printStackTrace();
-//            }
-//        }
+
 
 
 
@@ -158,11 +151,11 @@ public class DemoMessageReceiver extends PushMessageReceiver {
 
                 //打印日志：注册成功
                 System.out.println("");
-                Log.e("@#","注册完毕");
+                Log.e("@#","注册命令完毕");
             } else {
                 //打印日志：注册失败
                 System.out.println("注册失败");
-                Log.e("@#","注册完毕");
+                Log.e("@#","注册命令失败");
             }
         } else {
             System.out.println("其他情况"+message.getReason());

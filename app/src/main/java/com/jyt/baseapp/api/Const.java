@@ -8,7 +8,6 @@ import com.jyt.baseapp.helper.IntentHelper;
 import com.jyt.baseapp.util.BaseUtil;
 import com.netease.nimlib.sdk.NIMClient;
 import com.netease.nimlib.sdk.auth.AuthService;
-import com.xiaomi.mipush.sdk.MiPushClient;
 
 import java.io.File;
 
@@ -83,7 +82,7 @@ public class Const {
     public static final String Event_Launch = "LaunchActivity";
     public static final String Event_Live = "LivePlayActivity";
     public static final String Event_Audience = "AudienceActivity";
-    public static final String Event_Project = "AudienceProjectActivity";
+    public static final String Event_HangUp = "AudienceProjectActivity";
 
 
     public static void SaveUser(UserBean user){
@@ -111,9 +110,9 @@ public class Const {
         BaseUtil.setSpString(RongToken,"");
         BaseUtil.setSpString(WyAccount,"");
         BaseUtil.setSpString(WyToken,"");
-        MiPushClient.unsetAlias(BaseUtil.getContext(),Const.getUserID(),null);
+//        MiPushClient.unsetAlias(BaseUtil.getContext(),Const.getUserID(),null);
 //        MiPushClient.unregisterPush(BaseUtil.getContext());
-        MiPushClient.pausePush(BaseUtil.getContext(),null);
+//        MiPushClient.pausePush(BaseUtil.getContext(),null);
         BaseUtil.makeText("退出登录成功");
         RongIMClient.getInstance().logout();
         NIMClient.getService(AuthService.class).logout();

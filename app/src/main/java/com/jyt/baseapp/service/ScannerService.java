@@ -52,6 +52,7 @@ import static com.netease.nimlib.sdk.media.player.AudioPlayer.TAG;
  */
 public class ScannerService extends Service implements ScannerCallBack,AVChatStateObserverLite {
 
+
     @Override
     public void onCreate() {
         super.onCreate();
@@ -107,6 +108,21 @@ public class ScannerService extends Service implements ScannerCallBack,AVChatSta
     @Override
     public void show() {
         ScannerManager.show(this);
+    }
+
+    @Override
+    public void hide() {
+        ScannerManager.hide();
+    }
+
+    @Override
+    public void muteLocalVideo() {
+        ScannerManager.muteLocalVideo();
+    }
+
+    @Override
+    public void muteLocalAudio() {
+        ScannerManager.muteLocalAudio();
     }
 
     @Override
