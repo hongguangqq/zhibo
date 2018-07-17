@@ -6,9 +6,7 @@ import android.view.View;
 import android.widget.RelativeLayout;
 
 import com.jyt.baseapp.R;
-import com.jyt.baseapp.api.BeanCallback;
 import com.jyt.baseapp.api.Const;
-import com.jyt.baseapp.bean.BaseJson;
 import com.jyt.baseapp.helper.IntentHelper;
 import com.jyt.baseapp.model.LoginModel;
 import com.jyt.baseapp.model.impl.LoginModelImpl;
@@ -102,16 +100,17 @@ public class SettingActivity extends BaseMCVActivity {
         mLogOffDialog.setOnIPhoneClickListener(new IPhoneDialog.OnIPhoneClickListener() {
             @Override
             public void ClickSubmit(boolean isShow, String input) {
-                mLoginModel.LogOff(new BeanCallback<BaseJson>(SettingActivity.this,false,null) {
-                    @Override
-                    public void response(boolean success, BaseJson response, int id) {
-                        if (success){
-                            if (response.getCode()==200){
-                                Const.LogOff(SettingActivity.this);
-                            }
-                        }
-                    }
-                });
+                Const.LogOff(SettingActivity.this);
+//                mLoginModel.LogOff(new BeanCallback<BaseJson>(SettingActivity.this,false,null) {
+//                    @Override
+//                    public void response(boolean success, BaseJson response, int id) {
+//                        if (success){
+//                            if (response.getCode()==200){
+//
+//                            }
+//                        }
+//                    }
+//                });
             }
 
             @Override

@@ -1,5 +1,6 @@
 package com.jyt.baseapp.view.activity;
 
+import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
@@ -9,11 +10,19 @@ import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
+import android.widget.TextView;
 
+import com.bigkoo.pickerview.OptionsPickerView;
 import com.jyt.baseapp.R;
+import com.jyt.baseapp.adapter.BaseRcvAdapter;
+import com.jyt.baseapp.api.BeanCallback;
 import com.jyt.baseapp.api.Const;
+import com.jyt.baseapp.bean.BarrageBean;
+import com.jyt.baseapp.bean.BaseJson;
 import com.jyt.baseapp.bean.EventBean;
 import com.jyt.baseapp.helper.IntentHelper;
+import com.jyt.baseapp.model.LiveModel;
+import com.jyt.baseapp.model.impl.LiveModelImpl;
 import com.jyt.baseapp.service.ScannerController;
 import com.jyt.baseapp.service.ScannerManager;
 import com.jyt.baseapp.util.BaseUtil;
@@ -22,6 +31,9 @@ import com.jyt.baseapp.view.dialog.IPhoneDialog;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import static com.jyt.baseapp.App.getHandler;
 
@@ -32,6 +44,17 @@ public class LivePlayActivity extends BaseMCVActivity {
     private ImageView mIvHorn;//音频开关
     private ImageView mIvCamera;//视频开关
     private ImageView mIvNarrow;//窗口模式开关
+    private TextView mTvB1;
+    private TextView mTvB2;
+    private TextView mTvB3;
+    private TextView mTvB4;
+
+    private LiveModel mLiveModel;
+
+    private List<String> mBarrageStrList;//弹幕Str列表
+    private List<BarrageBean> mBarrageBeanList;//弹幕列表
+    private BaseRcvAdapter mBaseRcvAdapter;
+    private OptionsPickerView mBarragePickerView;
     private Button mBtnStar;
     private String mMeetingName;
     private IPhoneDialog mExitDialog;
@@ -70,11 +93,18 @@ public class LivePlayActivity extends BaseMCVActivity {
         mIvHorn = findViewById(R.id.iv_live_horn);
         mIvCamera = findViewById(R.id.iv_live_camera);
         mIvNarrow = findViewById(R.id.iv_live_narrow);
+        mTvB1 = findViewById(R.id.tv_livePlay_t1);
+        mTvB2 = findViewById(R.id.tv_livePlay_t2);
+        mTvB3 = findViewById(R.id.tv_livePlay_t3);
+        mTvB4 = findViewById(R.id.tv_livePlay_t4);
         mExitDialog = new IPhoneDialog(this);
         mExitDialog.setTitle("确认退出吗？");
+        mBarrageStrList = new ArrayList<>();
         if (ScannerManager.isStartLive){
             mBtnStar.setVisibility(View.GONE);//隐藏直播开启按钮
         }
+        mLiveModel = new LiveModelImpl();
+        mLiveModel.onStart(this);
     }
 
     private void initStting(){
@@ -91,7 +121,43 @@ public class LivePlayActivity extends BaseMCVActivity {
                 //                    ScannerController.getInstance().show();
             }
         },1000);
+        mBarragePickerView = new OptionsPickerView.Builder(this, new OptionsPickerView.OnOptionsSelectListener() {
+            @Override
+            public void onOptionsSelect(int options1, int options2, int options3, View v) {
+                String txt = mBarrageStrList.get(options1);
+                mLiveModel.SendBarrage(txt, new BeanCallback() {
+                    @Override
+                    public void response(boolean success, Object response, int id) {
 
+                    }
+                });
+            }
+        }).setSubmitText("发送")//确定按钮文字
+                .setCancelText("取消")//取消按钮文字
+                .setTitleText("消息")//标题
+                .setSubCalSize(18)//确定和取消文字大小
+                .setTitleSize(20)//标题文字大小
+                .setTitleColor(Color.WHITE)//标题文字颜色
+                .setSubmitColor(Color.WHITE)//确定按钮文字颜色
+                .setCancelColor(Color.WHITE)//取消按钮文字颜色
+                .setTitleBgColor(getResources().getColor(R.color.picker_city))//标题背景颜色 Night mode
+                .setBgColor(getResources().getColor(R.color.white))//滚轮背景颜色 Night mode
+                .setContentTextSize(18)//滚轮文字大小
+                .setLinkage(true)//设置是否联动，默认true
+                .setOutSideCancelable(true)//点击外部dismiss default true
+                .build();
+        mLiveModel.GetBarrageList(new BeanCallback<BaseJson<List<BarrageBean>>>() {
+            @Override
+            public void response(boolean success, BaseJson<List<BarrageBean>> response, int id) {
+                    if (success && response.getCode()==200){
+                        List<BarrageBean> List = response.getData();
+                        for (BarrageBean bean:List){
+                            mBarrageStrList.add(bean.getText());
+                        }
+                        mBarragePickerView.setPicker(mBarrageStrList);
+                    }
+            }
+        });
 
     }
 
@@ -110,7 +176,7 @@ public class LivePlayActivity extends BaseMCVActivity {
                                 ScannerController.getInstance().createAndJoinRoom();
                             }
                             mFlLocalRender.addView(ScannerController.getInstance().getLocalRender(),params);
-                            mFlRemoterRender.addView(ScannerController.getInstance().getRemoteRender(),params);
+//                            mFlRemoterRender.addView(ScannerController.getInstance().getRemoteRender(),params);
                             mBtnStar.setVisibility(View.GONE);//隐藏直播开启按钮
                         }
 
@@ -156,6 +222,14 @@ public class LivePlayActivity extends BaseMCVActivity {
 
             }
         });
+
+        mTvB1.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                mBarragePickerView.show();
+            }
+        });
+
     }
 
 
@@ -182,6 +256,12 @@ public class LivePlayActivity extends BaseMCVActivity {
             BaseUtil.makeText("观众已挂断");
             finish();
         }
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void BarrageUpdata(BarrageBean bean){
+        //弹幕处理
+        mBarrageBeanList.add(bean);
     }
 
     private void doCompletelyFinish() {

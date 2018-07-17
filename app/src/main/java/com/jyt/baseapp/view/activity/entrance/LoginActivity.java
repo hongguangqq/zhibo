@@ -81,7 +81,7 @@ public class LoginActivity extends BaseMCVActivity implements PlatformActionList
                                     Const.SaveUser(response.getData());
                                     IntentHelper.OpenContentActivity(LoginActivity.this);
                                     //小米登录
-                                    MiPushClient.setAlias(BaseUtil.getContext(), Const.getUserID(),null);
+
                                     MiPushClient.resumePush(BaseUtil.getContext(),null);
                                 }else if (response.getCode()==500){
                                     //没有注册

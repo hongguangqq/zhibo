@@ -59,5 +59,7 @@ public class Path {
     public static final String GetEavesdropNum = BasePath + "/chat/user/nowListen";
     public static final String GetComMoney = BasePath + "/chat/user/finishTalk";
     public static final String ReportProgressTime = BasePath + "/chat/user/userGetNowBlance";
+    public static final String GetBarrageList = BasePath + "/chat/user/danmu";
+    public static final String SendBarrage = BasePath + "/chat/user/sendDanmu";
 
 }

@@ -9,6 +9,8 @@ import com.jyt.baseapp.service.ScannerManager;
 import com.zhy.http.okhttp.OkHttpUtils;
 import com.zhy.http.okhttp.callback.Callback;
 
+import static com.jyt.baseapp.service.ScannerManager.trId;
+
 /**
  * @author LinWei on 2018/6/22 16:02
  */
@@ -113,7 +115,7 @@ public class LiveModelImpl implements LiveModel {
         OkHttpUtils.post()
                 .url(Path.DongHangUp)
                 .tag(mContext)
-                .addParams("trId", ScannerManager.trId)
+                .addParams("trId", trId)
                 .addHeader("token",Const.getUserToken())
                 .build()
                 .execute(callback);
@@ -149,7 +151,7 @@ public class LiveModelImpl implements LiveModel {
                 .tag(mContext)
                 .addHeader("token",Const.getUserToken())
                 .addParams("isAnchor",code)
-                .addParams("trId",ScannerManager.trId)
+                .addParams("trId", trId)
                 .build()
                 .execute(callback);
     }
@@ -166,6 +168,37 @@ public class LiveModelImpl implements LiveModel {
                 .tag(mContext)
                 .addHeader("token",Const.getUserToken())
                 .addParams("trId",trId)
+                .build()
+                .execute(callback);
+    }
+
+    /**
+     * 获取弹幕列表
+     * @param callback
+     */
+    @Override
+    public void GetBarrageList(Callback callback) {
+        OkHttpUtils.get()
+                .url(Path.GetBarrageList)
+                .tag(mContext)
+                .addHeader("token",Const.getUserToken())
+                .build()
+                .execute(callback);
+    }
+
+    /**
+     * 发送弹幕
+     * @param txt
+     * @param callback
+     */
+    @Override
+    public void SendBarrage(String txt, Callback callback) {
+        OkHttpUtils.post()
+                .url(Path.SendBarrage)
+                .tag(mContext)
+                .addHeader("token",Const.getUserToken())
+                .addParams("trId", ScannerManager.trId)
+                .addParams("danmu",txt)
                 .build()
                 .execute(callback);
     }

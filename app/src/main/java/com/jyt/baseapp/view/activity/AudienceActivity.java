@@ -1,5 +1,6 @@
 package com.jyt.baseapp.view.activity;
 
+import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
@@ -8,10 +9,13 @@ import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.FrameLayout;
 
+import com.bigkoo.pickerview.OptionsPickerView;
 import com.jyt.baseapp.R;
 import com.jyt.baseapp.api.Const;
 import com.jyt.baseapp.bean.EventBean;
 import com.jyt.baseapp.helper.IntentHelper;
+import com.jyt.baseapp.model.LiveModel;
+import com.jyt.baseapp.model.impl.LiveModelImpl;
 import com.jyt.baseapp.service.ScannerController;
 import com.jyt.baseapp.service.ScannerManager;
 import com.jyt.baseapp.util.BaseUtil;
@@ -20,6 +24,8 @@ import com.jyt.baseapp.view.dialog.IPhoneDialog;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
+
+import java.util.List;
 
 import static com.jyt.baseapp.App.getHandler;
 
@@ -30,7 +36,10 @@ public class AudienceActivity extends BaseMCVActivity {
     private FrameLayout mFlLocalRender;
     private IPhoneDialog mExitDialog;
 
+    private LiveModel mLiveModel;
     private boolean isMeLeave;//是否为自己主动发起离开
+    private OptionsPickerView mBarragePickerView;
+    private List mBarrageList;//弹幕列表
 
 
     @Override
@@ -61,6 +70,8 @@ public class AudienceActivity extends BaseMCVActivity {
         mFlRemoterRender = findViewById(R.id.fl_RemoteRender);
         mExitDialog = new IPhoneDialog(this);
         mExitDialog.setTitle("确认退出吗？");
+        mLiveModel = new LiveModelImpl();
+        mLiveModel.onStart(this);
     }
 
 
@@ -71,7 +82,7 @@ public class AudienceActivity extends BaseMCVActivity {
         if (!BaseUtil.isServiceRunning(this,"com.jyt.baseapp.service.ScannerService")){
             ScannerController.getInstance().startMonkServer(this);
         }
-//        ScannerManager.isStartLive = true;
+
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
@@ -95,6 +106,25 @@ public class AudienceActivity extends BaseMCVActivity {
 
             }
         });
+        mBarragePickerView = new OptionsPickerView.Builder(this, new OptionsPickerView.OnOptionsSelectListener() {
+            @Override
+            public void onOptionsSelect(int options1, int options2, int options3, View v) {
+
+            }
+        }).setSubmitText("发送")//确定按钮文字
+                .setCancelText("取消")//取消按钮文字
+                .setTitleText("消息")//标题
+                .setSubCalSize(18)//确定和取消文字大小
+                .setTitleSize(20)//标题文字大小
+                .setTitleColor(Color.WHITE)//标题文字颜色
+                .setSubmitColor(Color.WHITE)//确定按钮文字颜色
+                .setCancelColor(Color.WHITE)//取消按钮文字颜色
+                .setTitleBgColor(getResources().getColor(R.color.picker_city))//标题背景颜色 Night mode
+                .setBgColor(getResources().getColor(R.color.white))//滚轮背景颜色 Night mode
+                .setContentTextSize(18)//滚轮文字大小
+                .setLinkage(true)//设置是否联动，默认true
+                .setOutSideCancelable(true)//点击外部dismiss default true
+                .build();
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
@@ -169,6 +199,7 @@ public class AudienceActivity extends BaseMCVActivity {
         if(EventBus.getDefault().isRegistered(this)) {
             EventBus.getDefault().unregister(this);
         }
+        mLiveModel.onDestroy();
 
     }
 

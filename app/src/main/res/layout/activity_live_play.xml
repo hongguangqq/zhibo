@@ -59,87 +59,100 @@
         android:layout_alignParentRight="true">
         <ImageView
             android:id="@+id/iv_live_horn"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
             android:src="@mipmap/icon_horn"/>
         <ImageView
             android:id="@+id/iv_live_camera"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
             android:layout_marginLeft="15dp"
             android:src="@mipmap/icon_camera"/>
         <ImageView
             android:id="@+id/iv_live_narrow"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
             android:layout_marginLeft="15dp"
             android:src="@mipmap/icon_narrow"/>
     </LinearLayout>
 
     <LinearLayout
-        android:layout_width="345dp"
-        android:layout_height="55dp"
-        android:orientation="horizontal"
-        android:background="@drawable/corner_ht97"
-        android:layout_centerHorizontal="true"
-        android:layout_alignParentBottom="true"
-        android:layout_marginBottom="12dp"
-        android:gravity="center_vertical">
-        <TextView
-            android:layout_weight="1"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:gravity="center_horizontal"
-            android:text="文字"
-            android:textSize="12dp"
-            android:textColor="#D4FFFFFF"
-            android:drawableTop="@mipmap/liaotian_wenzi"/>
-        <View
-            android:layout_width="1dp"
-            android:layout_height="match_parent"
-            android:layout_marginTop="12dp"
-            android:background="#62D8D8D8"
-            android:layout_marginBottom="12dp"/>
-        <TextView
-            android:layout_weight="1"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:gravity="center_horizontal"
-            android:text="对方余额"
-            android:textSize="12dp"
-            android:textColor="#D4FFFFFF"
-            android:drawableTop="@mipmap/liaotian_yue"/>
-        <View
-            android:layout_width="1dp"
-            android:layout_height="match_parent"
-            android:layout_marginTop="12dp"
-            android:background="#62D8D8D8"
-            android:layout_marginBottom="12dp"/>
-        <TextView
-            android:layout_weight="1"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:gravity="center_horizontal"
-            android:text="预约"
-            android:textSize="12dp"
-            android:textColor="#D4FFFFFF"
-            android:drawableTop="@mipmap/liaotian_liebiao"/>
-        <View
-            android:layout_width="1dp"
-            android:layout_height="match_parent"
-            android:layout_marginTop="12dp"
-            android:background="#62D8D8D8"
-            android:layout_marginBottom="12dp"/>
-        <TextView
-            android:layout_weight="1"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:gravity="center_horizontal"
-            android:text="挂断"
-            android:textSize="12dp"
-            android:textColor="#D4FFFFFF"
-            android:drawableTop="@mipmap/liaotian_guaduan"/>
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:gravity="center_horizontal"
+        android:layout_alignParentBottom="true">
+        <LinearLayout
+            android:layout_width="345dp"
+            android:layout_height="55dp"
+            android:orientation="horizontal"
+            android:layout_centerHorizontal="true"
+            android:layout_alignParentBottom="true"
+            android:layout_marginBottom="12dp"
+            android:gravity="center_vertical"
+            android:background="@drawable/corner_ht97">
+            <TextView
+                android:id="@+id/tv_livePlay_t1"
+                android:layout_weight="1"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:gravity="center_horizontal"
+                android:text="文字"
+                android:textSize="12dp"
+                android:textColor="#D4FFFFFF"
+                android:drawableTop="@mipmap/liaotian_wenzi"/>
+            <View
+                android:layout_width="1dp"
+                android:layout_height="match_parent"
+                android:layout_marginTop="12dp"
+                android:background="#62D8D8D8"
+                android:layout_marginBottom="12dp"/>
+            <TextView
+                android:id="@+id/tv_livePlay_t2"
+                android:layout_weight="1"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:gravity="center_horizontal"
+                android:text="对方余额"
+                android:textSize="12dp"
+                android:textColor="#D4FFFFFF"
+                android:drawableTop="@mipmap/liaotian_yue"/>
+            <View
+                android:layout_width="1dp"
+                android:layout_height="match_parent"
+                android:layout_marginTop="12dp"
+                android:background="#62D8D8D8"
+                android:layout_marginBottom="12dp"/>
+            <TextView
+                android:id="@+id/tv_livePlay_t3"
+                android:layout_weight="1"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:gravity="center_horizontal"
+                android:text="预约"
+                android:textSize="12dp"
+                android:textColor="#D4FFFFFF"
+                android:drawableTop="@mipmap/liaotian_liebiao"/>
+            <View
+                android:layout_width="1dp"
+                android:layout_height="match_parent"
+                android:layout_marginTop="12dp"
+                android:background="#62D8D8D8"
+                android:layout_marginBottom="12dp"/>
+            <TextView
+                android:id="@+id/tv_livePlay_t4"
+                android:layout_weight="1"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:gravity="center_horizontal"
+                android:text="挂断"
+                android:textSize="12dp"
+                android:textColor="#D4FFFFFF"
+                android:drawableTop="@mipmap/liaotian_guaduan"/>
+        </LinearLayout>
+
     </LinearLayout>
+
 
     <Button
         android:id="@+id/btn_star"

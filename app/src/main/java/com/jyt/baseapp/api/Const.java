@@ -8,6 +8,7 @@ import com.jyt.baseapp.helper.IntentHelper;
 import com.jyt.baseapp.util.BaseUtil;
 import com.netease.nimlib.sdk.NIMClient;
 import com.netease.nimlib.sdk.auth.AuthService;
+import com.xiaomi.mipush.sdk.MiPushClient;
 
 import java.io.File;
 
@@ -98,6 +99,8 @@ public class Const {
         BaseUtil.setSpString(MiPush,user.getMiPush());
         BaseUtil.setSpString(WyAccount,user.getEasyId());
         BaseUtil.setSpString(WyToken,user.getEasyToken());
+        MiPushClient.setAlias(BaseUtil.getContext(), user.getId()+"",null);
+        MiPushClient.setUserAccount(BaseUtil.getContext(), user.getId()+"",null);
     }
 
     public static void LogOff(Context context){
@@ -110,7 +113,7 @@ public class Const {
         BaseUtil.setSpString(RongToken,"");
         BaseUtil.setSpString(WyAccount,"");
         BaseUtil.setSpString(WyToken,"");
-//        MiPushClient.unsetAlias(BaseUtil.getContext(),Const.getUserID(),null);
+//        MiPushClient.unsetUserAccount(BaseUtil.getContext(),Const.getUserID(),null);
 //        MiPushClient.unregisterPush(BaseUtil.getContext());
 //        MiPushClient.pausePush(BaseUtil.getContext(),null);
         BaseUtil.makeText("退出登录成功");

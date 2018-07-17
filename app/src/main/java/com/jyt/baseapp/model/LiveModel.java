@@ -25,5 +25,9 @@ public interface LiveModel extends BaseModel{
 
     void ReportProgressTime(String trId , Callback callback);
 
+    void GetBarrageList(Callback callback);
+
+    void SendBarrage(String txt ,Callback callback);
+
 
 }

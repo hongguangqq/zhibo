@@ -7,11 +7,9 @@ import android.os.IBinder;
 import android.support.annotation.Nullable;
 import android.util.Log;
 
-import com.netease.nimlib.sdk.avchat.AVChatCallback;
 import com.netease.nimlib.sdk.avchat.AVChatManager;
 import com.netease.nimlib.sdk.avchat.AVChatStateObserverLite;
 import com.netease.nimlib.sdk.avchat.constant.AVChatResCode;
-import com.netease.nimlib.sdk.avchat.constant.AVChatVideoScalingType;
 import com.netease.nimlib.sdk.avchat.model.AVChatAudioFrame;
 import com.netease.nimlib.sdk.avchat.model.AVChatNetworkStats;
 import com.netease.nimlib.sdk.avchat.model.AVChatSessionStats;
@@ -252,50 +250,4 @@ public class ScannerService extends Service implements ScannerCallBack,AVChatSta
 
     }
 
-    private void releaseRtc(final Activity activity , boolean isReleaseRtc, boolean isLeaveRoom){
-//        if (mVideoEffect != null) {
-//            mVideoEffectHandler.post(new Runnable() {
-//                @Override
-//                public void run() {
-//                    Log.e("@#", "releaseRtc unInit");
-//                    mVideoEffect.unInit();
-//                    mVideoEffect = null;
-//                }
-//            });
-//        }
-
-        if (isReleaseRtc) {
-            AVChatManager.getInstance().setupLocalVideoRender(null, false, AVChatVideoScalingType.SCALE_ASPECT_BALANCED);
-            AVChatManager.getInstance().stopVideoPreview();
-            AVChatManager.getInstance().disableVideo();
-            AVChatManager.getInstance().disableRtc();
-
-        }
-        if (isLeaveRoom){
-            AVChatManager.getInstance().leaveRoom2(ScannerManager.mMeetingName, new AVChatCallback<Void>() {
-                @Override
-                public void onSuccess(Void aVoid) {
-                    Log.e("@#","leave channel success");
-                    ScannerManager.mMeetingName = "";
-                    if (activity!=null){
-                        activity.finish();
-                    }
-                }
-
-                @Override
-                public void onFailed(int i) {
-                    Log.e("@#","leave channel failed, code:" + i);
-                }
-
-                @Override
-                public void onException(Throwable throwable) {
-                    Log.e("@#","leave channel exception, throwable:" + throwable.getMessage());
-                }
-            });
-        }
-
-
-
-
-    }
 }

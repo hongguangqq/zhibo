@@ -17,6 +17,7 @@
     <uses-permission android:name="android.permission.GET_ACCOUNTS"/>
     <uses-permission android:name="android.permission.RECORD_AUDIO"/>
     <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW"/>
+    <uses-permission android:name="android.permission.SYSTEM_OVERLAY_WINDOW"/>
     <!-- 蓝牙分享所需的权限 -->
     <uses-permission android:name="android.permission.BLUETOOTH"/>
     <uses-permission android:name="android.permission.BLUETOOTH_ADMIN"/>
@@ -89,41 +90,42 @@
             android:process=":pushservice"
             android:name="com.xiaomi.push.service.XMPushService"/>
 
-        <!-- 此service必须在3.0.1版本以后（包括3.0.1版本）加入 -->
-        <service
-            android:name="com.xiaomi.push.service.XMJobService"
-            android:enabled="true"
-            android:exported="false"
-            android:permission="android.permission.BIND_JOB_SERVICE"
-            android:process=":pushservice"/>
+        <!--&lt;!&ndash; 此service必须在3.0.1版本以后（包括3.0.1版本）加入 &ndash;&gt;-->
+        <!--<service-->
+            <!--android:name="com.xiaomi.push.service.XMJobService"-->
+            <!--android:enabled="true"-->
+            <!--android:exported="false"-->
+            <!--android:permission="android.permission.BIND_JOB_SERVICE"-->
+            <!--android:process=":pushservice"/>-->
 
-        <!-- 此service必须在2.2.5版本以后（包括2.2.5版本）加入 -->
-        <service
-            android:name="com.xiaomi.mipush.sdk.PushMessageHandler"
-            android:enabled="true"
-            android:exported="true"/>
-        <service
-            android:name="com.xiaomi.mipush.sdk.MessageHandleService"
-            android:enabled="true"/>
+        <!--&lt;!&ndash; 此service必须在2.2.5版本以后（包括2.2.5版本）加入 &ndash;&gt;-->
+        <!--<service-->
+            <!--android:name="com.xiaomi.mipush.sdk.PushMessageHandler"-->
+            <!--android:enabled="true"-->
+            <!--android:exported="true"/>-->
+        <!--<service-->
+            <!--android:name="com.xiaomi.mipush.sdk.MessageHandleService"-->
+            <!--android:enabled="true"/>-->
 
-        <!-- 3个广播 -->
-        <receiver
-            android:name="com.xiaomi.push.service.receivers.NetworkStatusReceiver"
-            android:exported="true">
-            <intent-filter>
-                <action android:name="android.net.conn.CONNECTIVITY_CHANGE"/>
+        <!--&lt;!&ndash; 3个广播 &ndash;&gt;-->
+        <!--<receiver-->
+            <!--android:name="com.xiaomi.push.service.receivers.NetworkStatusReceiver"-->
+            <!--android:exported="true">-->
+            <!--<intent-filter>-->
+                <!--<action android:name="android.net.conn.CONNECTIVITY_CHANGE"/>-->
 
-                <category android:name="android.intent.category.DEFAULT"/>
-            </intent-filter>
-        </receiver>
-        <receiver
-            android:name="com.xiaomi.push.service.receivers.PingReceiver"
-            android:exported="false"
-            android:process=":pushservice">
-            <intent-filter>
-                <action android:name="com.xiaomi.push.PING_TIMER"/>
-            </intent-filter>
-        </receiver>
+                <!--<category android:name="android.intent.category.DEFAULT"/>-->
+            <!--</intent-filter>-->
+        <!--</receiver>-->
+        <!--<receiver-->
+            <!--android:name="com.xiaomi.push.service.receivers.PingReceiver"-->
+            <!--android:exported="false"-->
+            <!--android:process=":pushservice">-->
+            <!--<intent-filter>-->
+                <!--<action android:name="com.xiaomi.push.PING_TIMER"/>-->
+            <!--</intent-filter>-->
+        <!--</receiver>-->
+        <!--MI End-->
         <receiver
             android:name=".receiver.DemoMessageReceiver"
             android:exported="true">
@@ -224,7 +226,7 @@
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
-        <activity android:name=".view.activity.ContentActivity">
+        <activity android:name="com.jyt.baseapp.view.activity.ContentActivity">
         </activity>
         <activity android:name=".view.activity.entrance.RegisterActivity">
         </activity>

@@ -279,6 +279,7 @@ public class PersonActivity extends BaseMCVActivity {
 
     }
 
+
     private void getUserData(){
         mPersonModel.getOtherData(id, new BeanCallback<BaseJson<PersonBean>>(this,false,null) {
             @Override

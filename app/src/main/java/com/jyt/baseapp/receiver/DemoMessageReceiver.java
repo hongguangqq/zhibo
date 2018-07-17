@@ -4,6 +4,7 @@ import android.content.Context;
 import android.util.Log;
 
 import com.jyt.baseapp.api.Const;
+import com.jyt.baseapp.bean.BarrageBean;
 import com.jyt.baseapp.bean.EventBean;
 import com.jyt.baseapp.helper.IntentHelper;
 import com.jyt.baseapp.service.ScannerManager;
@@ -32,7 +33,10 @@ public class DemoMessageReceiver extends PushMessageReceiver {
     private String mUserAccount;
     private static final String MSG_Live = "1";
     private static final String MSG_Audience = "2";
-    private static final String MSG_HangUp = "3";
+    private static final String MSG_HangUp = "3";//用户挂断
+    private static final String MSG_LiveHangUp = "4";//主播挂断
+    private static final String MSG_BarrageText = "5";//文字弹幕
+    private static final String MSG_BarrageImg = "6";//图片弹幕
 
     //透传消息到达客户端时调用
     //作用：可通过参数message从而获得透传消息，具体请看官方SDK文档
@@ -79,6 +83,36 @@ public class DemoMessageReceiver extends PushMessageReceiver {
 //                ScannerManager.releaseRtc(null,true,true);
 //            }
 
+        } else if (MSG_LiveHangUp.equals(code)){
+
+        } else if (MSG_BarrageText.equals(code)){
+            String jobjStr = map.get("message");
+            try {
+                JSONObject jobj = new JSONObject(jobjStr);
+                BarrageBean bean = new BarrageBean();
+                String name = jobj.getString("name");
+                String danmu = jobj.getString("danmu");
+                bean.setName(name);
+                bean.setText(danmu);
+                EventBus.getDefault().post(bean);
+            }
+            catch (JSONException e) {
+                e.printStackTrace();
+            }
+        } else if (MSG_BarrageImg.equals(code)){
+            String jobjStr = map.get("message");
+            try {
+                JSONObject jobj = new JSONObject(jobjStr);
+                BarrageBean bean = new BarrageBean();
+                String name = jobj.getString("name");
+                String img = jobj.getString("img");
+                bean.setName(name);
+                bean.setImg(img);
+                EventBus.getDefault().post(bean);
+            }
+            catch (JSONException e) {
+                e.printStackTrace();
+            }
         }
 
     }
@@ -151,7 +185,8 @@ public class DemoMessageReceiver extends PushMessageReceiver {
 
                 //打印日志：注册成功
                 System.out.println("");
-                Log.e("@#","注册命令完毕");
+                Log.e("@#","注册命令完毕 reId="+MiPushClient.getRegId(context));
+
             } else {
                 //打印日志：注册失败
                 System.out.println("注册失败");

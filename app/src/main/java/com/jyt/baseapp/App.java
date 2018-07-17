@@ -167,7 +167,7 @@ public class App  extends MultiDexApplication {
         try {
             RongPushClient.checkManifest(this);
         } catch (RongException e) {
-            Log.e("@#",e.getMessage());
+            Log.e("@#","rongyun:"+e.getMessage());
         }
         RongIMClient.setOnReceiveMessageListener(new RongIMClient.OnReceiveMessageListener() {
             @Override
@@ -177,7 +177,7 @@ public class App  extends MultiDexApplication {
                 intent.setAction(Const.Reciver_Message);
                 intent.putExtra(Const.Rong_Message,message);
                 sendBroadcast(intent);
-                return true;
+                return false;
             }
         });
 

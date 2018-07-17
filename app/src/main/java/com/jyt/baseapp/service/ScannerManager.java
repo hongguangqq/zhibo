@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.pm.PackageManager;
 import android.content.res.Configuration;
+import android.graphics.Color;
 import android.graphics.PixelFormat;
 import android.os.Build;
 import android.os.Handler;
@@ -19,13 +20,13 @@ import com.jyt.baseapp.App;
 import com.jyt.baseapp.api.BeanCallback;
 import com.jyt.baseapp.api.Const;
 import com.jyt.baseapp.bean.EventBean;
-import com.jyt.baseapp.helper.IntentHelper;
 import com.jyt.baseapp.model.LiveModel;
 import com.jyt.baseapp.model.impl.LiveModelImpl;
 import com.jyt.baseapp.util.BaseUtil;
 import com.jyt.baseapp.util.FinishActivityManager;
 import com.jyt.baseapp.view.activity.AudienceActivity;
 import com.jyt.baseapp.view.activity.LivePlayActivity;
+import com.jyt.baseapp.view.widget.MyInterruptLinearLayout;
 import com.netease.nimlib.sdk.ResponseCode;
 import com.netease.nimlib.sdk.avchat.AVChatCallback;
 import com.netease.nimlib.sdk.avchat.AVChatManager;
@@ -36,6 +37,7 @@ import com.netease.nimlib.sdk.avchat.constant.AVChatVideoCaptureOrientation;
 import com.netease.nimlib.sdk.avchat.constant.AVChatVideoCropRatio;
 import com.netease.nimlib.sdk.avchat.constant.AVChatVideoFrameRate;
 import com.netease.nimlib.sdk.avchat.constant.AVChatVideoQuality;
+import com.netease.nimlib.sdk.avchat.constant.AVChatVideoQualityStrategy;
 import com.netease.nimlib.sdk.avchat.constant.AVChatVideoScalingType;
 import com.netease.nimlib.sdk.avchat.model.AVChatCameraCapturer;
 import com.netease.nimlib.sdk.avchat.model.AVChatChannelInfo;
@@ -69,6 +71,8 @@ public class ScannerManager  {
     public static String trId ="";//通话记录的ID
     public static String comID = "";//聊天对象网易云ID
 
+    private static MyInterruptLinearLayout mLlRemoteLayout;
+
 
     private static WindowManager mWindowManager;
     private static WindowManager.LayoutParams wmParams;
@@ -83,8 +87,10 @@ public class ScannerManager  {
         mLiveModel.onStart(context);
         wmParams = new WindowManager.LayoutParams();
         //设置Render
-        mLocalRender = new AVChatSurfaceViewRenderer(context);
+        mLlRemoteLayout = new MyInterruptLinearLayout(context);
         mRemoterRender = new AVChatSurfaceViewRenderer(context);
+        mLocalRender = new AVChatSurfaceViewRenderer(context);
+        mLlRemoteLayout.addView(mRemoterRender);
         //false true主播可行  true false观众可行
         mLocalRender.setZOrderMediaOverlay(true);
         mRemoterRender.setZOrderMediaOverlay(false);
@@ -94,27 +100,30 @@ public class ScannerManager  {
         }
         ViewGroup parent2 = (ViewGroup) mRemoterRender.getParent();
         if (parent2!=null){
-            parent2.removeView(mRemoterRender);
+//            parent2.removeView(mRemoterRender);
         }
-        startPreview(context);
+        mLlRemoteLayout.setBackgroundColor(Color.parseColor("#ff0000"));
+        ViewGroup.LayoutParams params = new ViewGroup.LayoutParams(200,200);
+        mLlRemoteLayout.setLayoutParams(params);
         //设置完毕
-        mRemoterRender.setOnClickListener(new View.OnClickListener() {
+        mLlRemoteLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Log.e("@#","点击事件触发");
-                if (!isBigScreen){
-                    if (Const.getGender() == 1){
-                        //男性
-                        hide();
-                        IntentHelper.OpenAudienceActivity(context);
-                    }else {
-                        //女性
-                        hide();
-                        IntentHelper.OpenLivePlayActivity((Activity) context);
-                    }
-                }
+//                if (!isBigScreen){
+//                    if (Const.getGender() == 1){
+//                        //男性
+//                        hide();
+//                        IntentHelper.OpenAudienceActivity(context);
+//                    }else {
+//                        //女性
+//                        hide();
+//                        IntentHelper.OpenLivePlayActivity((Activity) context);
+//                    }
+//                }
             }
         });
+        startPreview(context);
 
 
 
@@ -132,9 +141,8 @@ public class ScannerManager  {
 
     public static void setWindowType(final Context context){
         WindowManager windowManager = getWindowManager(context);
-        if (Build.VERSION.SDK_INT >= 24) { /*android7.0不能用TYPE_TOAST*/
-            wmParams.type = WindowManager.LayoutParams.TYPE_PHONE;
-        } else { /*以下代码块使得android6.0之后的用户不必再去手动开启悬浮窗权限*/
+        if (Build.VERSION.SDK_INT >= 23) { /*android7.0不能用TYPE_TOAST*/
+
             String packname = context.getPackageName();
             PackageManager pm = context.getPackageManager();
             boolean permission = (PackageManager.PERMISSION_GRANTED == pm.checkPermission("android.permission.SYSTEM_ALERT_WINDOW", packname));
@@ -144,11 +152,15 @@ public class ScannerManager  {
             } else {
                 Log.e("@#","TYPE_TOAST");
                 wmParams.type = WindowManager.LayoutParams.TYPE_TOAST;
+
             }
+        } else { /*以下代码块使得android6.0之后的用户不必再去手动开启悬浮窗权限*/
+            wmParams.type = WindowManager.LayoutParams.TYPE_SYSTEM_DIALOG;
         }
-        wmParams.format = PixelFormat.RGBA_8888;
+        wmParams.format = PixelFormat.TRANSLUCENT;
         //设置浮动窗口不可聚焦（实现操作除浮动窗口外的其他可见窗口的操作）
         wmParams.flags =  WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE;
+
         //调整悬浮窗显示的停靠位置为右侧置顶
         wmParams.gravity = Gravity.LEFT | Gravity.TOP;
         DisplayMetrics dm = new DisplayMetrics();
@@ -298,7 +310,7 @@ public class ScannerManager  {
 
     public static void hide() {
         if (mHasShown)
-            mWindowManager.removeViewImmediate(mRemoterRender);
+            mWindowManager.removeViewImmediate(mLlRemoteLayout);
         mHasShown = false;
     }
 
@@ -310,9 +322,10 @@ public class ScannerManager  {
             setWindowType(context);
             ViewGroup parent = (ViewGroup) mRemoterRender.getParent();
             if (parent!=null){
-                parent.removeView(mRemoterRender);
+//                parent.removeView(mRemoterRender);
             }
-        mWindowManager.addView(mRemoterRender , wmParams);
+        mWindowManager.addView(mLlRemoteLayout , wmParams);
+
 
     }
 
@@ -343,16 +356,21 @@ public class ScannerManager  {
             AVChatManager.getInstance().setupVideoCapturer(mVideoCapturer);
             mVideoCapturer.setFlash(true);//设置闪光灯
         }
+        if (AVChatManager.getInstance().isAudienceRole()){
+            AVChatManager.getInstance().enableAudienceRole(false);
+        }
         if (true){
-            AVChatManager.getInstance().enableVideo();
+
         }
         //设置视频采集模块
         AVChatCameraCapturer videoCapturer = AVChatVideoCapturerFactory.createCameraCapturer();
         AVChatManager.getInstance().setupVideoCapturer(videoCapturer);
         if (true) {
+            AVChatManager.getInstance().enableVideo();
             AVChatManager.getInstance().muteLocalVideo(true);//开启视频
             AVChatManager.getInstance().muteLocalAudio(true);//开启音频
             AVChatManager.getInstance().setupLocalVideoRender(mLocalRender, false, AVChatVideoScalingType.SCALE_ASPECT_BALANCED);
+            AVChatManager.getInstance().setVideoQualityStrategy(AVChatVideoQualityStrategy.PreferFrameRate);
         }
         //parameters
         AVChatParameters parameters = new AVChatParameters();
@@ -361,15 +379,16 @@ public class ScannerManager  {
         parameters.setString(AVChatParameters.KEY_VIDEO_ENCODER_MODE, AVChatMediaCodecMode.MEDIA_CODEC_SOFTWARE);
         parameters.setInteger(AVChatParameters.KEY_VIDEO_QUALITY, AVChatVideoQuality.QUALITY_720P);
         //如果用到美颜功能，建议这里设为15帧
-//        parameters.setInteger(AVChatParameters.KEY_VIDEO_FRAME_RATE, AVChatVideoFrameRate.FRAME_RATE_15);
+        //        parameters.setInteger(AVChatParameters.KEY_VIDEO_FRAME_RATE, AVChatVideoFrameRate.FRAME_RATE_15);
         //如果不用美颜功能，这里可以设为25帧
         parameters.setInteger(AVChatParameters.KEY_VIDEO_FRAME_RATE, AVChatVideoFrameRate.FRAME_RATE_25);
         parameters.set(AVChatParameters.KEY_SESSION_LIVE_COMPOSITING_LAYOUT, new AVChatLiveCompositingLayout(AVChatLiveCompositingLayout.Mode.LAYOUT_FLOATING_RIGHT_VERTICAL));
         parameters.setInteger(AVChatParameters.KEY_VIDEO_FIXED_CROP_RATIO, AVChatVideoCropRatio.CROP_RATIO_16_9);
-        parameters.setBoolean(AVChatParameters.KEY_VIDEO_ROTATE_IN_RENDING, true);
+        parameters.setBoolean(AVChatParameters.KEY_VIDEO_ROTATE_IN_RENDING, false);
         int videoOrientation = context.getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT ? AVChatVideoCaptureOrientation.ORIENTATION_PORTRAIT : AVChatVideoCaptureOrientation.ORIENTATION_LANDSCAPE_RIGHT;
         parameters.setInteger(AVChatParameters.KEY_VIDEO_CAPTURE_ORIENTATION, videoOrientation);
         parameters.setBoolean(AVChatParameters.KEY_VIDEO_FRAME_FILTER, true);
+
         AVChatManager.getInstance().setParameters(parameters);
         if (true){
             AVChatManager.getInstance().startVideoPreview();
@@ -381,9 +400,7 @@ public class ScannerManager  {
             //男
             if (!TextUtils.isEmpty(ScannerManager.comID) && ScannerManager.comID.equals(s)){
                 isAudienceJoin = true;
-                if (AVChatManager.getInstance().isAudienceRole()){
-                    AVChatManager.getInstance().enableAudienceRole(false);
-                }
+
                 Log.e("@#","观众：男用户进入房间，连接主播视屏");
                 AVChatManager.getInstance().setupRemoteVideoRender(ScannerManager.comID, mRemoterRender,false,AVChatVideoScalingType.SCALE_ASPECT_BALANCED);
 
@@ -392,9 +409,6 @@ public class ScannerManager  {
             //女
             if (!TextUtils.isEmpty(ScannerManager.comID) && ScannerManager.comID.equals(s)){
                 isAudienceJoin = true;
-                if (AVChatManager.getInstance().isAudienceRole()){
-                    AVChatManager.getInstance().enableAudienceRole(false);
-                }
                 Log.e("@#","主播：男用户进入房间，连接用户视屏");
                 AVChatManager.getInstance().setupRemoteVideoRender(s,mRemoterRender,false,AVChatVideoScalingType.SCALE_ASPECT_BALANCED);
             }
@@ -453,15 +467,12 @@ public class ScannerManager  {
         }
         if (isLeaveRoom) {
             //挂断电话
-           if (Const.getGender()==1){
-               //男性挂断电话
-               mLiveModel.DoneHangUp(new BeanCallback() {
-                   @Override
-                   public void response(boolean success, Object response, int id) {
+            mLiveModel.DoneHangUp(new BeanCallback() {
+                @Override
+                public void response(boolean success, Object response, int id) {
 
-                   }
-               });
-           }
+                }
+            });
             //离开房间
             AVChatManager.getInstance().leaveRoom2(ScannerManager.mMeetingName, new AVChatCallback<Void>() {
                 @Override

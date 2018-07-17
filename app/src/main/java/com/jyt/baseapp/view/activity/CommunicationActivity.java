@@ -699,6 +699,7 @@ public class CommunicationActivity extends BaseMCVActivity {
                 if (message.getTargetId().equals(comid)){
                     mMessageList.add(message);
                     mComAdapter.notifyData(mMessageList);
+                    mRvContent.scrollToPosition(mComAdapter.getItemCount());
                 }
 
             }
