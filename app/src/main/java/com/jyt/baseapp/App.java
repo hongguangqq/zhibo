@@ -12,7 +12,9 @@ import android.support.multidex.MultiDexApplication;
 import android.util.Log;
 
 import com.jyt.baseapp.api.Const;
+import com.jyt.baseapp.bean.EventBean;
 import com.jyt.baseapp.util.L;
+import com.jyt.baseapp.view.widget.BarrageMessage;
 import com.netease.nimlib.sdk.NIMClient;
 import com.netease.nimlib.sdk.SDKOptions;
 import com.netease.nimlib.sdk.StatusBarNotificationConfig;
@@ -28,6 +30,8 @@ import com.xiaomi.mipush.sdk.MiPushClient;
 import com.zhy.http.okhttp.OkHttpUtils;
 import com.zhy.http.okhttp.log.LoggerInterceptor;
 
+import org.greenrobot.eventbus.EventBus;
+
 import java.io.File;
 import java.security.SecureRandom;
 import java.security.cert.X509Certificate;
@@ -40,7 +44,9 @@ import javax.net.ssl.SSLSocketFactory;
 import javax.net.ssl.TrustManager;
 import javax.net.ssl.X509TrustManager;
 
+import io.rong.imlib.AnnotationNotFoundException;
 import io.rong.imlib.RongIMClient;
+import io.rong.message.TextMessage;
 import io.rong.push.RongPushClient;
 import io.rong.push.common.RongException;
 import okhttp3.OkHttpClient;
@@ -160,14 +166,19 @@ public class App  extends MultiDexApplication {
     }
 
     private void initRY(){
+
         if (shouldInit()){
             RongPushClient.registerMiPush(this,Const.MiAppID,Const.MiAppKey);
         }
         RongIMClient.init(this);
+
         try {
+            RongIMClient.registerMessageType(BarrageMessage.class);
             RongPushClient.checkManifest(this);
         } catch (RongException e) {
             Log.e("@#","rongyun:"+e.getMessage());
+        } catch (AnnotationNotFoundException e) {
+            e.printStackTrace();
         }
         RongIMClient.setOnReceiveMessageListener(new RongIMClient.OnReceiveMessageListener() {
             @Override
@@ -177,6 +188,10 @@ public class App  extends MultiDexApplication {
                 intent.setAction(Const.Reciver_Message);
                 intent.putExtra(Const.Rong_Message,message);
                 sendBroadcast(intent);
+                //消息类型为文本时触发监听，Tab2刷新消息数量
+                if (message.getContent() instanceof TextMessage){
+                    EventBus.getDefault().post(new EventBean(null));
+                }
                 return false;
             }
         });

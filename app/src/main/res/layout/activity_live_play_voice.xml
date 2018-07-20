@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.jyt.baseapp.view.activity.LaunchActivity">
+    <com.jyt.baseapp.view.widget.RoundLayout
+        android:id="@+id/ro_answer"
+        android:layout_width="match_parent"
+        android:layout_marginTop="50dp"
+        android:layout_marginLeft="12dp"
+        android:layout_marginRight="12dp"
+        android:layout_height="272dp"
+        app:roundLayoutRadius="12">
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@drawable/corner_ht12"/>
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:src="@drawable/corner_ht12"/>
+        <com.jyt.baseapp.view.widget.CircleImageView
+            android:id="@+id/iv_eavesdrop_hpic"
+            android:layout_width="82dp"
+            android:layout_height="82dp"
+            android:layout_marginTop="50dp"
+            android:layout_centerHorizontal="true"
+            android:src="@mipmap/pic_tonghuahzong"
+            app:border_color="@color/white"/>
+
+        <TextView
+            android:id="@+id/tv_liveVoice_time"
+            android:layout_below="@id/iv_eavesdrop_hpic"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="11dp"
+            android:layout_centerHorizontal="true"
+            android:text=""
+            android:textSize="25dp"
+            android:textColor="@color/white"/>
+
+    </com.jyt.baseapp.view.widget.RoundLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_below="@+id/ro_answer"
+        android:layout_marginTop="28dp"
+        android:paddingLeft="12dp"
+        android:paddingRight="12dp">
+        <Button
+            android:id="@+id/btn_liveVoice_hangup"
+            android:layout_width="0dp"
+            android:layout_height="95dp"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="挂断"
+            android:textSize="16dp"
+            android:textColor="@color/white"
+            android:background="@drawable/corner_r12"/>
+    </LinearLayout>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="15dp"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:text="请勿散播色情、暴力、反动言论"
+        android:textSize="15dp"
+        android:textColor="@color/white"/>
+
+</RelativeLayout>

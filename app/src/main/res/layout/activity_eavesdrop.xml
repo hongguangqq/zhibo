@@ -97,14 +97,109 @@
             android:background="@drawable/corner_p12"/>
     </LinearLayout>
 
+
+
+
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:visibility="gone"
         android:layout_marginBottom="15dp"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
         android:text="请勿散播色情、暴力、反动言论"
         android:textSize="15dp"
         android:textColor="@color/white"/>
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/ll_eavesdrop_bottom"
+        android:orientation="horizontal">
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/rv_eavesdrop_s1"
+            android:layout_weight="1"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:visibility="invisible">
+        </android.support.v7.widget.RecyclerView>
+        <View
+            android:layout_width="1dp"
+            android:layout_height="1dp"/>
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/rv_eavesdrop_s2"
+            android:layout_weight="1"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:visibility="invisible">
+        </android.support.v7.widget.RecyclerView>
+        <View
+            android:layout_width="1dp"
+            android:layout_height="1dp"/>
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/rv_eavesdrop_s3"
+            android:layout_weight="1"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:visibility="invisible">
+        </android.support.v7.widget.RecyclerView>
+    </LinearLayout>
+    <LinearLayout
+        android:id="@+id/ll_eavesdrop_bottom"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="3dp"
+        android:orientation="horizontal">
+        <TextView
+            android:id="@+id/tv_eavesdrop_t1"
+            android:layout_weight="1"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:background="@drawable/corner_white12"
+            android:gravity="center"
+            android:text="提醒"
+            android:textSize="14dp"
+            android:textColor="@color/black"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp"
+            android:paddingTop="3dp"
+            android:paddingBottom="3dp"/>
+        <View
+            android:layout_width="1dp"
+            android:layout_height="1dp"/>
+        <TextView
+            android:id="@+id/tv_eavesdrop_t2"
+            android:layout_weight="1"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:background="@drawable/corner_white12"
+            android:gravity="center"
+            android:text="鼓励"
+            android:textSize="14dp"
+            android:textColor="@color/black"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp"
+            android:paddingTop="3dp"
+            android:paddingBottom="3dp"/>
+        <View
+            android:layout_width="1dp"
+            android:layout_height="1dp"/>
+        <TextView
+            android:id="@+id/tv_eavesdrop_t3"
+            android:layout_weight="1"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:background="@drawable/corner_white12"
+            android:gravity="center"
+            android:text="调笑"
+            android:textSize="14dp"
+            android:textColor="@color/black"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp"
+            android:paddingTop="3dp"
+            android:paddingBottom="3dp"/>
+    </LinearLayout>
 
 </RelativeLayout>

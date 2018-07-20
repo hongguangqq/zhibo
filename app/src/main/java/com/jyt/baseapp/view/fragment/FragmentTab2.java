@@ -1,26 +1,33 @@
 package com.jyt.baseapp.view.fragment;
 
-import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.jyt.baseapp.R;
 import com.jyt.baseapp.adapter.NewAdapter;
+import com.jyt.baseapp.api.BeanCallback;
+import com.jyt.baseapp.api.Const;
+import com.jyt.baseapp.bean.BaseJson;
+import com.jyt.baseapp.bean.EventBean;
 import com.jyt.baseapp.helper.IntentHelper;
 import com.jyt.baseapp.itemDecoration.RecycleViewDivider;
+import com.jyt.baseapp.model.TabModel;
+import com.jyt.baseapp.model.impl.TabModelImpl;
 import com.jyt.baseapp.view.widget.CircleImageView;
 import com.jyt.baseapp.view.widget.MyRecycleView;
+import com.xiaomi.mipush.sdk.MiPushMessage;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
-import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 /**
@@ -47,10 +54,17 @@ public class FragmentTab2 extends BaseFragment {
     RelativeLayout mRlSystem;
     @BindView(R.id.rv_tab2_stranger)
     MyRecycleView mRvStranger;
+    @BindView(R.id.tv_tab2_friendNum)
+    TextView mTvFriendNum;
+    @BindView(R.id.tv_tab2_VistorNum)
+    TextView mTvVistorNum;
 
 
     private NewAdapter mAdapter;
     private List<String> mDataList;
+    private TabModel mTabModel;
+    public static int gFriendNewNum;
+
 
     @Override
     protected int getLayoutId() {
@@ -66,6 +80,9 @@ public class FragmentTab2 extends BaseFragment {
     private void init() {
         mAdapter = new NewAdapter(2);
         mDataList = new ArrayList<>();
+        mTabModel = new TabModelImpl();
+        mTabModel.onStart(getActivity());
+        EventBus.getDefault().register(this);
         mDataList.add("");
         mDataList.add("");
         mDataList.add("");
@@ -77,10 +94,25 @@ public class FragmentTab2 extends BaseFragment {
         mRvStranger.addItemDecoration(new RecycleViewDivider(getActivity(), LinearLayoutManager.VERTICAL, 1, getResources().getColor(R.color.line_color2)));
         mAdapter.setDataList(mDataList);
         mRvStranger.setAdapter(mAdapter);
+        if(gFriendNewNum!=0){
+            mTvFriendNum.setVisibility(View.VISIBLE);
+            mTvFriendNum.setText(String.valueOf(gFriendNewNum));//设置好友消息数量
+        }
+        mTabModel.getVistorNum(System.currentTimeMillis(), new BeanCallback<BaseJson<Integer>>() {
+            @Override
+            public void response(boolean success, BaseJson<Integer> response, int id) {
+                if (success && response.getCode()==200 && response.getData()!=null){
+                    mTvVistorNum.setVisibility(View.VISIBLE);
+                    mTvVistorNum.setText(String.valueOf(response.getData()));
+                }
+            }
+        });
+
     }
 
     @OnClick(R.id.ll_tab2_n1)
     public void OpenNewActivity1() {
+        gFriendNewNum = 0;
         IntentHelper.OpenNewActivity(getActivity(), 1);
     }
 
@@ -104,18 +136,24 @@ public class FragmentTab2 extends BaseFragment {
         IntentHelper.OpenNewActivity(getActivity(), 5);
     }
 
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        // TODO: inflate a fragment view
-        View rootView = super.onCreateView(inflater, container, savedInstanceState);
-        unbinder = ButterKnife.bind(this, rootView);
-        return rootView;
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void EventOver(EventBean bean) {
+        if (Const.Event_NewArrive.equals(bean.getCode())){
+            gFriendNewNum++;
+            mTvFriendNum.setText(String.valueOf(gFriendNewNum));
+        } else if (Const.Event_SystemFirst.equals(bean.getCode())){
+            MiPushMessage msg = (MiPushMessage) bean.getItem1();
+            String content = msg.getDescription();
+            //设置最新一条系统消息
+        }
+
     }
 
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        unbinder.unbind();
+        mTabModel.onDestroy();
+        EventBus.getDefault().unregister(this);
     }
 
 

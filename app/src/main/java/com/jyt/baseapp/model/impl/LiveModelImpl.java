@@ -192,13 +192,56 @@ public class LiveModelImpl implements LiveModel {
      * @param callback
      */
     @Override
-    public void SendBarrage(String txt, Callback callback) {
+    public void SendBarrageGift(String txt, Callback callback) {
         OkHttpUtils.post()
                 .url(Path.SendBarrage)
                 .tag(mContext)
                 .addHeader("token",Const.getUserToken())
                 .addParams("trId", ScannerManager.trId)
                 .addParams("danmu",txt)
+                .build()
+                .execute(callback);
+    }
+
+    /**
+     * 获取用户余额
+     * @param callback
+     */
+    @Override
+    public void GetUserBlance(Callback callback) {
+        OkHttpUtils.get()
+                .url(Path.GetUserBlance)
+                .tag(mContext)
+                .addHeader("token",Const.getUserToken())
+                .addParams("trId",ScannerManager.trId)
+                .build()
+                .execute(callback);
+    }
+
+    /**
+     * 获取自己的余额
+     * @param callback
+     */
+    @Override
+    public void GetMeBlance(Callback callback) {
+        OkHttpUtils.get()
+                .url(Path.GetLiveBlance)
+                .tag(mContext)
+                .addHeader("token",Const.getUserToken())
+                .build()
+                .execute(callback);
+    }
+
+    /**
+     * 获取弹幕礼物列表
+     * @param callback
+     */
+    @Override
+    public void GetBarrageGift(Callback callback) {
+        OkHttpUtils.get()
+                .url(Path.GetBarrageGiftList)
+                .tag(mContext)
+                .addHeader("token",Const.getUserToken())
                 .build()
                 .execute(callback);
     }

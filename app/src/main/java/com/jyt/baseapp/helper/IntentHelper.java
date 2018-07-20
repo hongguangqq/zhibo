@@ -14,6 +14,7 @@ import com.jyt.baseapp.util.FinishActivityManager;
 import com.jyt.baseapp.view.activity.AccountActivity;
 import com.jyt.baseapp.view.activity.AnswerActivity;
 import com.jyt.baseapp.view.activity.AudienceActivity;
+import com.jyt.baseapp.view.activity.AudienceVoiceActivity;
 import com.jyt.baseapp.view.activity.BlackActivity;
 import com.jyt.baseapp.view.activity.BrowseImagesActivity;
 import com.jyt.baseapp.view.activity.CommunicationActivity;
@@ -26,6 +27,7 @@ import com.jyt.baseapp.view.activity.FeedbackActivity;
 import com.jyt.baseapp.view.activity.LaunchActivity;
 import com.jyt.baseapp.view.activity.ListActivity;
 import com.jyt.baseapp.view.activity.LivePlayActivity;
+import com.jyt.baseapp.view.activity.LivePlayVoiceActivity;
 import com.jyt.baseapp.view.activity.MateActivity;
 import com.jyt.baseapp.view.activity.ModifyActivity;
 import com.jyt.baseapp.view.activity.NewsActivity;
@@ -134,7 +136,7 @@ public class IntentHelper {
      */
     public static void OpenExplainActivity(Activity activity,String RID){
         Intent intent = getIntent(activity, ExplainActivity.class);
-        intent.putExtra(IntentKey.RegisterRID,RID);
+        intent.putExtra(IntentKey.RegisterRID,Integer.valueOf(RID));
         activity.startActivity(intent);
         FinishActivityManager manager =FinishActivityManager.getManager();
         if(manager.IsActivityExist(RegisterActivity.class)){
@@ -415,17 +417,19 @@ public class IntentHelper {
      * 主播收到观众电话，跳转接听界面
      * @param activity
      */
-    public static void OpenAnswerActivity(Context activity,String name ,String hpic){
+    public static void OpenAnswerActivity(Context activity,String name ,String hpic , boolean isVoice){
         Intent intent =getIntent(activity, AnswerActivity.class);
         intent.putExtra(IntentKey.Answer_Name,name);
         intent.putExtra(IntentKey.Answer_Hpic,hpic);
+        intent.putExtra(IntentKey.Answer_IsVoice,isVoice);
         activity.startActivity(intent);
     }
 
     public static Tuple AnswerActivityGetPara(Intent intent){
         String name = intent.getStringExtra(IntentKey.Answer_Name);
         String hpic = intent.getStringExtra(IntentKey.Answer_Hpic);
-        return new Tuple(name,hpic);
+        boolean isVoice = intent.getBooleanExtra(IntentKey.Answer_IsVoice,false);
+        return new Tuple(name,hpic,isVoice);
     }
 
 
@@ -464,10 +468,40 @@ public class IntentHelper {
 
     /**
      * 跳转到直播界面
+     * @param context
+     */
+    public static void OpenLivePlayActivity(Context context){
+        Intent intent =getIntent(context, LivePlayActivity.class);
+        context.startActivity(intent);
+    }
+
+    /**
+     * 跳转到通话界面
+     * @param context
+     */
+    public static void OpenLivePlayVoiceActivity(Context context){
+        Intent intent =getIntent(context, LivePlayVoiceActivity.class);
+        context.startActivity(intent);
+    }
+
+
+
+    /**
+     * 跳转到直播界面
      * @param activity
      */
     public static void OpenAudienceActivity(Context activity){
         Intent intent =getIntent(activity, AudienceActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        activity.startActivity(intent);
+    }
+
+    /**
+     * 跳转到观众声音界面
+     * @param activity
+     */
+    public static void OpenAudienceVoiceActivity(Context activity){
+        Intent intent =getIntent(activity, AudienceVoiceActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         activity.startActivity(intent);
     }
@@ -529,11 +563,35 @@ public class IntentHelper {
     }
 
     /**
+     * 跳转通话结束界面 用于聊天双方使用
+     * @param activity
+     * @param isLive
+     */
+    public static void OpenEndCallActivity(Context activity , boolean isLive){
+        Intent intent = getIntent(activity, EndCallActivity.class);
+        intent.putExtra(Const.IsLive,isLive);
+        intent.putExtra(Const.FinishTime,"");
+        activity.startActivity(intent);
+    }
+
+    /**
      * 舔砖通话结束界面，用于偷听观众使用
      * @param activity
      * @param time
      */
     public static void OpenEndCallActivity(Activity activity ,String time){
+        Intent intent = getIntent(activity, EndCallActivity.class);
+        intent.putExtra(Const.IsLive,false);
+        intent.putExtra(Const.FinishTime,time);
+        activity.startActivity(intent);
+    }
+
+    /**
+     * 舔砖通话结束界面，用于偷听观众使用
+     * @param activity
+     * @param time
+     */
+    public static void OpenEndCallActivity(Context activity ,String time){
         Intent intent = getIntent(activity, EndCallActivity.class);
         intent.putExtra(Const.IsLive,false);
         intent.putExtra(Const.FinishTime,time);
@@ -604,6 +662,10 @@ public class IntentHelper {
         activity.startActivity(intent);
     }
 
+    /**
+     * 跳转到充值界面
+     * @param activity
+     */
     public static void OpenRechargeActivity(Activity activity){
         Intent intent =getIntent(activity, RechargeActivity.class);
         activity.startActivity(intent);

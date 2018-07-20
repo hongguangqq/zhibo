@@ -1,6 +1,8 @@
 package com.jyt.baseapp.view.viewholder;
 
+import android.text.TextUtils;
 import android.view.LayoutInflater;
+import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
@@ -58,7 +60,12 @@ public class ListViewHolder extends BaseViewHolder<UserBean> {
         }
         mTvNick.setText(data.getNickname());
         mTvMark.setText(data.getMark());
-        mTvWork.setText(data.getProfession());
+        if (TextUtils.isEmpty(data.getProfession())){
+            mTvWork.setVisibility(View.INVISIBLE);
+        }else {
+            mTvWork.setVisibility(View.VISIBLE);
+            mTvWork.setText(data.getProfession());
+        }
         if (data.getOnlineState()==0){
             mTvOnline.setText("离线");
         }else {

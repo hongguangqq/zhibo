@@ -27,7 +27,13 @@ public interface LiveModel extends BaseModel{
 
     void GetBarrageList(Callback callback);
 
-    void SendBarrage(String txt ,Callback callback);
+    void SendBarrageGift(String txt , Callback callback);
+
+    void GetUserBlance(Callback callback);
+
+    void GetMeBlance(Callback callback);
+
+    void GetBarrageGift(Callback callback);
 
 
 }

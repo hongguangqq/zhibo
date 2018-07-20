@@ -28,6 +28,7 @@ public class AuthModelImpl implements AuthModel {
     @Override
     public void AuthInfo(int rid ,String name, String card, String PhotoPath, Callback callback) {
         OkHttpUtils.post()
+                .tag(mContext)
                 .url(Path.AuthInfoData)
                 .addParams("userId",rid+"")
                 .addParams("name",name)

@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.os.IBinder;
 import android.support.annotation.Nullable;
 import android.util.Log;
+import android.view.ViewGroup;
 
 import com.netease.nimlib.sdk.avchat.AVChatManager;
 import com.netease.nimlib.sdk.avchat.AVChatStateObserverLite;
@@ -95,11 +96,19 @@ public class ScannerService extends Service implements ScannerCallBack,AVChatSta
 
     @Override
     public AVChatSurfaceViewRenderer getLocalRender() {
+        ViewGroup parent = (ViewGroup) ScannerManager.getmLocalRender().getParent();
+        if (parent!=null){
+            parent.removeView(ScannerManager.getmLocalRender());
+        }
         return ScannerManager.getmLocalRender();
     }
 
     @Override
     public AVChatSurfaceViewRenderer getRemoterRender() {
+        ViewGroup parent = (ViewGroup) ScannerManager.getmRemoteRender().getParent();
+        if (parent!=null){
+            parent.removeView(ScannerManager.getmRemoteRender());
+        }
         return ScannerManager.getmRemoteRender();
     }
 

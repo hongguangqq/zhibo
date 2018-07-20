@@ -7,6 +7,7 @@ import android.content.IntentFilter;
 import android.os.Handler;
 import android.os.Message;
 import android.support.v4.view.ViewPager;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -142,6 +143,7 @@ public class FragmentTab1 extends BaseFragment {
                     for(ListBean bean:data){
                         switch (bean.getType()){
                             case 1:
+                                Log.e("@#",mFlowHot.toString());
                                 mFlowHot.removeAllViews();
                                 setListData(bean,mFlowHot);
                                 break;
@@ -165,7 +167,7 @@ public class FragmentTab1 extends BaseFragment {
                                 break;
                         }
                         if (Const.getGender()==1){
-                            if (bean.getType()==6){
+                            if (bean.getType()==5){
                                 mFlowUser.removeAllViews();
                                 setListData(bean, mFlowUser);
                             }
@@ -294,11 +296,7 @@ public class FragmentTab1 extends BaseFragment {
         mFlowRecommend.setChildSpacing(BaseUtil.dip2px(5));
         mFlowTheme.setPadding(0, 0, 0, 0);
         mFlowTheme.setChildSpacing(BaseUtil.dip2px(5));
-//        setListData(2, mFlowFocus);
-//        setListData(2, mFlowHot);
-//        setListData(4, mFlowUser);
-//        setListData(4, mFlowRecommend);
-//        setListData(5, mFlowTheme);
+
         /*基础设置完毕*/
         //----------轮播图设置-----------
         mTab1Model.getBunner(new BeanCallback<BaseJson<List<String>>>(getActivity(),false,null) {

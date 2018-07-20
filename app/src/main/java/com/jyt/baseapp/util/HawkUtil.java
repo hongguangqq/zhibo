@@ -1,6 +1,8 @@
 package com.jyt.baseapp.util;
 
+import com.jyt.baseapp.bean.PushMessageBean;
 import com.orhanobut.hawk.Hawk;
+import com.xiaomi.mipush.sdk.MiPushMessage;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -10,6 +12,7 @@ import java.util.List;
  */
 public class HawkUtil {
     private static final String KEY_PSD = "KEY_SEARCH_HISTORY";
+    private static final String KEY_PUSH= "KEY_PUSH";
 
     public static List<String> getHistory(){
         List<String> onj= Hawk.get(KEY_PSD);
@@ -31,6 +34,21 @@ public class HawkUtil {
     public static void updateHistory(List<String> list){
         clearHistory();
         Hawk.put(KEY_PSD,list);
+    }
+
+    public static void addPushMessage(MiPushMessage message){
+        PushMessageBean pushBean = new PushMessageBean(System.currentTimeMillis(),message);
+        List<PushMessageBean> onj=getPushList();
+        onj.add(pushBean);
+        Hawk.put(KEY_PUSH,onj);
+    }
+
+    public static List<PushMessageBean> getPushList(){
+        List<PushMessageBean> onj= Hawk.get(KEY_PUSH);
+        if (onj==null){
+            onj = new ArrayList<>();
+        }
+        return onj;
     }
 
 

@@ -20,6 +20,7 @@ import com.jyt.baseapp.App;
 import com.jyt.baseapp.api.BeanCallback;
 import com.jyt.baseapp.api.Const;
 import com.jyt.baseapp.bean.EventBean;
+import com.jyt.baseapp.helper.IntentHelper;
 import com.jyt.baseapp.model.LiveModel;
 import com.jyt.baseapp.model.impl.LiveModelImpl;
 import com.jyt.baseapp.util.BaseUtil;
@@ -68,8 +69,10 @@ public class ScannerManager  {
     private static boolean isOpenAudio;//是否开启音频
     private static boolean isOpenVideo;//是否开启视频
     public static boolean isAudienceJoin;//聊天对象是否已进入
+    public static int mEavesdropNum;//偷听人数
     public static String trId ="";//通话记录的ID
     public static String comID = "";//聊天对象网易云ID
+    public static int LastRequestNum;//一次直播中，只允许有3次查看对方余额的机会
 
     private static MyInterruptLinearLayout mLlRemoteLayout;
 
@@ -90,7 +93,6 @@ public class ScannerManager  {
         mLlRemoteLayout = new MyInterruptLinearLayout(context);
         mRemoterRender = new AVChatSurfaceViewRenderer(context);
         mLocalRender = new AVChatSurfaceViewRenderer(context);
-        mLlRemoteLayout.addView(mRemoterRender);
         //false true主播可行  true false观众可行
         mLocalRender.setZOrderMediaOverlay(true);
         mRemoterRender.setZOrderMediaOverlay(false);
@@ -100,7 +102,7 @@ public class ScannerManager  {
         }
         ViewGroup parent2 = (ViewGroup) mRemoterRender.getParent();
         if (parent2!=null){
-//            parent2.removeView(mRemoterRender);
+            parent2.removeView(mRemoterRender);
         }
         mLlRemoteLayout.setBackgroundColor(Color.parseColor("#ff0000"));
         ViewGroup.LayoutParams params = new ViewGroup.LayoutParams(200,200);
@@ -110,17 +112,16 @@ public class ScannerManager  {
             @Override
             public void onClick(View view) {
                 Log.e("@#","点击事件触发");
-//                if (!isBigScreen){
-//                    if (Const.getGender() == 1){
-//                        //男性
-//                        hide();
-//                        IntentHelper.OpenAudienceActivity(context);
-//                    }else {
-//                        //女性
-//                        hide();
-//                        IntentHelper.OpenLivePlayActivity((Activity) context);
-//                    }
-//                }
+                if (!isBigScreen){
+                    hide();
+                    if (Const.getGender() == 1){
+                        //男性
+                        IntentHelper.OpenAudienceActivity(context);
+                    }else {
+                        //女性
+                        IntentHelper.OpenLivePlayActivity(context);
+                    }
+                }
             }
         });
         startPreview(context);
@@ -155,7 +156,7 @@ public class ScannerManager  {
 
             }
         } else { /*以下代码块使得android6.0之后的用户不必再去手动开启悬浮窗权限*/
-            wmParams.type = WindowManager.LayoutParams.TYPE_SYSTEM_DIALOG;
+            wmParams.type = WindowManager.LayoutParams.TYPE_TOAST;
         }
         wmParams.format = PixelFormat.TRANSLUCENT;
         //设置浮动窗口不可聚焦（实现操作除浮动窗口外的其他可见窗口的操作）
@@ -288,7 +289,8 @@ public class ScannerManager  {
                 parent2.removeView(mRemoterRender);
             }
         }
-
+        AVChatManager.getInstance().disableRtc();
+        AVChatManager.getInstance().disableVideo();
         mLocalRender = null;
         mRemoterRender = null;
         isAudienceJoin = false;
@@ -296,6 +298,9 @@ public class ScannerManager  {
         isPause = true;
         mMeetingName = "";
         comID = "";
+        LastRequestNum = 0;//重置零
+        mEavesdropNum = 0;
+
     }
 
 
@@ -311,22 +316,31 @@ public class ScannerManager  {
     public static void hide() {
         if (mHasShown)
             mWindowManager.removeViewImmediate(mLlRemoteLayout);
+            mLlRemoteLayout.removeView(mRemoterRender);
+            ViewGroup LocalParent = (ViewGroup) mLocalRender.getParent();
+            if (LocalParent != null){
+                LocalParent.removeView(mLocalRender);
+            }
         mHasShown = false;
     }
 
     public static void show(Context context) {
         if (!mHasShown)
-
             mHasShown = true;
             isBigScreen = false;//切换为窗口模式
             setWindowType(context);
             ViewGroup parent = (ViewGroup) mRemoterRender.getParent();
             if (parent!=null){
-//                parent.removeView(mRemoterRender);
+                parent.removeView(mRemoterRender);
+
             }
-        mWindowManager.addView(mLlRemoteLayout , wmParams);
-
-
+//            ViewGroup parent2 = (ViewGroup) mLlRemoteLayout.getParent();
+//            if (parent2!=null){
+//                parent2.removeView(mLlRemoteLayout);
+//
+//            }
+            mLlRemoteLayout.addView(mRemoterRender);
+            mWindowManager.addView(mLlRemoteLayout , wmParams);
     }
 
     /**
@@ -413,6 +427,7 @@ public class ScannerManager  {
                 AVChatManager.getInstance().setupRemoteVideoRender(s,mRemoterRender,false,AVChatVideoScalingType.SCALE_ASPECT_BALANCED);
             }
         }
+        EventBus.getDefault().post(new EventBean(Const.Event_UserJoin));
     }
 
     public static void onUserLeave(String s, int i) {
@@ -420,7 +435,10 @@ public class ScannerManager  {
         if (!TextUtils.isEmpty(comID) && s.equals(comID)){
             isStartLive = false;
             isAudienceJoin = false;
+            BaseUtil.makeText("聊天对象已退出，请等待退出");
             releaseRtc(null,true,true);//退出操作
+        }else {
+            EventBus.getDefault().post(new EventBean(Const.Event_UserLeave));
         }
     }
 
@@ -428,9 +446,11 @@ public class ScannerManager  {
         if (isOpenVideo){
             isOpenVideo = false;
             AVChatManager.getInstance().muteLocalVideo(false);
+            BaseUtil.makeText("视频采集已关闭");
         } else {
             isOpenVideo = true;
             AVChatManager.getInstance().muteLocalVideo(true);
+            BaseUtil.makeText("视频采集已开启");
         }
 
     }
@@ -439,9 +459,11 @@ public class ScannerManager  {
         if (isOpenAudio){
             isOpenAudio = false;
             AVChatManager.getInstance().muteLocalAudio(false);
+            BaseUtil.makeText("音频采集已关闭");
         }else {
             isOpenAudio = true;
             AVChatManager.getInstance().muteLocalAudio(true);
+            BaseUtil.makeText("音频采集已开启");
         }
     }
 
@@ -467,12 +489,12 @@ public class ScannerManager  {
         }
         if (isLeaveRoom) {
             //挂断电话
-            mLiveModel.DoneHangUp(new BeanCallback() {
-                @Override
-                public void response(boolean success, Object response, int id) {
-
-                }
-            });
+//            mLiveModel.DoneHangUp(new BeanCallback() {
+//                @Override
+//                public void response(boolean success, Object response, int id) {
+//
+//                }
+//            });
             //离开房间
             AVChatManager.getInstance().leaveRoom2(ScannerManager.mMeetingName, new AVChatCallback<Void>() {
                 @Override
@@ -509,6 +531,11 @@ public class ScannerManager  {
             if (!ScannerManager.isBigScreen){
                 Log.e("@#","窗口模式下触发离开");
                 hide();
+//                if (Const.getGender() == 1){
+//                    IntentHelper.OpenEndCallActivity((Activity) App.getContext(),false);
+//                }else {
+//                    IntentHelper.OpenEndCallActivity((Activity) App.getContext(),true);
+//                }
                 //窗口模式触发离开需要关闭服务
                 ScannerController.getInstance().stopMonkServer(App.getContext());
             }
@@ -526,7 +553,7 @@ public class ScannerManager  {
                 mLiveModel.ReportProgressTime(ScannerManager.trId, new BeanCallback() {
                     @Override
                     public void response(boolean success, Object response, int id) {
-                        //金额不足，主动离开房间
+                        //报告目前金额，当金额不足时，主动离开房间
                     }
                 });
                 //递归调用本runable对象，实现每隔60秒一次执行任务

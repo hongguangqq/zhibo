@@ -71,22 +71,27 @@ public class EndCallActivity extends BaseMCVActivity {
         }else {
             mTvTime.setText(mFinishTime);
         }
-
-        mLiveModel.getComFinishMoney(mIsLive, new BeanCallback<BaseJson<SettlementBean>>() {
+        mLiveModel.DoneHangUp(new BeanCallback() {
             @Override
-            public void response(boolean success, BaseJson<SettlementBean> response, int id) {
-                if (success && response.getCode()==200){
-                    SettlementBean bean  = response.getData();
-                    if (mIsLive){
-                        mTvGMoney.setText("获得金币："+bean.getGiftMoney());
-                        mTvCMoney.setText("获得金币："+bean.getTalkMoney());
-                    }else {
-                        mTvGMoney.setText("消费金币："+bean.getGiftMoney());
-                        mTvCMoney.setText("消费金币："+bean.getTalkMoney());
+            public void response(boolean success, Object response, int id) {
+                mLiveModel.getComFinishMoney(mIsLive, new BeanCallback<BaseJson<SettlementBean>>() {
+                    @Override
+                    public void response(boolean success, BaseJson<SettlementBean> response, int id) {
+                        if (success && response.getCode()==200){
+                            SettlementBean bean  = response.getData();
+                            if (mIsLive){
+                                mTvGMoney.setText("获得金币："+bean.getGiftMoney());
+                                mTvCMoney.setText("获得金币："+bean.getTalkMoney());
+                            }else {
+                                mTvGMoney.setText("消费金币："+bean.getGiftMoney());
+                                mTvCMoney.setText("消费金币："+bean.getTalkMoney());
+                            }
+                        }
                     }
-                }
+                });
             }
         });
+
 
     }
 

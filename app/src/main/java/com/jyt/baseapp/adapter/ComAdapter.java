@@ -59,7 +59,7 @@ public class ComAdapter extends RecyclerView.Adapter<BaseViewHolder> {
             holder.setOnMePlayListener(onMeVoicePlayListener);
             return holder;
         }else if (viewType==Type_Other){
-           ComOtherViewHolder holder = new ComOtherViewHolder(parent);
+            ComOtherViewHolder holder = new ComOtherViewHolder(parent);
             holder.setOnOtherPlayListener(onOtherVoicePlayListener);
             return holder;
         }

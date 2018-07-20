@@ -292,6 +292,11 @@ public class PersonActivity extends BaseMCVActivity {
                         if (Const.getGender()!=mUser.getGender()){
                             mLlBottom.setVisibility(View.VISIBLE);
                         }
+                        //当前界面为用户自身的介绍页，隐藏
+                        if (mUser.getId()==Integer.valueOf(Const.getUserID())){
+                            mLlBottom.setVisibility(View.GONE);
+                        }
+
                         if (mUser.getGender()==1){
                             mIvSex.setImageResource(R.mipmap.icon_nan2);
                         }else {

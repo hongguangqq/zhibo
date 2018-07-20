@@ -6,6 +6,7 @@ import android.util.Log;
 import io.rong.push.notification.PushMessageReceiver;
 import io.rong.push.notification.PushNotificationMessage;
 
+
 /**
  * @author LinWei on 2018/6/11 16:00
  */

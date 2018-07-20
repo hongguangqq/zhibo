@@ -19,8 +19,10 @@
         android:paddingTop="7dp"
         android:paddingRight="20dp"
         android:paddingBottom="7dp"
-        android:background="@drawable/corner_hs97">
+        android:background="@drawable/corner_hs97"
+        android:id="@+id/linearLayout">
         <com.jyt.baseapp.view.widget.CircleImageView
+            android:id="@+id/iv_audeience_hpic"
             android:layout_width="40dp"
             android:layout_height="40dp"
             android:src="@mipmap/timg"
@@ -32,6 +34,7 @@
             android:layout_gravity="center_vertical"
             android:orientation="vertical">
             <TextView
+                android:id="@+id/tv_audience_name"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:maxLength="8"
@@ -40,6 +43,7 @@
                 android:textSize="10dp"
                 android:textColor="#D4FFFFFF"/>
             <TextView
+                android:id="@+id/tv_audience_money"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="2dp"
@@ -58,16 +62,18 @@
         android:layout_marginRight="20dp"
         android:layout_alignParentRight="true">
         <ImageView
-            android:id="@+id/iv_horn"
+            android:id="@+id/iv_audeience_horn"
             android:layout_width="20dp"
             android:layout_height="20dp"
             android:src="@mipmap/icon_horn"/>
         <ImageView
+            android:id="@+id/iv_audeience_camera"
             android:layout_width="20dp"
             android:layout_height="20dp"
             android:layout_marginLeft="15dp"
             android:src="@mipmap/icon_camera"/>
         <ImageView
+            android:id="@+id/iv_audeience_narrow"
             android:layout_width="20dp"
             android:layout_height="20dp"
             android:layout_marginLeft="15dp"
@@ -75,12 +81,13 @@
     </LinearLayout>
 
     <android.support.v7.widget.RecyclerView
-        android:layout_width="130dp"
+        android:id="@+id/rv_audience_danmu"
+        android:layout_width="200dp"
         android:layout_height="130dp"
-        android:layout_marginLeft="25dp"
-        android:layout_marginBottom="80dp"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentLeft="true">
+        android:paddingLeft="15dp"
+        android:layout_alignBottom="@+id/fl_LocalRender"
+        android:layout_alignEnd="@+id/linearLayout"
+        android:layout_marginEnd="11dp">
     </android.support.v7.widget.RecyclerView>
 
     <LinearLayout
@@ -98,6 +105,7 @@
             android:layout_marginBottom="12dp"
             android:gravity="center_vertical">
             <TextView
+                android:id="@+id/tv_audeience_t1"
                 android:layout_weight="1"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
@@ -113,6 +121,7 @@
                 android:background="#62D8D8D8"
                 android:layout_marginBottom="12dp"/>
             <TextView
+                android:id="@+id/tv_audeience_t2"
                 android:layout_weight="1"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
@@ -128,6 +137,7 @@
                 android:background="#62D8D8D8"
                 android:layout_marginBottom="12dp"/>
             <TextView
+                android:id="@+id/tv_audeience_t3"
                 android:layout_weight="1"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
@@ -143,6 +153,7 @@
                 android:background="#62D8D8D8"
                 android:layout_marginBottom="12dp"/>
             <TextView
+                android:id="@+id/tv_audeience_t4"
                 android:layout_weight="1"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
@@ -153,8 +164,9 @@
                 android:drawableTop="@mipmap/liaotian_guaduan"/>
         </LinearLayout>
         <android.support.v7.widget.RecyclerView
+            android:id="@+id/rv_audience_gift"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="60dp"
             android:visibility="gone"
             android:paddingLeft="16dp"
             android:paddingRight="16dp"

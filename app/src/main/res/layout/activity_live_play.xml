@@ -21,6 +21,7 @@
         android:paddingBottom="7dp"
         android:background="@drawable/corner_hs97">
         <com.jyt.baseapp.view.widget.CircleImageView
+            android:id="@+id/iv_livePlay_hpic"
             android:layout_width="40dp"
             android:layout_height="40dp"
             android:src="@mipmap/timg"
@@ -32,6 +33,7 @@
             android:layout_gravity="center_vertical"
             android:orientation="vertical">
             <TextView
+                android:id="@+id/tv_livePlay_name"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:maxLength="8"
@@ -40,6 +42,7 @@
                 android:textSize="10dp"
                 android:textColor="#D4FFFFFF"/>
             <TextView
+                android:id="@+id/tv_livePlay_money"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="2dp"
@@ -75,6 +78,16 @@
             android:layout_marginLeft="15dp"
             android:src="@mipmap/icon_narrow"/>
     </LinearLayout>
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/rv_livePlay_danmu"
+        android:layout_width="200dp"
+        android:layout_height="130dp"
+        android:layout_marginLeft="25dp"
+        android:layout_marginBottom="80dp"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="true">
+    </android.support.v7.widget.RecyclerView>
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -150,7 +163,15 @@
                 android:textColor="#D4FFFFFF"
                 android:drawableTop="@mipmap/liaotian_guaduan"/>
         </LinearLayout>
-
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/rv_alivePlay_gift"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:visibility="gone"
+            android:paddingLeft="16dp"
+            android:paddingRight="16dp"
+            android:background="@color/white">
+        </android.support.v7.widget.RecyclerView>
     </LinearLayout>
 
 

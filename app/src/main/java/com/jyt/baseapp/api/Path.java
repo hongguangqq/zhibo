@@ -16,9 +16,10 @@ public class Path {
     public static final String GetAllList = BasePath+"/chat/user/getAll";
     public static final String GetThemeList = BasePath+"/chat/user/getActivityList";
     public static final String EditOnlineState = BasePath+"/chat/user/editOnlineState";
+    public static final String GetInOut = BasePath+"/chat/user/inOut";
     //搜寻，也用于用户列表获取
     public static final String SearchKey = BasePath+"/chat/user/indexSearch";
-    public static final String GetFocus = BasePath+"/chat/user/getRecommend";
+    public static final String GetFocus = BasePath+"/chat/user/meFollowList";
     public static final String GetRecommend = BasePath+"/chat/user/getRecommandList";
     public static final String GetHot = BasePath+"/chat/statistical/getlist";
     public static final String GetBalance = BasePath+"/chat/user/getSelfBlance";
@@ -61,5 +62,10 @@ public class Path {
     public static final String ReportProgressTime = BasePath + "/chat/user/userGetNowBlance";
     public static final String GetBarrageList = BasePath + "/chat/user/danmu";
     public static final String SendBarrage = BasePath + "/chat/user/sendDanmu";
+    public static final String GetUserBlance = BasePath + "/chat/user/getLookBlance";
+    public static final String GetLiveBlance = BasePath + "/chat/user/getSelfBlance";
+    public static final String GetBarrageGiftList = BasePath +"/chat/gift/getGiftList";
+    public static final String GetVistorNum = BasePath+"/chat/user/countWhoLookMe";//查看时间段内谁看过我用户数量
+    public static final String GetVistor = BasePath+"/chat/user/whoLookMe";//查看时间段内谁看过我用户数据
 
 }

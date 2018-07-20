@@ -10,13 +10,17 @@ import com.jyt.baseapp.R;
 import com.jyt.baseapp.adapter.ListAdapter;
 import com.jyt.baseapp.api.BeanCallback;
 import com.jyt.baseapp.bean.BaseJson;
+import com.jyt.baseapp.bean.HotBean;
 import com.jyt.baseapp.bean.SearchBean;
 import com.jyt.baseapp.bean.Tuple;
 import com.jyt.baseapp.bean.UserBean;
 import com.jyt.baseapp.helper.IntentHelper;
+import com.jyt.baseapp.model.PersonModel;
 import com.jyt.baseapp.model.TabModel;
+import com.jyt.baseapp.model.impl.PersonModelImpl;
 import com.jyt.baseapp.model.impl.TabModelImpl;
 import com.jyt.baseapp.util.BaseUtil;
+import com.jyt.baseapp.view.viewholder.BaseViewHolder;
 import com.lcodecore.tkrefreshlayout.RefreshListenerAdapter;
 import com.lcodecore.tkrefreshlayout.TwinklingRefreshLayout;
 
@@ -37,6 +41,7 @@ public class ListActivity extends BaseMCVActivity {
     private int mPage;
     private int PageCode;
     private TabModel mTabModel;
+    private PersonModel mPersonModel;
     private List<UserBean> mDataList;
     private ListAdapter mListAdapter;
 
@@ -64,6 +69,9 @@ public class ListActivity extends BaseMCVActivity {
         PageCode = (int) tuple.getItem1();
         setvActionBarColor(R.color.bg_content);
         mTabModel = new TabModelImpl();
+        mTabModel.onStart(this);
+        mPersonModel = new PersonModelImpl();
+        mPersonModel.onStart(this);
         mDataList = new ArrayList<>();
         mListAdapter = new ListAdapter();
         switch (PageCode){
@@ -80,6 +88,7 @@ public class ListActivity extends BaseMCVActivity {
                 setTextTitle("推荐列表");
                 break;
         }
+
         setData();
     }
 
@@ -89,6 +98,7 @@ public class ListActivity extends BaseMCVActivity {
 
     private void setData(){
         if (PageCode == 3){
+            //男女用户列表
             mTabModel.getListData(PageCode,mPage, 10, new BeanCallback<BaseJson<SearchBean>>(this,false,null) {
                 @Override
                 public void response(boolean success, BaseJson<SearchBean> response, int id) {
@@ -144,11 +154,105 @@ public class ListActivity extends BaseMCVActivity {
                                         mDataList.addAll(response.getData().getContent());
                                         mListAdapter.setDataList(mDataList);
                                         mPage++;
+//                                        BaseUtil.makeText("加载完毕");
                                     }else {
                                         BaseUtil.makeText("没有更多数据");
                                         mTrlLoad.finishLoadmore();
                                         return;
                                     }
+                                }
+                            }
+                            mHandler.postDelayed(new Runnable() {
+                                @Override
+                                public void run() {
+                                    mTrlLoad.finishLoadmore();
+                                    mListAdapter.notifyDataSetChanged();
+
+                                }
+                            }, 1500);
+                        }
+                    });
+                }
+            });
+        } else if (PageCode == 2){
+            //热门
+            mTabModel.getListData(PageCode, mPage, 10, new BeanCallback<BaseJson<List<HotBean>>>() {
+                @Override
+                public void response(boolean success, BaseJson<List<HotBean>> response, int id) {
+                    if (success && response.getCode()==200){
+                        for(HotBean hot:response.getData()){
+                            mDataList.add(hot.getUser());
+                        }
+                        mListAdapter.setDataList(mDataList);
+                        mListAdapter.notifyDataSetChanged();
+                        mRvContent.setAdapter(mListAdapter);
+                    }
+                }
+            });
+
+
+        } else {
+            mTabModel.getListData(PageCode,mPage, 10, new BeanCallback<BaseJson<List<UserBean>>>(this,false,null) {
+                @Override
+                public void response(boolean success, BaseJson<List<UserBean>> response, int id) {
+                    if (success){
+                        if (response.getCode()==200 && response.getData()!=null && response.getData().size()>0){
+                            mDataList.addAll(response.getData());
+                            mListAdapter.setDataList(mDataList);
+                            mRvContent.setAdapter(mListAdapter);
+                            mPage++;
+                        }
+                    }
+                }
+            });
+
+            mTrlLoad.setOnRefreshListener(new RefreshListenerAdapter() {
+                @Override
+                public void onRefresh(TwinklingRefreshLayout refreshLayout) {
+                    super.onRefresh(refreshLayout);
+                    mPage=0;
+                    mTabModel.getListData(PageCode,mPage, 10, new BeanCallback<BaseJson<List<UserBean>>>() {
+                        @Override
+                        public void response(boolean success, BaseJson<List<UserBean>> response, int id) {
+                            if (success){
+                                if (response.getCode()==200 && response.getData()!=null && response.getData().size()>0){
+                                    mDataList = response.getData();
+                                    mListAdapter.setDataList(mDataList);
+                                    mPage++;
+                                }
+                            }
+                            mHandler.postDelayed(new Runnable() {
+                                @Override
+                                public void run() {
+                                    mTrlLoad.finishRefreshing();
+                                    mListAdapter.notifyDataSetChanged();
+                                    BaseUtil.makeText("刷新完毕");
+                                }
+                            }, 1500);
+                        }
+
+                    });
+
+                }
+
+                @Override
+                public void onLoadMore(TwinklingRefreshLayout refreshLayout) {
+                    super.onLoadMore(refreshLayout);
+                    mTabModel.getListData(PageCode,mPage, 10, new BeanCallback<BaseJson<List<UserBean>>>() {
+                        @Override
+                        public void response(boolean success, BaseJson<List<UserBean>> response, int id) {
+                            if (success){
+                                if (response.getCode()==200 ){
+                                    if (response.getData()!=null && response.getData().size()>0){
+                                        mDataList.addAll(response.getData());
+                                        mListAdapter.setDataList(mDataList);
+                                        mPage++;
+                                    }else {
+                                        BaseUtil.makeText("没有更多数据");
+                                        mTrlLoad.finishLoadmore();
+                                        return;
+                                    }
+
                                 }
                             }
                             mHandler.postDelayed(new Runnable() {
@@ -163,88 +267,24 @@ public class ListActivity extends BaseMCVActivity {
                     });
                 }
             });
-        }else {
-            mTabModel.getListData(PageCode,mPage, 10, new BeanCallback<BaseJson<List<UserBean>>>(this,false,null) {
-                @Override
-                public void response(boolean success, BaseJson<List<UserBean>> response, int id) {
-                    if (success){
-                        if (response.getCode()==200 && response.getData()!=null && response.getData().size()>0){
-                            mDataList.addAll(response.getData());
-                            mListAdapter.setDataList(mDataList);
-                            mRvContent.setAdapter(mListAdapter);
-                            mPage++;
-                        }
-                    }
-                }
-            });
         }
 
-        mTrlLoad.setOnRefreshListener(new RefreshListenerAdapter() {
+        mListAdapter.setOnViewHolderClickListener(new BaseViewHolder.OnViewHolderClickListener() {
             @Override
-            public void onRefresh(TwinklingRefreshLayout refreshLayout) {
-                super.onRefresh(refreshLayout);
-                mPage=0;
-                mTabModel.getListData(PageCode,mPage, 10, new BeanCallback<BaseJson<List<UserBean>>>() {
-                    @Override
-                    public void response(boolean success, BaseJson<List<UserBean>> response, int id) {
-                        if (success){
-                            if (response.getCode()==200 && response.getData()!=null && response.getData().size()>0){
-                                mDataList = response.getData();
-                                mListAdapter.setDataList(mDataList);
-                                mPage++;
-                            }
-                        }
-                        mHandler.postDelayed(new Runnable() {
-                            @Override
-                            public void run() {
-                                mTrlLoad.finishRefreshing();
-                                mListAdapter.notifyDataSetChanged();
-                                BaseUtil.makeText("刷新完毕");
-                            }
-                        }, 1500);
-                    }
-
-                });
-
-            }
-
-            @Override
-            public void onLoadMore(TwinklingRefreshLayout refreshLayout) {
-                super.onLoadMore(refreshLayout);
-                mTabModel.getListData(PageCode,mPage, 10, new BeanCallback<BaseJson<List<UserBean>>>() {
-                    @Override
-                    public void response(boolean success, BaseJson<List<UserBean>> response, int id) {
-                        if (success){
-                            if (response.getCode()==200 ){
-                                if (response.getData()!=null && response.getData().size()>0){
-                                    mDataList.addAll(response.getData());
-                                    mListAdapter.setDataList(mDataList);
-                                    mPage++;
-                                }else {
-                                    BaseUtil.makeText("没有更多数据");
-                                    mTrlLoad.finishLoadmore();
-                                    return;
-                                }
-
-                            }
-                        }
-                        mHandler.postDelayed(new Runnable() {
-                            @Override
-                            public void run() {
-                                mTrlLoad.finishLoadmore();
-                                mListAdapter.notifyDataSetChanged();
-                                BaseUtil.makeText("加载完毕");
-                            }
-                        }, 1500);
-                    }
-                });
+            public void onClick(BaseViewHolder holder) {
+                UserBean bean = (UserBean) holder.getData();
+                IntentHelper.OpenPersonActivity(ListActivity.this,bean.getId());
             }
         });
 
+
+
     }
 
-
-
-
-
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        mTabModel.onDestroy();
+        mPersonModel.onDestroy();
+    }
 }

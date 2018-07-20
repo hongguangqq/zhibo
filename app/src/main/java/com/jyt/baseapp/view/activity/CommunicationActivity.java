@@ -34,6 +34,7 @@ import com.jyt.baseapp.bean.Tuple;
 import com.jyt.baseapp.helper.IntentHelper;
 import com.jyt.baseapp.itemDecoration.SpacesItemDecoration;
 import com.jyt.baseapp.util.BaseUtil;
+import com.jyt.baseapp.util.SoftInputUtil;
 import com.jyt.baseapp.view.dialog.RecordDialog;
 import com.jyt.baseapp.view.viewholder.ComMeViewHolder;
 import com.jyt.baseapp.view.viewholder.ComOtherViewHolder;
@@ -304,6 +305,14 @@ public class CommunicationActivity extends BaseMCVActivity {
             @Override
             public void ShowImg(Uri uri) {
                 IntentHelper.openBrowseImagesActivity(CommunicationActivity.this,uri);
+            }
+        });
+
+        mRvContent.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View view, MotionEvent motionEvent) {
+                SoftInputUtil.hideSoftKeyBoard2(CommunicationActivity.this,mEtInput);
+                return false;
             }
         });
 

@@ -12,4 +12,8 @@ public interface AppointModel extends BaseModel {
     void MakeAppointment(int userId , int length , Callback callback);
 
     void CancelOrder(int id , Callback callback);
+
+    void getInOut(Callback callback);
+
+    void getWhoLokeMe(Callback callback);
 }

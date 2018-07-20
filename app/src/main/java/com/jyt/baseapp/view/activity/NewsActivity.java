@@ -11,11 +11,14 @@ import com.jyt.baseapp.adapter.NewAdapter;
 import com.jyt.baseapp.api.BeanCallback;
 import com.jyt.baseapp.bean.AppointBean;
 import com.jyt.baseapp.bean.BaseJson;
+import com.jyt.baseapp.bean.CallRecordBean;
 import com.jyt.baseapp.bean.Tuple;
 import com.jyt.baseapp.helper.IntentHelper;
 import com.jyt.baseapp.itemDecoration.RecycleViewDivider;
 import com.jyt.baseapp.model.AppointModel;
+import com.jyt.baseapp.model.PersonModel;
 import com.jyt.baseapp.model.impl.AppointModelImpl;
+import com.jyt.baseapp.model.impl.PersonModelImpl;
 import com.jyt.baseapp.view.dialog.IPhoneDialog;
 import com.jyt.baseapp.view.viewholder.NewViewHolder5;
 import com.lcodecore.tkrefreshlayout.TwinklingRefreshLayout;
@@ -36,6 +39,7 @@ public class NewsActivity extends BaseMCVActivity {
 
     private int mCode;
     private AppointModel mAppointModel;
+    private PersonModel mPersonModel;
     private NewAdapter mAdapter;
     private List mDataList;
 
@@ -61,9 +65,12 @@ public class NewsActivity extends BaseMCVActivity {
 
     private void init() {
         setvMainBackgroundColor(R.color.bg_content);
-        mAppointModel = new AppointModelImpl();
         mAdapter = new NewAdapter(mCode);
         mDataList = new ArrayList<>();
+        mAppointModel = new AppointModelImpl();
+        mAppointModel.onStart(this);
+        mPersonModel = new PersonModelImpl();
+        mPersonModel.onStart(this);
 
     }
 
@@ -79,12 +86,27 @@ public class NewsActivity extends BaseMCVActivity {
                 break;
             case 2:
                 setTextTitle("谁看过我");
+                mAppointModel.getWhoLokeMe(new BeanCallback() {
+                    @Override
+                    public void response(boolean success, Object response, int id) {
+                       
+                    }
+                });
                 break;
             case 3:
                 setTextTitle("系统通知");
                 break;
             case 4:
                 setTextTitle("通话记录");
+                mAppointModel.getInOut(new BeanCallback<BaseJson<List<CallRecordBean>>>() {
+                    @Override
+                    public void response(boolean success, BaseJson<List<CallRecordBean>> response, int id) {
+                        if (success && response.getCode()==200){
+                            mDataList = response.getData();
+                            mAdapter.notifyData(mDataList);
+                        }
+                    }
+                });
                 break;
             case 5:
                 setTextTitle("我的预约");
@@ -136,5 +158,6 @@ public class NewsActivity extends BaseMCVActivity {
     protected void onDestroy() {
         super.onDestroy();
         mAppointModel.onDestroy();
+        mPersonModel.onDestroy();
     }
 }

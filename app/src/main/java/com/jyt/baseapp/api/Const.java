@@ -5,6 +5,7 @@ import android.os.Environment;
 
 import com.jyt.baseapp.bean.UserBean;
 import com.jyt.baseapp.helper.IntentHelper;
+import com.jyt.baseapp.model.LoginModel;
 import com.jyt.baseapp.util.BaseUtil;
 import com.netease.nimlib.sdk.NIMClient;
 import com.netease.nimlib.sdk.auth.AuthService;
@@ -84,9 +85,13 @@ public class Const {
     public static final String Event_Live = "LivePlayActivity";
     public static final String Event_Audience = "AudienceActivity";
     public static final String Event_HangUp = "AudienceProjectActivity";
+    public static final String Event_UserJoin = "Event_UserJoin";//用户加入
+    public static final String Event_UserLeave = "Event_UserLeave";//用户离开
+    public static final String Event_NewArrive = "Event_NewArrive";//消息到达
+    public static final String Event_SystemFirst = "Event_SystemFirst";//第一条系统消息
 
 
-    public static void SaveUser(UserBean user){
+    public static void SaveUser(UserBean user , LoginModel loginModel){
 
         BaseUtil.setSpString(UserID,user.getId()+"");
         BaseUtil.setSpString(UserName,user.getNickname());
@@ -101,6 +106,11 @@ public class Const {
         BaseUtil.setSpString(WyToken,user.getEasyToken());
         MiPushClient.setAlias(BaseUtil.getContext(), user.getId()+"",null);
         MiPushClient.setUserAccount(BaseUtil.getContext(), user.getId()+"",null);
+
+
+
+
+
     }
 
     public static void LogOff(Context context){
@@ -113,7 +123,7 @@ public class Const {
         BaseUtil.setSpString(RongToken,"");
         BaseUtil.setSpString(WyAccount,"");
         BaseUtil.setSpString(WyToken,"");
-//        MiPushClient.unsetUserAccount(BaseUtil.getContext(),Const.getUserID(),null);
+        MiPushClient.unsetUserAccount(context,Const.getUserID(),null);
 //        MiPushClient.unregisterPush(BaseUtil.getContext());
 //        MiPushClient.pausePush(BaseUtil.getContext(),null);
         BaseUtil.makeText("退出登录成功");

@@ -48,7 +48,7 @@ public class FFActivity extends BaseMCVActivity {
     }
 
     private void init() {
-        setTextTitle("XX列表");
+        setTextTitle("我的列表");
         setvMainBackgroundColor(R.color.bg_content);
         Tuple tuple = IntentHelper.FFActivityGetPara(getIntent());
         mPage = (int) tuple.getItem1();

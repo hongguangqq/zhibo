@@ -22,7 +22,6 @@ import com.jyt.baseapp.model.LoginModel;
 import com.jyt.baseapp.model.impl.LoginModelImpl;
 import com.jyt.baseapp.util.BaseUtil;
 import com.jyt.baseapp.view.activity.BaseMCVActivity;
-import com.xiaomi.mipush.sdk.MiPushClient;
 
 import java.util.HashMap;
 
@@ -78,11 +77,10 @@ public class LoginActivity extends BaseMCVActivity implements PlatformActionList
                                 Log.e("@#","success");
                                 if (response.getCode()==200){
                                     //直接登录
-                                    Const.SaveUser(response.getData());
+                                    Const.SaveUser(response.getData(),mLoginModel);
                                     IntentHelper.OpenContentActivity(LoginActivity.this);
-                                    //小米登录
 
-                                    MiPushClient.resumePush(BaseUtil.getContext(),null);
+
                                 }else if (response.getCode()==500){
                                     //没有注册
                                     BaseUtil.makeText(response.getMessage());
@@ -157,7 +155,7 @@ public class LoginActivity extends BaseMCVActivity implements PlatformActionList
                 if (success){
                     BaseUtil.e(response);
                     if (response.getCode()==200){
-                        Const.SaveUser(response.getData());
+                        Const.SaveUser(response.getData(),mLoginModel);
                         BaseUtil.makeText("登录成功");
                         IntentHelper.OpenContentActivity(LoginActivity.this);
                     }else if(response.getCode()==300){

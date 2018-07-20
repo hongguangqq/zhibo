@@ -85,62 +85,53 @@
          注：共是3个广播接收器和4个服务，其中包括继承了PushMessageReceiver的DemoMessageReceiver
          4个后台服务
         -->
-        <service
-            android:enabled="true"
-            android:process=":pushservice"
-            android:name="com.xiaomi.push.service.XMPushService"/>
+         <service
+         android:enabled="true"
+         android:process=":pushservice"
+         android:name="com.xiaomi.push.service.XMPushService"/>
 
-        <!--&lt;!&ndash; 此service必须在3.0.1版本以后（包括3.0.1版本）加入 &ndash;&gt;-->
-        <!--<service-->
-            <!--android:name="com.xiaomi.push.service.XMJobService"-->
-            <!--android:enabled="true"-->
-            <!--android:exported="false"-->
-            <!--android:permission="android.permission.BIND_JOB_SERVICE"-->
-            <!--android:process=":pushservice"/>-->
 
-        <!--&lt;!&ndash; 此service必须在2.2.5版本以后（包括2.2.5版本）加入 &ndash;&gt;-->
-        <!--<service-->
-            <!--android:name="com.xiaomi.mipush.sdk.PushMessageHandler"-->
-            <!--android:enabled="true"-->
-            <!--android:exported="true"/>-->
-        <!--<service-->
-            <!--android:name="com.xiaomi.mipush.sdk.MessageHandleService"-->
-            <!--android:enabled="true"/>-->
+         <!-- 此service必须在3.0.1版本以后（包括3.0.1版本）加入 -->
+         <service
+         android:name="com.xiaomi.push.service.XMJobService"
+         android:enabled="true"
+         android:exported="false"
+         android:permission="android.permission.BIND_JOB_SERVICE"
+         android:process=":pushservice"/>
 
-        <!--&lt;!&ndash; 3个广播 &ndash;&gt;-->
-        <!--<receiver-->
-            <!--android:name="com.xiaomi.push.service.receivers.NetworkStatusReceiver"-->
-            <!--android:exported="true">-->
-            <!--<intent-filter>-->
-                <!--<action android:name="android.net.conn.CONNECTIVITY_CHANGE"/>-->
 
-                <!--<category android:name="android.intent.category.DEFAULT"/>-->
-            <!--</intent-filter>-->
-        <!--</receiver>-->
-        <!--<receiver-->
-            <!--android:name="com.xiaomi.push.service.receivers.PingReceiver"-->
-            <!--android:exported="false"-->
-            <!--android:process=":pushservice">-->
-            <!--<intent-filter>-->
-                <!--<action android:name="com.xiaomi.push.PING_TIMER"/>-->
-            <!--</intent-filter>-->
-        <!--</receiver>-->
-        <!--MI End-->
+         <!-- 此service必须在2.2.5版本以后（包括2.2.5版本）加入 -->
+         <service
+         android:name="com.xiaomi.mipush.sdk.PushMessageHandler"
+         android:enabled="true"
+         android:exported="true"/>
+         <service
+         android:name="com.xiaomi.mipush.sdk.MessageHandleService"
+         android:enabled="true"/>
+
+
+         <!-- 3个广播 -->
+         <receiver
+         android:name="com.xiaomi.push.service.receivers.NetworkStatusReceiver"
+         android:exported="true">
+         <intent-filter>
+         <action android:name="android.net.conn.CONNECTIVITY_CHANGE"/>
+
+
+         <category android:name="android.intent.category.DEFAULT"/>
+         </intent-filter>
+         </receiver>
+         <receiver
+         android:name="com.xiaomi.push.service.receivers.PingReceiver"
+         android:exported="false"
+         android:process=":pushservice">
+         <intent-filter>
+         <action android:name="com.xiaomi.push.PING_TIMER"/>
+         </intent-filter>
+         </receiver>
+        <!-- MI End -->
         <receiver
             android:name=".receiver.DemoMessageReceiver"
-            android:exported="true">
-            <intent-filter>
-                <action android:name="com.xiaomi.mipush.RECEIVE_MESSAGE"/>
-            </intent-filter>
-            <intent-filter>
-                <action android:name="com.xiaomi.mipush.MESSAGE_ARRIVED"/>
-            </intent-filter>
-            <intent-filter>
-                <action android:name="com.xiaomi.mipush.ERROR"/>
-            </intent-filter>
-        </receiver>
-        <receiver
-            android:name="io.rong.push.platform.MiMessageReceiver"
             android:exported="true">
             <intent-filter>
                 <action android:name="com.xiaomi.mipush.RECEIVE_MESSAGE"/>
@@ -163,6 +154,21 @@
                 <action android:name="io.rong.push.intent.THIRD_PARTY_PUSH_STATE"/>
             </intent-filter>
         </receiver>
+
+         <receiver
+         android:name="io.rong.push.platform.MiMessageReceiver"
+         android:exported="true">
+         <intent-filter>
+         <action android:name="com.xiaomi.mipush.RECEIVE_MESSAGE"/>
+         </intent-filter>
+         <intent-filter>
+         <action android:name="com.xiaomi.mipush.MESSAGE_ARRIVED"/>
+         </intent-filter>
+         <intent-filter>
+         <action android:name="com.xiaomi.mipush.ERROR"/>
+         </intent-filter>
+         </receiver>
+
 
         <!-- 音视频 -->
         <!--
@@ -226,7 +232,7 @@
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
-        <activity android:name="com.jyt.baseapp.view.activity.ContentActivity">
+        <activity android:name=".view.activity.ContentActivity">
         </activity>
         <activity android:name=".view.activity.entrance.RegisterActivity">
         </activity>
@@ -326,6 +332,10 @@
         <activity android:name=".view.activity.TestActivity">
         </activity>
         <activity android:name=".view.activity.EavesdropActivity">
+        </activity>
+        <activity android:name=".view.activity.LivePlayVoiceActivity">
+        </activity>
+        <activity android:name=".view.activity.AudienceVoiceActivity">
         </activity>
     </application>
 

@@ -136,6 +136,23 @@ public class TabModelImpl implements TabModel {
         }
     }
 
+    /**
+     * 获取是看过我的人数
+     * @param time
+     * @param callback
+     */
+    @Override
+    public void getVistorNum(long time, Callback callback) {
+        OkHttpUtils.get()
+                .url(Path.GetVistorNum)
+                .tag(mContext)
+                .addHeader("token", Const.getUserToken())
+                .addParams("date",String.valueOf(time))
+                .build()
+                .execute(callback);
+
+    }
+
 
 
 

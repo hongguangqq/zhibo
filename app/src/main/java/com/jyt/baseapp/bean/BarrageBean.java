@@ -8,6 +8,8 @@ public class BarrageBean  {
     private String name;
     private String text;
     private String img;
+    private int price;
+    private String gifUrl;
 
     public int getId() {
         return id;
@@ -39,5 +41,21 @@ public class BarrageBean  {
 
     public void setImg(String img) {
         this.img = img;
+    }
+
+    public int getPrice() {
+        return price;
+    }
+
+    public void setPrice(int price) {
+        this.price = price;
+    }
+
+    public String getGifUrl() {
+        return gifUrl;
+    }
+
+    public void setGifUrl(String gifUrl) {
+        this.gifUrl = gifUrl;
     }
 }

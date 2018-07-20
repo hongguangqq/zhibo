@@ -3,10 +3,10 @@ package com.jyt.baseapp.adapter;
 import android.text.TextUtils;
 import android.view.ViewGroup;
 
-import com.jyt.baseapp.bean.BarrageBean;
 import com.jyt.baseapp.view.viewholder.BarrageImgViewHolder;
 import com.jyt.baseapp.view.viewholder.BarrageTextViewHolder;
 import com.jyt.baseapp.view.viewholder.BaseViewHolder;
+import com.jyt.baseapp.view.widget.BarrageMessage;
 
 /**
  * @author LinWei on 2018/7/17 19:33
@@ -28,8 +28,8 @@ public class BarrageAdapter extends BaseRcvAdapter {
 
     @Override
     public int getItemViewType(int position) {
-        BarrageBean bean = (BarrageBean) dataList.get(position);
-        if (TextUtils.isEmpty(bean.getImg())){
+        BarrageMessage msg = (BarrageMessage) dataList.get(position);
+        if (TextUtils.isEmpty(msg.getImg())){
             //文字弹幕
             return Barrage_Text;
         }else {

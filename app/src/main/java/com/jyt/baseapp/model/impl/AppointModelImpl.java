@@ -42,6 +42,12 @@ public class AppointModelImpl implements AppointModel {
     }
 
 
+    /**
+     * 预定
+     * @param userId
+     * @param length
+     * @param callback
+     */
     @Override
     public void MakeAppointment(int userId, int length, Callback callback) {
         OkHttpUtils.post()
@@ -54,6 +60,11 @@ public class AppointModelImpl implements AppointModel {
                 .execute(callback);
     }
 
+    /**
+     * 取消预定
+     * @param id
+     * @param callback
+     */
     @Override
     public void CancelOrder(int id, Callback callback) {
         OkHttpUtils.get()
@@ -61,6 +72,34 @@ public class AppointModelImpl implements AppointModel {
                 .tag(mContext)
                 .addHeader("token", Const.getUserToken())
                 .addParams("subId",String.valueOf(id))
+                .build()
+                .execute(callback);
+    }
+
+    /**
+     * 获取通话记录
+     * @param callback
+     */
+    @Override
+    public void getInOut(Callback callback) {
+        OkHttpUtils.get()
+                .url(Path.GetInOut)
+                .tag(mContext)
+                .addHeader("token", Const.getUserToken())
+                .build()
+                .execute(callback);
+    }
+
+    /**
+     * 获取看过我的用户数据
+     * @param callback
+     */
+    @Override
+    public void getWhoLokeMe(Callback callback) {
+        OkHttpUtils.get()
+                .url(Path.GetVistor)
+                .tag(mContext)
+                .addHeader("token", Const.getUserToken())
                 .build()
                 .execute(callback);
     }

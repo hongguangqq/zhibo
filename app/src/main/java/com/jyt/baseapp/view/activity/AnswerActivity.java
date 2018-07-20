@@ -43,6 +43,7 @@ public class AnswerActivity extends BaseMCVActivity {
     Button mBtnNo;
 
     private long downTime;
+    private boolean mIsVoice;
 
     @Override
     protected int getLayoutId() {
@@ -68,6 +69,7 @@ public class AnswerActivity extends BaseMCVActivity {
         Tuple tuple = IntentHelper.AnswerActivityGetPara(getIntent());
         String name = (String) tuple.getItem1();
         String hpic = (String) tuple.getItem2();
+        mIsVoice = (boolean) tuple.getItem3();
         downTime = System.currentTimeMillis();
         mTvName.setText(name);
         Glide.with(this).load(hpic).error(R.mipmap.timg).into(mIvHpic);
@@ -89,7 +91,11 @@ public class AnswerActivity extends BaseMCVActivity {
             BaseUtil.makeText("已超过有效时间");
             finish();
         }
-        IntentHelper.OpenLivePlayActivity(this);
+        if (mIsVoice){
+            IntentHelper.OpenLivePlayVoiceActivity(this);
+        }else {
+            IntentHelper.OpenLivePlayActivity(this);
+        }
         finish();
     }
 

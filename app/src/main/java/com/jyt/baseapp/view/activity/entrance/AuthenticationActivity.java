@@ -27,7 +27,6 @@ import com.netease.cloud.nos.android.core.CallRet;
 
 import java.io.File;
 import java.net.URI;
-import java.net.URISyntaxException;
 
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -164,7 +163,7 @@ public class AuthenticationActivity extends BaseMCVActivity {
 
                         }
                     });
-                } catch (URISyntaxException e) {
+                } catch (Exception e) {
                     e.printStackTrace();
                 }
             }

@@ -2,13 +2,18 @@ package com.jyt.baseapp.view.activity;
 
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.jyt.baseapp.R;
+import com.jyt.baseapp.adapter.BarrageSanAdapter;
 import com.jyt.baseapp.api.BeanCallback;
+import com.jyt.baseapp.api.Const;
 import com.jyt.baseapp.bean.BaseJson;
 import com.jyt.baseapp.bean.CallBean;
 import com.jyt.baseapp.bean.UserBean;
@@ -18,6 +23,8 @@ import com.jyt.baseapp.model.impl.LiveModelImpl;
 import com.jyt.baseapp.service.ScannerManager;
 import com.jyt.baseapp.util.BaseUtil;
 import com.jyt.baseapp.util.TimeUtil;
+import com.jyt.baseapp.view.viewholder.BaseViewHolder;
+import com.jyt.baseapp.view.widget.BarrageMessage;
 import com.netease.nimlib.sdk.avchat.AVChatCallback;
 import com.netease.nimlib.sdk.avchat.AVChatManager;
 import com.netease.nimlib.sdk.avchat.AVChatStateObserverLite;
@@ -28,10 +35,15 @@ import com.netease.nimlib.sdk.avchat.model.AVChatNetworkStats;
 import com.netease.nimlib.sdk.avchat.model.AVChatSessionStats;
 import com.netease.nimlib.sdk.avchat.model.AVChatVideoFrame;
 
+import java.util.List;
 import java.util.Map;
 
 import butterknife.BindView;
 import butterknife.OnClick;
+import io.rong.imlib.IRongCallback;
+import io.rong.imlib.RongIMClient;
+import io.rong.imlib.model.Conversation;
+import io.rong.imlib.model.Message;
 
 
 public class EavesdropActivity extends BaseMCVActivity implements AVChatStateObserverLite {
@@ -46,11 +58,34 @@ public class EavesdropActivity extends BaseMCVActivity implements AVChatStateObs
     Button mBtnClose;
     @BindView(R.id.btn_eavesdrop_switch)
     Button mBtnSwitch;
+    @BindView(R.id.rv_eavesdrop_s1)
+    RecyclerView mRvS1;
+    @BindView(R.id.rv_eavesdrop_s2)
+    RecyclerView mRvS2;
+    @BindView(R.id.rv_eavesdrop_s3)
+    RecyclerView mRvS3;
+    @BindView(R.id.tv_eavesdrop_t1)
+    TextView mTvT1;
+    @BindView(R.id.tv_eavesdrop_t2)
+    TextView mTvT2;
+    @BindView(R.id.tv_eavesdrop_t3)
+    TextView mTvT3;
+    @BindView(R.id.ll_eavesdrop_bottom)
+    LinearLayout mLlEavesdropBottom;
+
+
+
 
     private LiveModel mLiveModel;
     private UserBean mUserBean;
     private boolean isHangUp;//是否挂断电话
     private boolean isReady;//是否处于准备状态
+    private BarrageSanAdapter mSanAdapter1;
+    private BarrageSanAdapter mSanAdapter2;
+    private BarrageSanAdapter mSanAdapter3;
+    private boolean isShow1;
+    private boolean isShow2;
+    private boolean isShow3;
     //计时器
     private Handler mhandle = new Handler();
     private boolean isPause = false;//是否暂停
@@ -79,17 +114,162 @@ public class EavesdropActivity extends BaseMCVActivity implements AVChatStateObs
         mLiveModel = new LiveModelImpl();
         mLiveModel.onStart(this);
         AVChatManager.getInstance().observeAVChatState(this, true);
-
+        mRvS1.setLayoutManager(new LinearLayoutManager(this , LinearLayoutManager.VERTICAL , false));
+        mRvS2.setLayoutManager(new LinearLayoutManager(this , LinearLayoutManager.VERTICAL , false));
+        mRvS3.setLayoutManager(new LinearLayoutManager(this , LinearLayoutManager.VERTICAL , false));
+        mSanAdapter1 = new BarrageSanAdapter();
+        mSanAdapter2 = new BarrageSanAdapter();
+        mSanAdapter3 = new BarrageSanAdapter();
+        mRvS1.setAdapter(mSanAdapter1);
+        mRvS2.setAdapter(mSanAdapter2);
+        mRvS3.setAdapter(mSanAdapter3);
     }
 
-    private void initSetting(){
+    private void initSetting() {
         JoinEavesdropRoom();
+        mSanAdapter1.setOnViewHolderClickListener(new BaseViewHolder.OnViewHolderClickListener() {
+            @Override
+            public void onClick(BaseViewHolder holder) {
+                if (mUserBean==null){
+                    BaseUtil.makeText("无法使用");
+                    return;
+                }
+                BarrageMessage bm = new BarrageMessage(Const.getUserNick(),(String) holder.getData(),null);
+                RongIMClient.getInstance().sendMessage(Conversation.ConversationType.CHATROOM
+                        , mUserBean.getRoomName(), bm, null, null, new IRongCallback.ISendMessageCallback() {
+                            @Override
+                            public void onAttached(Message message) {
 
+                            }
+
+                            @Override
+                            public void onSuccess(Message message) {
+                                Log.e("@#","发送成功");
+                            }
+
+                            @Override
+                            public void onError(Message message, RongIMClient.ErrorCode errorCode) {
+
+                            }
+                        });
+            }
+        });
+
+        mSanAdapter2.setOnViewHolderClickListener(new BaseViewHolder.OnViewHolderClickListener() {
+            @Override
+            public void onClick(BaseViewHolder holder) {
+                if (mUserBean==null){
+                    BaseUtil.makeText("无法使用");
+                    return;
+                }
+                BarrageMessage bm = new BarrageMessage(Const.getUserNick(),(String) holder.getData(),null);
+                RongIMClient.getInstance().sendMessage(Conversation.ConversationType.CHATROOM
+                        , mUserBean.getRoomName(), bm, null, null, new IRongCallback.ISendMessageCallback() {
+                            @Override
+                            public void onAttached(Message message) {
+
+                            }
+
+                            @Override
+                            public void onSuccess(Message message) {
+                                Log.e("@#","发送成功");
+                                BaseUtil.makeText("发送成功");
+                            }
+
+                            @Override
+                            public void onError(Message message, RongIMClient.ErrorCode errorCode) {
+
+                            }
+                        });
+            }
+        });
+
+        mSanAdapter3.setOnViewHolderClickListener(new BaseViewHolder.OnViewHolderClickListener() {
+            @Override
+            public void onClick(BaseViewHolder holder) {
+                if (mUserBean==null){
+                    BaseUtil.makeText("无法使用");
+                    return;
+                }
+                BarrageMessage bm = new BarrageMessage(Const.getUserNick(),(String) holder.getData(),null);
+                RongIMClient.getInstance().sendMessage(Conversation.ConversationType.CHATROOM
+                        , mUserBean.getRoomName(), bm, null, null, new IRongCallback.ISendMessageCallback() {
+                            @Override
+                            public void onAttached(Message message) {
+
+                            }
+
+                            @Override
+                            public void onSuccess(Message message) {
+                                Log.e("@#","发送成功");
+                            }
+
+                            @Override
+                            public void onError(Message message, RongIMClient.ErrorCode errorCode) {
+
+                            }
+                        });
+            }
+        });
+
+        mLiveModel.GetBarrageList(new BeanCallback<BaseJson>() {
+            @Override
+            public void response(boolean success, BaseJson response, int id) {
+                if (success && response.getCode() == 200) {
+                    List<List<String>> data = (List<List<String>>) response.getData();
+                    mSanAdapter1.setDataList(data.get(0));
+                    mSanAdapter2.setDataList(data.get(1));
+                    mSanAdapter3.setDataList(data.get(2));
+                    mSanAdapter1.notifyDataSetChanged();
+                    mSanAdapter2.notifyDataSetChanged();
+                    mSanAdapter3.notifyDataSetChanged();
+                }
+            }
+        });
+
+        mTvT1.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (!isShow1){
+                    mRvS1.setVisibility(View.VISIBLE);
+                    isShow1 = true;
+                }else {
+                    mRvS1.setVisibility(View.INVISIBLE);
+                    isShow1 = false;
+                }
+            }
+        });
+
+        mTvT2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (!isShow2){
+                    mRvS2.setVisibility(View.VISIBLE);
+                    isShow2 = true;
+                }else {
+                    mRvS2.setVisibility(View.INVISIBLE);
+                    isShow2 = false;
+                }
+            }
+        });
+
+        mTvT3.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (!isShow3){
+                    mRvS3.setVisibility(View.VISIBLE);
+                    isShow3 = true;
+                }else {
+                    mRvS3.setVisibility(View.INVISIBLE);
+                    isShow3 = false;
+                }
+            }
+        });
     }
 
-    private void JoinEavesdropRoom(){
-        if (isReady){
-            BaseUtil.makeText("正在初始化，请稍后再操作");
+    private void JoinEavesdropRoom() {
+        if (isReady) {
+            BaseUtil.makeText("正在初始化，请稍后");
             return;
         }
         //偷听步骤
@@ -99,48 +279,68 @@ public class EavesdropActivity extends BaseMCVActivity implements AVChatStateObs
         mLiveModel.EavesdropLive(new BeanCallback<BaseJson<UserBean>>() {
             @Override
             public void response(boolean success, BaseJson<UserBean> response, int id) {
-                if (success && response.getCode()==200){
+                if (success && response.getCode() == 200) {
                     mUserBean = response.getData();
+                    if (mUserBean == null) {
+                        BaseUtil.makeText("当前无直播");
+
+                    }
+                    if (mUserBean == null) {
+                        return;
+                    }
                     mLiveModel.MakeCall(mUserBean.getId(), 1, new BeanCallback<BaseJson<CallBean>>() {
                         @Override
                         public void response(boolean success, BaseJson<CallBean> response, int id) {
 
-                            if (success && response.getCode()==200){
+                            if (success && response.getCode() == 200) {
                                 ScannerManager.trId = String.valueOf(response.getData().getId());
                                 AVChatManager.getInstance().enableRtc();
                                 AVChatManager.getInstance().joinRoom2(mUserBean.getRoomName(), AVChatType.VIDEO, new AVChatCallback<AVChatData>() {
                                     @Override
                                     public void onSuccess(AVChatData avChatData) {
-                                        Log.e("@#" , "join channel success");
+                                        Log.e("@#", "join channel success");
                                         AVChatManager.getInstance().enableAudienceRole(true);
                                         mhandle.post(timeRunable);
+                                        //加入弹幕聊天室
+                                        RongIMClient.getInstance().joinChatRoom(mUserBean.getRoomName(), -1, new RongIMClient.OperationCallback() {
+                                            @Override
+                                            public void onSuccess() {
+
+                                            }
+
+                                            @Override
+                                            public void onError(RongIMClient.ErrorCode errorCode) {
+
+                                            }
+                                        });
                                     }
 
                                     @Override
                                     public void onFailed(int i) {
-                                        Log.e("@#" , "join channel failed, code:" + i);
+                                        Log.e("@#", "join channel failed, code:" + i);
                                     }
 
                                     @Override
                                     public void onException(Throwable throwable) {
-                                        Log.e("@#" , "join channel exception, throwable:" + throwable.getMessage());
+                                        Log.e("@#", "join channel exception, throwable:" + throwable.getMessage());
                                     }
                                 });
                             }
                         }
                     });
 
-                }else {
+                } else {
                     BaseUtil.makeText("搜寻失败，请重试");
                 }
             }
         });
+
     }
 
     /**
      * 离开房间
      */
-    private void LeaveEavesdropRoom(){
+    private void LeaveEavesdropRoom() {
         isPause = true;
         isReady = true;
         AVChatManager.getInstance().disableRtc();
@@ -155,11 +355,11 @@ public class EavesdropActivity extends BaseMCVActivity implements AVChatStateObs
             @Override
             public void onSuccess(Void aVoid) {
                 isReady = false;
-                if (isHangUp){
+                if (isHangUp) {
                     //挂断操作，进入结算界面
-                    IntentHelper.OpenEndCallActivity(EavesdropActivity.this,TimeUtil.getFormatMS(currentSecond));
+                    IntentHelper.OpenEndCallActivity(EavesdropActivity.this, TimeUtil.getFormatMS(currentSecond));
                     finish();
-                }else {
+                } else {
                     //切换偷听对象，离开房间后再次进入另一个房间
                     JoinEavesdropRoom();
                 }
@@ -178,7 +378,6 @@ public class EavesdropActivity extends BaseMCVActivity implements AVChatStateObs
     }
 
 
-
     private Runnable timeRunable = new Runnable() {
         @Override
         public void run() {
@@ -192,19 +391,17 @@ public class EavesdropActivity extends BaseMCVActivity implements AVChatStateObs
     };
 
     @OnClick(R.id.btn_eavesdrop_close)
-    public void CloseEavesDrop(){
+    public void CloseEavesDrop() {
         //挂断电话
         isHangUp = true;
         LeaveEavesdropRoom();
     }
 
     @OnClick(R.id.btn_eavesdrop_switch)
-    public void SwithComUser(){
+    public void SwithComUser() {
         isHangUp = false;
         LeaveEavesdropRoom();
     }
-
-
 
 
     @Override
@@ -224,7 +421,7 @@ public class EavesdropActivity extends BaseMCVActivity implements AVChatStateObs
 
     @Override
     public void onUserLeave(String s, int i) {
-        if (s.equals(mUserBean.getEasyId())){
+        if (s.equals(mUserBean.getEasyId())) {
             //主播离开时，用户同步离开当前界面
             isHangUp = true;
             LeaveEavesdropRoom();
@@ -320,7 +517,7 @@ public class EavesdropActivity extends BaseMCVActivity implements AVChatStateObs
     protected void onDestroy() {
         super.onDestroy();
         mLiveModel.onDestroy();
-        AVChatManager.getInstance().observeAVChatState(this, true);
+        AVChatManager.getInstance().observeAVChatState(this, false);
     }
 
 

@@ -10,6 +10,7 @@ import com.jyt.baseapp.helper.IntentHelper;
 import com.jyt.baseapp.service.ScannerManager;
 import com.jyt.baseapp.util.BaseUtil;
 import com.jyt.baseapp.util.FinishActivityManager;
+import com.jyt.baseapp.util.HawkUtil;
 import com.jyt.baseapp.view.activity.LivePlayActivity;
 import com.xiaomi.mipush.sdk.ErrorCode;
 import com.xiaomi.mipush.sdk.MiPushClient;
@@ -37,6 +38,9 @@ public class DemoMessageReceiver extends PushMessageReceiver {
     private static final String MSG_LiveHangUp = "4";//主播挂断
     private static final String MSG_BarrageText = "5";//文字弹幕
     private static final String MSG_BarrageImg = "6";//图片弹幕
+    private static final String MSG_LiveVoice = "7";//主播音频来电
+    private static final String MSG_AudienceVoice = "8";//观众音频来电
+
 
     //透传消息到达客户端时调用
     //作用：可通过参数message从而获得透传消息，具体请看官方SDK文档
@@ -56,8 +60,8 @@ public class DemoMessageReceiver extends PushMessageReceiver {
                 ScannerManager.comID = jobj.getString("userAccid");
                 ScannerManager.trId = jobj.getString("trId");
                 String name = jobj.getString("userName");
-                String hpic = jobj.getString("img");
-                IntentHelper.OpenAnswerActivity(context,name,hpic);
+                String hpic = jobj.optString("img");
+                IntentHelper.OpenAnswerActivity(context,name,hpic,false);
             } catch (JSONException e) {
                 e.printStackTrace();
             }
@@ -105,10 +109,35 @@ public class DemoMessageReceiver extends PushMessageReceiver {
                 JSONObject jobj = new JSONObject(jobjStr);
                 BarrageBean bean = new BarrageBean();
                 String name = jobj.getString("name");
-                String img = jobj.getString("img");
+                String img = jobj.optString("img");
                 bean.setName(name);
                 bean.setImg(img);
                 EventBus.getDefault().post(bean);
+            }
+            catch (JSONException e) {
+                e.printStackTrace();
+            }
+        } else if (MSG_LiveVoice.equals(code)){
+            String jobjStr = map.get("message");
+            try {
+                JSONObject jobj = new JSONObject(jobjStr);
+                ScannerManager.comID = jobj.getString("userAccid");
+                ScannerManager.trId = jobj.getString("trId");
+                String name = jobj.getString("userName");
+                String hpic = jobj.optString("img");
+                IntentHelper.OpenAnswerActivity(context,name,hpic,true);
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        } else if (MSG_AudienceVoice.equals(code)){
+            String jobjStr = map.get("message");
+            try {
+                JSONObject jobj = new JSONObject(jobjStr);
+                ScannerManager.comID = jobj.getString("accid");
+                ScannerManager.mMeetingName = jobj.getString("roomName");
+                IntentHelper.OpenAudienceVoiceActivity(context);
+                EventBus.getDefault().post(new EventBean(Const.Event_Launch));//拨打电话界面销毁
+
             }
             catch (JSONException e) {
                 e.printStackTrace();
@@ -129,6 +158,8 @@ public class DemoMessageReceiver extends PushMessageReceiver {
         BaseUtil.e("通知消息是"+message.toString());
 //        Map<String,String> map = message.getExtra();
 //        Log.e("@#",map.get("bili"));
+        HawkUtil.addPushMessage(message);
+        EventBus.getDefault().post(new EventBean(Const.Event_SystemFirst,message));//系统消息
     }
 
     //用户手动点击通知栏消息时调用
