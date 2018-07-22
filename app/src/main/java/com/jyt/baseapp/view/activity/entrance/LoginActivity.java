@@ -246,8 +246,8 @@ public class LoginActivity extends BaseMCVActivity implements PlatformActionList
     public void onComplete(Platform platform, int i, HashMap<String, Object> hashMap) {
         String name = platform.getDb().getUserName();
         String id = platform.getDb().getUserId();
-        Log.e("@#","QQname="+name);
-        Log.e("@#","QQid="+id);
+        Log.e("@#","Qwname="+name);
+        Log.e("@#","Qwid="+id);
         Message message = Message.obtain();
         message.what = 1;
         message.obj = platform;

@@ -46,7 +46,9 @@ import javax.net.ssl.X509TrustManager;
 
 import io.rong.imlib.AnnotationNotFoundException;
 import io.rong.imlib.RongIMClient;
+import io.rong.message.ImageMessage;
 import io.rong.message.TextMessage;
+import io.rong.message.VoiceMessage;
 import io.rong.push.RongPushClient;
 import io.rong.push.common.RongException;
 import okhttp3.OkHttpClient;
@@ -189,7 +191,9 @@ public class App  extends MultiDexApplication {
                 intent.putExtra(Const.Rong_Message,message);
                 sendBroadcast(intent);
                 //消息类型为文本时触发监听，Tab2刷新消息数量
-                if (message.getContent() instanceof TextMessage){
+                if (message.getContent() instanceof TextMessage
+                        ||message.getContent() instanceof ImageMessage
+                        ||message.getContent() instanceof VoiceMessage){
                     EventBus.getDefault().post(new EventBean(null));
                 }
                 return false;
