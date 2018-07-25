@@ -281,7 +281,7 @@ public class AudienceVoiceActivity extends BaseMCVActivity implements AVChatStat
                 @Override
                 public void onSuccess(Void aVoid) {
                     Log.e("@#", "leave channel success");
-                    ScannerManager.mMeetingName = "";
+
 
                 }
 

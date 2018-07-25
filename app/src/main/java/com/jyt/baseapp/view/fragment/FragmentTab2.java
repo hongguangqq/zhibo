@@ -102,8 +102,11 @@ public class FragmentTab2 extends BaseFragment {
             @Override
             public void response(boolean success, BaseJson<Integer> response, int id) {
                 if (success && response.getCode()==200 && response.getData()!=null){
-                    mTvVistorNum.setVisibility(View.VISIBLE);
-                    mTvVistorNum.setText(String.valueOf(response.getData()));
+                    int num = response.getData();
+                    if (num!=0){
+                        mTvVistorNum.setVisibility(View.VISIBLE);
+                        mTvVistorNum.setText(String.valueOf(num));
+                    }
                 }
             }
         });
@@ -113,11 +116,13 @@ public class FragmentTab2 extends BaseFragment {
     @OnClick(R.id.ll_tab2_n1)
     public void OpenNewActivity1() {
         gFriendNewNum = 0;
+        mTvFriendNum.setVisibility(View.GONE);
         IntentHelper.OpenNewActivity(getActivity(), 1);
     }
 
     @OnClick(R.id.ll_tab2_n2)
     public void OpenNewActivity2() {
+        mTvVistorNum.setVisibility(View.GONE);
         IntentHelper.OpenNewActivity(getActivity(), 2);
     }
 
@@ -156,74 +161,4 @@ public class FragmentTab2 extends BaseFragment {
         EventBus.getDefault().unregister(this);
     }
 
-
-    //    mPager = (ViewPager) findViewById(R.id.vp_tab1_news);
-    //    final LinearLayout ll_banner= (LinearLayout) findViewById(R.id.ll_tab1_banner);
-    //    final List<String> list = new ArrayList<>();
-    //        list.add("!");
-    //        list.add("!");
-    //        list.add("!");
-    //        list.add("!");
-    //    PageBannerAdapter adapter = new PageBannerAdapter(this,list);
-    //        mPager.setAdapter(adapter);
-    //        for (int i = 0; i < list.size(); i++) {
-    //        ImageView point=new ImageView(this);
-    //        if (i==0){
-    //            point.setImageResource(R.mipmap.indicator_selected);
-    //        }else {
-    //            point.setImageResource(R.mipmap.indicator_normal);
-    //        }
-    //        LinearLayout.LayoutParams params=
-    //                new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT,LinearLayout.LayoutParams.WRAP_CONTENT);
-    //        if (i>0){
-    //            params.leftMargin=3;
-    //        }
-    //        ll_banner.addView(point ,params);
-    //
-    //    }
-    //        mPager.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
-    //        @Override
-    //        public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-    //
-    //        }
-    //
-    //        @Override
-    //        public void onPageSelected(int position) {
-    //            position=position%list.size();
-    //            ImageView view= (ImageView) ll_banner.getChildAt(position);//取得孩子节点，强转为ImageView
-    //            view.setImageResource(R.mipmap.indicator_selected);
-    //            //上个点改为不选中
-    //            ImageView priPoint= (ImageView) ll_banner.getChildAt(mPreviousPs);//取得上一个孩子节点，强转为ImageView
-    //            priPoint.setImageResource(R.mipmap.indicator_normal);
-    //            mPreviousPs=position;//重新记录被选中的点
-    //        }
-    //
-    //        @Override
-    //        public void onPageScrollStateChanged(int state) {
-    //
-    //        }
-    //    });
-    //    HomeHeadTask task=new HomeHeadTask();
-    //        task.start();
-    //
-    //}
-    //
-    ////自动轮播
-    //class HomeHeadTask implements Runnable{
-    //
-    //    public void start(){
-    //        //移除所有的消息,以便清除其他消息的干扰
-    //        BaseUtil.getHandle().removeCallbacks(null);
-    //        BaseUtil.getHandle().postDelayed(this,3000);
-    //    }
-    //
-    //    @Override
-    //    public void run() {
-    //        int currentItem=mPager.getCurrentItem();
-    //        currentItem++;
-    //        mPager.setCurrentItem(currentItem);
-    //        //延迟3秒，继续发消息,实现内循环
-    //        BaseUtil.getHandle().postDelayed(this, 3000);
-    //    }
-    //}
 }

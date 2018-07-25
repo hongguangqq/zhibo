@@ -312,21 +312,21 @@ public class AudienceActivity extends BaseMCVActivity {
         });
 
         //监听聊天室消息的到来
-        RongIMClient.setOnReceiveMessageListener(new RongIMClient.OnReceiveMessageListener() {
-            @Override
-            public boolean onReceived(io.rong.imlib.model.Message message, int i) {
-
-                if (message.getTargetId().equals(ScannerManager.mMeetingName)){
-                    if ("app:BarrageMsg".equals(message.getObjectName())) {
-                        BarrageMessage barrageMessage = (BarrageMessage) message.getContent();
-                        mBarrageMessageList.add(barrageMessage);
-                        mBarrageAdapter.notifyDataSetChanged();
-                    }
-
-                }
-                return false;
-            }
-        });
+//        RongIMClient.setOnReceiveMessageListener(new RongIMClient.OnReceiveMessageListener() {
+//            @Override
+//            public boolean onReceived(io.rong.imlib.model.Message message, int i) {
+//
+//                if (message.getTargetId().equals(ScannerManager.mMeetingName)){
+//                    if ("app:BarrageMsg".equals(message.getObjectName())) {
+//                        BarrageMessage barrageMessage = (BarrageMessage) message.getContent();
+//                        mBarrageMessageList.add(barrageMessage);
+//                        mBarrageAdapter.notifyDataSetChanged();
+//                    }
+//
+//                }
+//                return false;
+//            }
+//        });
 
         mLiveModel.GetBarrageGift(new BeanCallback<BaseJson<List<BarrageBean>>>() {
             @Override
@@ -400,6 +400,18 @@ public class AudienceActivity extends BaseMCVActivity {
         }else if (Const.Event_UserLeave.equals(bean.getCode())){
             //用户离开
         }
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void BarrageArrived(final BarrageMessage bm){
+        mRvDanmu.post(new Runnable() {
+            @Override
+            public void run() {
+                mBarrageMessageList.add(bm);
+                mBarrageAdapter.notifyDataSetChanged();
+                mRvDanmu.smoothScrollToPosition(mBarrageAdapter.getItemCount());
+            }
+        });
     }
 
     // 退出聊天室

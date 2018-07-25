@@ -14,6 +14,7 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.jyt.baseapp.manager.LiveManager;
 import com.jyt.baseapp.R;
 import com.jyt.baseapp.api.BeanCallback;
 import com.jyt.baseapp.api.Const;
@@ -64,7 +65,7 @@ public class LaunchActivity extends BaseMCVActivity {
 
     private boolean isLaunch = true;
     private ValueAnimator mValueAnimator;
-    private int id;
+    private int uid;
     private int type;
     private int trid;
     private LiveModel mLiveModel;
@@ -95,7 +96,7 @@ public class LaunchActivity extends BaseMCVActivity {
         EventBus.getDefault().register(this);
 //        MiPushClient.setAlias(this, Const.getUserID(),null);//设置别名
         mLiveModel = new LiveModelImpl();
-        id = (int) tuple.getItem1();
+        uid = (int) tuple.getItem1();//对方用户的ID
         type = (int) tuple.getItem2();
         String nick = (String) tuple.getItem3();
         String hpic = (String) tuple.getItme4();
@@ -123,7 +124,7 @@ public class LaunchActivity extends BaseMCVActivity {
             public void onAnimationStart(Animator animation) {
                 //拨打主播，视频聊天
                 mPbProgress.setVisibility(View.VISIBLE);
-                mLiveModel.MakeCall(id, type, new BeanCallback<BaseJson<CallBean>>() {
+                mLiveModel.MakeCall(uid, type, new BeanCallback<BaseJson<CallBean>>() {
                     @Override
                     public void response(boolean success, BaseJson<CallBean> response, int id) {
                         if (success && response.getCode()==200){
@@ -131,6 +132,11 @@ public class LaunchActivity extends BaseMCVActivity {
                             mCallBean = response.getData();
                             trid = mCallBean.getId();
                             ScannerManager.trId = String.valueOf(trid);
+                            if (type==2){
+                                LiveManager.requsetGreateRoom(String.valueOf(uid));
+                            }else if (type==3){
+                                LiveManager.requsetGreateVoiceRoom(String.valueOf(uid));
+                            }
                         }else if (success && response.getCode()==500){
                             BaseUtil.makeText(response.getMessage());
                             finish();
@@ -148,10 +154,10 @@ public class LaunchActivity extends BaseMCVActivity {
                 mPbProgress.setProgress(0);
                 //Activity被销毁，动画播放仍然存在，会导致30秒后用户端发起挂断。加上当前Activity是否存在的判断，防止该状况发生。
                 if (FinishActivityManager.getManager().IsActivityExist(LaunchActivity.class)){
-                    mLiveModel.HangUp(id, trid, new BeanCallback() {
+                    mLiveModel.HangUp(uid, trid, new BeanCallback() {
                         @Override
                         public void response(boolean success, Object response, int id) {
-
+                            LiveManager.audienceHangUp(String.valueOf(uid));
                         }
                     });
                 }
@@ -185,9 +191,10 @@ public class LaunchActivity extends BaseMCVActivity {
             mTvStar.setVisibility(View.GONE);
             mPbProgress.setVisibility(View.GONE);
             mBtnStar.setText("重拨");
-            mLiveModel.HangUp(id, trid, new BeanCallback() {
+            mLiveModel.HangUp(uid, trid, new BeanCallback() {
                 @Override
                 public void response(boolean success, Object response, int id) {
+                    LiveManager.audienceHangUp(String.valueOf(uid));
                     finish();
                 }
             });
@@ -227,6 +234,15 @@ public class LaunchActivity extends BaseMCVActivity {
        if (Const.Event_Launch.equals(bean.getCode())){
            Log.e("@#","销毁拨打电话界面");
            finish();
+       }else if (Const.Event_LiveHangUp.equals(bean.getCode())){
+           BaseUtil.makeText("主播忙碌");
+           mLiveModel.HangUp(uid, trid, new BeanCallback() {
+               @Override
+               public void response(boolean success, Object response, int uid) {
+                   finish();
+               }
+           });
+
        }
     }
 
@@ -239,9 +255,9 @@ public class LaunchActivity extends BaseMCVActivity {
             EventBus.getDefault().unregister(this);
         }
         if (isLaunch){
-//            mLiveModel.HangUp(id, trid, new BeanCallback() {
+//            mLiveModel.HangUp(uid, trid, new BeanCallback() {
 //                @Override
-//                public void response(boolean success, Object response, int id) {
+//                public void response(boolean success, Object response, int uid) {
 //
 //                }
 //            });

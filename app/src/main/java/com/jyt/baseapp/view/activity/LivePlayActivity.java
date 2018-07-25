@@ -301,33 +301,34 @@ public class LivePlayActivity extends BaseMCVActivity {
         });
 
         //监听聊天室消息的到来
-        RongIMClient.setOnReceiveMessageListener(new RongIMClient.OnReceiveMessageListener() {
-            @Override
-            public boolean onReceived(final io.rong.imlib.model.Message message, int i) {
-                if (message.getTargetId().equals(ScannerManager.mMeetingName)){
-                    if ("app:BarrageMsg".equals(message.getObjectName())) {
-                        mRvDanmu.post(new Runnable() {
-                            @Override
-                            public void run() {
-                                BarrageMessage barrageMessage = (BarrageMessage) message.getContent();
-                                mBarrageMessageList.add(barrageMessage);
-                                mBarrageAdapter.notifyDataSetChanged();
-                                mRvDanmu.smoothScrollToPosition(mBarrageAdapter.getItemCount());
-                            }
-                        });
-
-                    }
-
-                }
-                return false;
-            }
-        });
+//        RongIMClient.setOnReceiveMessageListener(new RongIMClient.OnReceiveMessageListener() {
+//            @Override
+//            public boolean onReceived(final io.rong.imlib.model.Message message, int i) {
+//                if (message.getTargetId().equals(ScannerManager.mMeetingName)){
+//                    if ("app:BarrageMsg".equals(message.getObjectName())) {
+//                        mRvDanmu.post(new Runnable() {
+//                            @Override
+//                            public void run() {
+//                                BarrageMessage barrageMessage = (BarrageMessage) message.getContent();
+//                                mBarrageMessageList.add(barrageMessage);
+//                                mBarrageAdapter.notifyDataSetChanged();
+//                                mRvDanmu.smoothScrollToPosition(mBarrageAdapter.getItemCount());
+//                            }
+//                        });
+//
+//                    }
+//
+//                }
+//                return false;
+//            }
+//        });
     }
 
     /**
      * 加入弹幕房
      */
     private void JoinDanmuRoom(){
+        Log.e("@#","房间名："+ScannerManager.mMeetingName);
         RongIMClient.getInstance().joinChatRoom(ScannerManager.mMeetingName, -1, new RongIMClient.OperationCallback() {
             @Override
             public void onSuccess() {
@@ -375,6 +376,19 @@ public class LivePlayActivity extends BaseMCVActivity {
             //用户离开
         }
     }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void BarrageArrived(final BarrageMessage bm){
+        mRvDanmu.post(new Runnable() {
+            @Override
+            public void run() {
+                mBarrageMessageList.add(bm);
+                mBarrageAdapter.notifyDataSetChanged();
+                mRvDanmu.smoothScrollToPosition(mBarrageAdapter.getItemCount());
+            }
+        });
+    }
+
 
     //计时器
     private  Handler mhandle;
@@ -430,6 +444,17 @@ public class LivePlayActivity extends BaseMCVActivity {
 
     @Override
     protected void onDestroy() {
+        RongIMClient.getInstance().quitChatRoom(ScannerManager.mMeetingName, new RongIMClient.OperationCallback() {
+            @Override
+            public void onSuccess() {
+                Log.e("@#","离开弹幕房间");
+            }
+
+            @Override
+            public void onError(RongIMClient.ErrorCode errorCode) {
+                Log.e("@#","离开弹幕房间失败 "+errorCode.getMessage());
+            }
+        });
         if (ScannerManager.isBigScreen){
             //未处于悬浮窗状态
             if (ScannerManager.isStartLive){
@@ -440,21 +465,11 @@ public class LivePlayActivity extends BaseMCVActivity {
             //处于悬浮窗状态
 
         }
-        super.onDestroy();
+
         if(EventBus.getDefault().isRegistered(this)) {
             EventBus.getDefault().unregister(this);
         }
 
-        RongIMClient.getInstance().quitChatRoom(ScannerManager.mMeetingName, new RongIMClient.OperationCallback() {
-            @Override
-            public void onSuccess() {
-
-            }
-
-            @Override
-            public void onError(RongIMClient.ErrorCode errorCode) {
-
-            }
-        });
+        super.onDestroy();
     }
 }

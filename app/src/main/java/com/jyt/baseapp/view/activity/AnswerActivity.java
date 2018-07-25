@@ -15,6 +15,8 @@ import com.jyt.baseapp.api.Const;
 import com.jyt.baseapp.bean.EventBean;
 import com.jyt.baseapp.bean.Tuple;
 import com.jyt.baseapp.helper.IntentHelper;
+import com.jyt.baseapp.manager.LiveManager;
+import com.jyt.baseapp.service.ScannerManager;
 import com.jyt.baseapp.util.BaseUtil;
 import com.jyt.baseapp.util.FastBlurUtil;
 import com.jyt.baseapp.view.widget.CircleImageView;
@@ -101,6 +103,7 @@ public class AnswerActivity extends BaseMCVActivity {
 
     @OnClick(R.id.btn_answer_no)
     public void AnswerNo(){
+        LiveManager.liveRejectCall(ScannerManager.uId);
         finish();
     }
 

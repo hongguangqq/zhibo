@@ -13,8 +13,16 @@ import android.util.Log;
 
 import com.jyt.baseapp.api.Const;
 import com.jyt.baseapp.bean.EventBean;
+import com.jyt.baseapp.helper.IntentHelper;
+import com.jyt.baseapp.service.ScannerManager;
+import com.jyt.baseapp.util.BaseUtil;
+import com.jyt.baseapp.util.FinishActivityManager;
 import com.jyt.baseapp.util.L;
+import com.jyt.baseapp.view.activity.AudienceActivity;
+import com.jyt.baseapp.view.activity.LaunchActivity;
+import com.jyt.baseapp.view.activity.LivePlayActivity;
 import com.jyt.baseapp.view.widget.BarrageMessage;
+import com.jyt.baseapp.view.widget.NMRCCallMessage;
 import com.netease.nimlib.sdk.NIMClient;
 import com.netease.nimlib.sdk.SDKOptions;
 import com.netease.nimlib.sdk.StatusBarNotificationConfig;
@@ -52,6 +60,8 @@ import io.rong.message.VoiceMessage;
 import io.rong.push.RongPushClient;
 import io.rong.push.common.RongException;
 import okhttp3.OkHttpClient;
+
+import static com.jyt.baseapp.api.Const.Event_NewArrive;
 
 /**
  * Created by chenweiqi on 2017/10/30.
@@ -176,25 +186,85 @@ public class App  extends MultiDexApplication {
 
         try {
             RongIMClient.registerMessageType(BarrageMessage.class);
+            RongIMClient.registerMessageType(NMRCCallMessage.class);
             RongPushClient.checkManifest(this);
         } catch (RongException e) {
             Log.e("@#","rongyun:"+e.getMessage());
         } catch (AnnotationNotFoundException e) {
             e.printStackTrace();
         }
+
+
         RongIMClient.setOnReceiveMessageListener(new RongIMClient.OnReceiveMessageListener() {
             @Override
             public boolean onReceived(io.rong.imlib.model.Message message, int i) {
                 Log.e("@#","onReceived");
-                Intent intent = new Intent();
-                intent.setAction(Const.Reciver_Message);
-                intent.putExtra(Const.Rong_Message,message);
-                sendBroadcast(intent);
-                //消息类型为文本时触发监听，Tab2刷新消息数量
+
                 if (message.getContent() instanceof TextMessage
                         ||message.getContent() instanceof ImageMessage
                         ||message.getContent() instanceof VoiceMessage){
-                    EventBus.getDefault().post(new EventBean(null));
+                    //消息类型为默认类型时触发监听，Tab2刷新消息数量
+                    EventBus.getDefault().post(new EventBean(Event_NewArrive));
+
+                    //广播-同步更新文本通讯界面的消息
+                    Intent intent = new Intent();
+                    intent.setAction(Const.Reciver_Message);
+                    intent.putExtra(Const.Rong_Message,message);
+                    sendBroadcast(intent);
+                }else if (message.getObjectName().equals("app:NMRCCallMessage")){
+                    NMRCCallMessage msg = (NMRCCallMessage) message.getContent();
+                    int code = Integer.valueOf(msg.getCode());
+                    String name = msg.getNickname();
+                    String hpic = msg.getHeadImg();
+                    String uId = msg.getuId();
+                    switch (code){
+                        case 1:
+                            //主播收到观众开播请求
+                            BaseUtil.e("主播收到观众开播请求");
+                            ScannerManager.comID = msg.getwId();
+                            ScannerManager.trId = msg.getTrId();
+                            ScannerManager.uId = uId;
+                            IntentHelper.OpenAnswerActivity(mcontext,name,hpic,false);
+                            break;
+                        case 2:
+                            ScannerManager.comID = msg.getwId();
+                            ScannerManager.trId = msg.getTrId();
+                            ScannerManager.mMeetingName  = msg.getRoomName();
+                            IntentHelper.OpenAudienceActivity(mcontext);
+                            EventBus.getDefault().post(new EventBean(Const.Event_Launch));//拨打电话界面销毁
+                            break;
+                        case 3:
+                            if (FinishActivityManager.getManager().IsActivityExist(LivePlayActivity.class)){
+                                EventBus.getDefault().post(new EventBean(Const.Event_HangUp));
+                            }
+                            break;
+                        case 4:
+                            if (FinishActivityManager.getManager().IsActivityExist(LaunchActivity.class)){
+                                EventBus.getDefault().post(new EventBean(Const.Event_LiveHangUp));
+                            }
+                            break;
+                        case 5:
+                            ScannerManager.comID = msg.getwId();
+                            ScannerManager.trId = msg.getTrId();
+                            ScannerManager.uId = uId;
+                            IntentHelper.OpenAnswerActivity(mcontext,name,hpic,true);
+                            break;
+                        case 6:
+                            ScannerManager.comID = msg.getwId();
+                            ScannerManager.trId = msg.getTrId();
+                            ScannerManager.mMeetingName  = msg.getRoomName();
+                            IntentHelper.OpenAudienceVoiceActivity(mcontext);
+                            EventBus.getDefault().post(new EventBean(Const.Event_Launch));//拨打电话界面销毁
+                            break;
+
+                    }
+                    return true;
+                }else if (message.getObjectName().equals("app:BarrageMsg")){
+                    BarrageMessage bm = (BarrageMessage) message.getContent();
+                    if (FinishActivityManager.getManager().IsActivityExist(LivePlayActivity.class)||
+                        FinishActivityManager.getManager().IsActivityExist(AudienceActivity.class)){
+                        EventBus.getDefault().post(bm);
+                    }
                 }
                 return false;
             }

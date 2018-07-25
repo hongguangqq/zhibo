@@ -21,6 +21,7 @@ import com.jyt.baseapp.api.BeanCallback;
 import com.jyt.baseapp.api.Const;
 import com.jyt.baseapp.bean.EventBean;
 import com.jyt.baseapp.helper.IntentHelper;
+import com.jyt.baseapp.manager.LiveManager;
 import com.jyt.baseapp.model.LiveModel;
 import com.jyt.baseapp.model.impl.LiveModelImpl;
 import com.jyt.baseapp.util.BaseUtil;
@@ -70,6 +71,7 @@ public class ScannerManager  {
     private static boolean isOpenVideo;//是否开启视频
     public static boolean isAudienceJoin;//聊天对象是否已进入
     public static int mEavesdropNum;//偷听人数
+    public static String uId = "";//用户ID
     public static String trId ="";//通话记录的ID
     public static String comID = "";//聊天对象网易云ID
     public static int LastRequestNum;//一次直播中，只允许有3次查看对方余额的机会
@@ -206,7 +208,7 @@ public class ScannerManager  {
                         mLiveModel.AnchorAnswer(trId, mMeetingName, Const.getWyAccount(), new BeanCallback() {
                             @Override
                             public void response(boolean success, Object response, int id) {
-
+                                LiveManager.liveAgreeCreatRoom(mMeetingName,uId);
                             }
                         });
 
@@ -298,6 +300,7 @@ public class ScannerManager  {
         isPause = true;
         mMeetingName = "";
         comID = "";
+        uId ="";
         LastRequestNum = 0;//重置零
         mEavesdropNum = 0;
 
@@ -500,7 +503,6 @@ public class ScannerManager  {
                 @Override
                 public void onSuccess(Void aVoid) {
                     Log.e("@#", "leave channel success");
-                    ScannerManager.mMeetingName = "";
                     if (activity != null) {
 //                        activity.finish();
                     }
@@ -531,11 +533,11 @@ public class ScannerManager  {
             if (!ScannerManager.isBigScreen){
                 Log.e("@#","窗口模式下触发离开");
                 hide();
-//                if (Const.getGender() == 1){
-//                    IntentHelper.OpenEndCallActivity((Activity) App.getContext(),false);
-//                }else {
-//                    IntentHelper.OpenEndCallActivity((Activity) App.getContext(),true);
-//                }
+                if (Const.getGender() == 1){
+                    IntentHelper.OpenEndCallActivity( App.getContext(),false);
+                }else {
+                    IntentHelper.OpenEndCallActivity( App.getContext(),true);
+                }
                 //窗口模式触发离开需要关闭服务
                 ScannerController.getInstance().stopMonkServer(App.getContext());
             }

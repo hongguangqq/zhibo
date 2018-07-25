@@ -4,14 +4,9 @@ import android.content.Context;
 import android.util.Log;
 
 import com.jyt.baseapp.api.Const;
-import com.jyt.baseapp.bean.BarrageBean;
 import com.jyt.baseapp.bean.EventBean;
-import com.jyt.baseapp.helper.IntentHelper;
-import com.jyt.baseapp.service.ScannerManager;
 import com.jyt.baseapp.util.BaseUtil;
-import com.jyt.baseapp.util.FinishActivityManager;
 import com.jyt.baseapp.util.HawkUtil;
-import com.jyt.baseapp.view.activity.LivePlayActivity;
 import com.xiaomi.mipush.sdk.ErrorCode;
 import com.xiaomi.mipush.sdk.MiPushClient;
 import com.xiaomi.mipush.sdk.MiPushCommandMessage;
@@ -19,8 +14,6 @@ import com.xiaomi.mipush.sdk.MiPushMessage;
 import com.xiaomi.mipush.sdk.PushMessageReceiver;
 
 import org.greenrobot.eventbus.EventBus;
-import org.json.JSONException;
-import org.json.JSONObject;
 
 import java.util.Map;
 
@@ -32,14 +25,14 @@ public class DemoMessageReceiver extends PushMessageReceiver {
     private String mTopic;
     private String mAlias;
     private String mUserAccount;
-    private static final String MSG_Live = "1";
-    private static final String MSG_Audience = "2";
-    private static final String MSG_HangUp = "3";//用户挂断
-    private static final String MSG_LiveHangUp = "4";//主播挂断
-    private static final String MSG_BarrageText = "5";//文字弹幕
-    private static final String MSG_BarrageImg = "6";//图片弹幕
-    private static final String MSG_LiveVoice = "7";//主播音频来电
-    private static final String MSG_AudienceVoice = "8";//观众音频来电
+//    private static final String MSG_Live = "1";
+//    private static final String MSG_Audience = "2";
+//    private static final String MSG_HangUp = "3";//用户挂断
+//    private static final String MSG_LiveHangUp = "4";//主播挂断
+//    private static final String MSG_BarrageText = "5";//文字弹幕
+//    private static final String MSG_BarrageImg = "6";//图片弹幕
+//    private static final String MSG_LiveVoice = "7";//主播音频来电
+//    private static final String MSG_AudienceVoice = "8";//观众音频来电
 
 
     //透传消息到达客户端时调用
@@ -52,97 +45,93 @@ public class DemoMessageReceiver extends PushMessageReceiver {
         BaseUtil.e("透传消息是"+message.toString());
         Map<String,String> map = message.getExtra();
         String code = map.get("code");
-        if (MSG_Live.equals(code)){
-            //主播收到观众开播请求，进入直播界面，创建房间
-            String jobjStr = map.get("message");
-            try {
-                JSONObject jobj = new JSONObject(jobjStr);
-                ScannerManager.comID = jobj.getString("userAccid");
-                ScannerManager.trId = jobj.getString("trId");
-                String name = jobj.getString("userName");
-                String hpic = jobj.optString("img");
-                IntentHelper.OpenAnswerActivity(context,name,hpic,false);
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
-        } else if (MSG_Audience.equals(code)){
-            //观众拨打电话给主播，主播同意后进入直播界面
-            String jobjStr = map.get("message");
-            try {
-                JSONObject jobj = new JSONObject(jobjStr);
-                ScannerManager.comID = jobj.getString("accid");
-                ScannerManager.mMeetingName = jobj.getString("roomName");
-                IntentHelper.OpenAudienceActivity(context);
-                EventBus.getDefault().post(new EventBean(Const.Event_Launch));//拨打电话界面销毁
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
-        } else if (MSG_HangUp.equals(code)){
-            //挂电话
-            if (FinishActivityManager.getManager().IsActivityExist(LivePlayActivity.class)){
-                EventBus.getDefault().post(new EventBean(Const.Event_HangUp));
-            }
-//            if (!ScannerManager.isBigScreen){
-//                //处于窗口模式
-//                ScannerManager.releaseRtc(null,true,true);
+//        if (MSG_Live.equals(code)){
+//            //主播收到观众开播请求，进入直播界面，创建房间
+//            String jobjStr = map.get("message");
+//            try {
+//                JSONObject jobj = new JSONObject(jobjStr);
+//                ScannerManager.comID = jobj.getString("userAccid");
+//                ScannerManager.trId = jobj.getString("trId");
+//                String name = jobj.getString("userName");
+//                String hpic = jobj.optString("img");
+//                IntentHelper.OpenAnswerActivity(context,name,hpic,false);
+//            } catch (JSONException e) {
+//                e.printStackTrace();
 //            }
-
-        } else if (MSG_LiveHangUp.equals(code)){
-
-        } else if (MSG_BarrageText.equals(code)){
-            String jobjStr = map.get("message");
-            try {
-                JSONObject jobj = new JSONObject(jobjStr);
-                BarrageBean bean = new BarrageBean();
-                String name = jobj.getString("name");
-                String danmu = jobj.getString("danmu");
-                bean.setName(name);
-                bean.setText(danmu);
-                EventBus.getDefault().post(bean);
-            }
-            catch (JSONException e) {
-                e.printStackTrace();
-            }
-        } else if (MSG_BarrageImg.equals(code)){
-            String jobjStr = map.get("message");
-            try {
-                JSONObject jobj = new JSONObject(jobjStr);
-                BarrageBean bean = new BarrageBean();
-                String name = jobj.getString("name");
-                String img = jobj.optString("img");
-                bean.setName(name);
-                bean.setImg(img);
-                EventBus.getDefault().post(bean);
-            }
-            catch (JSONException e) {
-                e.printStackTrace();
-            }
-        } else if (MSG_LiveVoice.equals(code)){
-            String jobjStr = map.get("message");
-            try {
-                JSONObject jobj = new JSONObject(jobjStr);
-                ScannerManager.comID = jobj.getString("userAccid");
-                ScannerManager.trId = jobj.getString("trId");
-                String name = jobj.getString("userName");
-                String hpic = jobj.optString("img");
-                IntentHelper.OpenAnswerActivity(context,name,hpic,true);
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
-        } else if (MSG_AudienceVoice.equals(code)){
-            String jobjStr = map.get("message");
-            try {
-                JSONObject jobj = new JSONObject(jobjStr);
-                ScannerManager.comID = jobj.getString("accid");
-                ScannerManager.mMeetingName = jobj.getString("roomName");
-                IntentHelper.OpenAudienceVoiceActivity(context);
-                EventBus.getDefault().post(new EventBean(Const.Event_Launch));//拨打电话界面销毁
-
-            }
-            catch (JSONException e) {
-                e.printStackTrace();
-            }
-        }
+//        } else if (MSG_Audience.equals(code)){
+//            //观众拨打电话给主播，主播同意后进入直播界面
+//            String jobjStr = map.get("message");
+//            try {
+//                JSONObject jobj = new JSONObject(jobjStr);
+//                ScannerManager.comID = jobj.getString("accid");
+//                ScannerManager.mMeetingName = jobj.getString("roomName");
+//                IntentHelper.OpenAudienceActivity(context);
+//                EventBus.getDefault().post(new EventBean(Const.Event_Launch));//拨打电话界面销毁
+//            } catch (JSONException e) {
+//                e.printStackTrace();
+//            }
+//        } else if (MSG_HangUp.equals(code)){
+//            //挂电话
+//            if (FinishActivityManager.getManager().IsActivityExist(LivePlayActivity.class)){
+//                EventBus.getDefault().post(new EventBean(Const.Event_HangUp));
+//            }
+//
+//        } else if (MSG_LiveHangUp.equals(code)){
+//
+//        } else if (MSG_BarrageText.equals(code)){
+//            String jobjStr = map.get("message");
+//            try {
+//                JSONObject jobj = new JSONObject(jobjStr);
+//                BarrageBean bean = new BarrageBean();
+//                String name = jobj.getString("name");
+//                String danmu = jobj.getString("danmu");
+//                bean.setName(name);
+//                bean.setText(danmu);
+//                EventBus.getDefault().post(bean);
+//            }
+//            catch (JSONException e) {
+//                e.printStackTrace();
+//            }
+//        } else if (MSG_BarrageImg.equals(code)){
+//            String jobjStr = map.get("message");
+//            try {
+//                JSONObject jobj = new JSONObject(jobjStr);
+//                BarrageBean bean = new BarrageBean();
+//                String name = jobj.getString("name");
+//                String img = jobj.optString("img");
+//                bean.setName(name);
+//                bean.setImg(img);
+//                EventBus.getDefault().post(bean);
+//            }
+//            catch (JSONException e) {
+//                e.printStackTrace();
+//            }
+//        } else if (MSG_LiveVoice.equals(code)){
+//            String jobjStr = map.get("message");
+//            try {
+//                JSONObject jobj = new JSONObject(jobjStr);
+//                ScannerManager.comID = jobj.getString("userAccid");
+//                ScannerManager.trId = jobj.getString("trId");
+//                String name = jobj.getString("userName");
+//                String hpic = jobj.optString("img");
+//                IntentHelper.OpenAnswerActivity(context,name,hpic,true);
+//            } catch (JSONException e) {
+//                e.printStackTrace();
+//            }
+//        } else if (MSG_AudienceVoice.equals(code)){
+//            String jobjStr = map.get("message");
+//            try {
+//                JSONObject jobj = new JSONObject(jobjStr);
+//                ScannerManager.comID = jobj.getString("accid");
+//                ScannerManager.mMeetingName = jobj.getString("roomName");
+//                IntentHelper.OpenAudienceVoiceActivity(context);
+//                EventBus.getDefault().post(new EventBean(Const.Event_Launch));//拨打电话界面销毁
+//
+//            }
+//            catch (JSONException e) {
+//                e.printStackTrace();
+//            }
+//        }
 
     }
 

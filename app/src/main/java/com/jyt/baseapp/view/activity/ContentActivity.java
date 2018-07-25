@@ -183,7 +183,6 @@ public class ContentActivity extends BaseMCVActivity implements View.OnClickList
         NIMClient.getService(AuthService.class).login(loginInfo).setCallback(new RequestCallback() {
             @Override
             public void onSuccess(Object param) {
-                Log.e("@#","Wy-onSuccess");
                 Log.e("@#","WY-accId："+Const.getWyAccount());
             }
 

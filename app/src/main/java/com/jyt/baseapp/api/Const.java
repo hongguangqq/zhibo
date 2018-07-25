@@ -81,10 +81,11 @@ public class Const {
 
     public static final String IsLive = "IsLive";//endcall界面判断是否为主播
     public static final String FinishTime = "FinishTime";//结束时间
-    public static final String Event_Launch = "LaunchActivity";
-    public static final String Event_Live = "LivePlayActivity";
-    public static final String Event_Audience = "AudienceActivity";
-    public static final String Event_HangUp = "AudienceProjectActivity";
+    public static final String Event_Launch = "Event_Launch";
+    public static final String Event_Live = "Event_Launch";
+    public static final String Event_Audience = "Event_Audience";
+    public static final String Event_HangUp = "Event_HangUp";
+    public static final String Event_LiveHangUp = "Event_LiveHangUp";//主播拒听
     public static final String Event_UserJoin = "Event_UserJoin";//用户加入
     public static final String Event_UserLeave = "Event_UserLeave";//用户离开
     public static final String Event_NewArrive = "Event_NewArrive";//消息到达

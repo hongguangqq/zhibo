@@ -38,6 +38,8 @@ import com.jyt.baseapp.util.SoftInputUtil;
 import com.jyt.baseapp.view.dialog.RecordDialog;
 import com.jyt.baseapp.view.viewholder.ComMeViewHolder;
 import com.jyt.baseapp.view.viewholder.ComOtherViewHolder;
+import com.jyt.baseapp.view.widget.BarrageMessage;
+import com.jyt.baseapp.view.widget.NMRCCallMessage;
 import com.linchaolong.android.imagepicker.ImagePicker;
 
 import java.io.File;
@@ -255,6 +257,13 @@ public class CommunicationActivity extends BaseMCVActivity {
                 if (messages==null){
                     mMessageList = new ArrayList<Message>();
                 }
+                List list = new ArrayList();
+                for(Message msg:mMessageList){
+                    if (msg.getContent() instanceof BarrageMessage || msg.getContent() instanceof NMRCCallMessage){
+                        list.add(msg);
+                    }
+                }
+                mMessageList.removeAll(list);
                 Collections.reverse(mMessageList);
                 mComAdapter.notifyData(mMessageList);
                 mRvContent.scrollToPosition(mMessageList.size()-1);
