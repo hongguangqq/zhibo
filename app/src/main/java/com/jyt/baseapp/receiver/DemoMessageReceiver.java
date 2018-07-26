@@ -1,6 +1,7 @@
 package com.jyt.baseapp.receiver;
 
 import android.content.Context;
+import android.text.TextUtils;
 import android.util.Log;
 
 import com.jyt.baseapp.api.Const;
@@ -147,8 +148,14 @@ public class DemoMessageReceiver extends PushMessageReceiver {
         BaseUtil.e("通知消息是"+message.toString());
 //        Map<String,String> map = message.getExtra();
 //        Log.e("@#",map.get("bili"));
-        HawkUtil.addPushMessage(message);
-        EventBus.getDefault().post(new EventBean(Const.Event_SystemFirst,message));//系统消息
+        Map<String,String> map = message.getExtra();
+        String code = map.get("code");
+        if (TextUtils.isEmpty(code) && "10".equals(code)){
+            //系统消息
+            HawkUtil.addPushMessage(message);
+            EventBus.getDefault().post(new EventBean(Const.Event_SystemFirst,message));
+        }
+
     }
 
     //用户手动点击通知栏消息时调用

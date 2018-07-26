@@ -13,6 +13,7 @@ import com.jyt.baseapp.bean.Tuple;
 import com.jyt.baseapp.util.FinishActivityManager;
 import com.jyt.baseapp.view.activity.AccountActivity;
 import com.jyt.baseapp.view.activity.AnswerActivity;
+import com.jyt.baseapp.view.activity.AnswerAudienceActivity;
 import com.jyt.baseapp.view.activity.AudienceActivity;
 import com.jyt.baseapp.view.activity.AudienceVoiceActivity;
 import com.jyt.baseapp.view.activity.BlackActivity;
@@ -428,6 +429,27 @@ public class IntentHelper {
     public static Tuple AnswerActivityGetPara(Intent intent){
         String name = intent.getStringExtra(IntentKey.Answer_Name);
         String hpic = intent.getStringExtra(IntentKey.Answer_Hpic);
+        boolean isVoice = intent.getBooleanExtra(IntentKey.Answer_IsVoice,false);
+        return new Tuple(name,hpic,isVoice);
+    }
+
+    /**
+     * 观众收到主播回拨电话，跳转接听界面
+     * @param activity
+     */
+    public static void OpenAnswerAudienceActivity(Context activity,String name ,String hpic , String uid , boolean isVoice){
+        Intent intent =getIntent(activity, AnswerAudienceActivity.class);
+        intent.putExtra(IntentKey.Answer_Name,name);
+        intent.putExtra(IntentKey.Answer_Hpic,hpic);
+        intent.putExtra(IntentKey.Answer_Id,uid);
+        intent.putExtra(IntentKey.Answer_IsVoice,isVoice);
+        activity.startActivity(intent);
+    }
+
+    public static Tuple AnswerActivityAudienceGetPara(Intent intent){
+        String name = intent.getStringExtra(IntentKey.Answer_Name);
+        String hpic = intent.getStringExtra(IntentKey.Answer_Hpic);
+        String uid = intent.getStringExtra(IntentKey.Answer_Id);
         boolean isVoice = intent.getBooleanExtra(IntentKey.Answer_IsVoice,false);
         return new Tuple(name,hpic,isVoice);
     }

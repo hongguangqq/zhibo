@@ -6,16 +6,22 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
+import com.jyt.baseapp.App;
 import com.jyt.baseapp.R;
+import com.jyt.baseapp.bean.FriendNewsBean;
+import com.jyt.baseapp.util.TimeUtil;
+import com.jyt.baseapp.view.widget.CircleImageView;
 
 import butterknife.BindView;
 
 /**
  * @author LinWei on 2018/5/17 11:10
  */
-public class NewViewHolder1 extends BaseViewHolder<String> {
+public class NewViewHolder1 extends BaseViewHolder<FriendNewsBean> {
 
-
+    @BindView(R.id.iv_ff_hpic)
+    CircleImageView mIvHpic;
     @BindView(R.id.tv_ff_state)
     TextView mTvState;
     @BindView(R.id.tv_ff_name)
@@ -32,11 +38,14 @@ public class NewViewHolder1 extends BaseViewHolder<String> {
     }
 
     @Override
-    public void setData(String data) {
+    public void setData(FriendNewsBean data) {
         super.setData(data);
         mTvState.setVisibility(View.GONE);
-        mTvName.setVisibility(View.GONE);
         mTvTime.setVisibility(View.VISIBLE);
+        Glide.with(App.getContext()).load(data.getHeadImg()).error(R.mipmap.timg).into(mIvHpic);
+        mTvName.setText(data.getNickname());
+        mTvMark.setText(data.getContent());
+        mTvTime.setText(TimeUtil.getTimeSlot((System.currentTimeMillis()-data.getTime())/100000));
     }
 
 

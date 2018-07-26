@@ -21,6 +21,8 @@ public class LiveManager {
     private static final String MSG_LiveHangUp = "4";//主播挂断-视频
     private static final String MSG_LiveVoice = "5";//主播收到音频创建房间请求
     private static final String MSG_AudienceVoice = "6";//观众收到邀请加入房间-音频
+    private static final String MSG_RingBack = "7";//主播回拨
+    private static final String MSG_AudienceHangUp = "8";//观众收到主播的回拨，选择挂断
 
 
     /**
@@ -36,12 +38,12 @@ public class LiveManager {
 
             @Override
             public void onSuccess(Message message) {
-                Log.e("@#","ASD"+"onSuccess");
+                Log.e("@#","ASD"+"onSuccess-requsetGreateRoom");
             }
 
             @Override
             public void onError(Message message, RongIMClient.ErrorCode errorCode) {
-                Log.e("@#","ASD"+"onError "+ errorCode.getMessage());
+                Log.e("@#","ASD"+"onError-requsetGreateRoom "+ errorCode.getMessage());
             }
         });
     }
@@ -59,12 +61,12 @@ public class LiveManager {
 
             @Override
             public void onSuccess(Message message) {
-                Log.e("@#","ASD"+"onSuccess");
+                Log.e("@#","ASD"+"onSuccess-liveAgreeCreatRoom");
             }
 
             @Override
             public void onError(Message message, RongIMClient.ErrorCode errorCode) {
-                Log.e("@#","ASD"+"onError "+ errorCode.getMessage());
+                Log.e("@#","ASD"+"onError-liveAgreeCreatRoom "+ errorCode.getMessage());
             }
         });
     }
@@ -82,12 +84,12 @@ public class LiveManager {
 
             @Override
             public void onSuccess(Message message) {
-                Log.e("@#","ASD"+"onSuccess");
+                Log.e("@#","ASD"+"onSuccess-audienceHangUp");
             }
 
             @Override
             public void onError(Message message, RongIMClient.ErrorCode errorCode) {
-                Log.e("@#","ASD"+"onError "+ errorCode.getMessage());
+                Log.e("@#","ASD"+"onError-audienceHangUp "+ errorCode.getMessage());
             }
         });
     }
@@ -105,12 +107,12 @@ public class LiveManager {
 
             @Override
             public void onSuccess(Message message) {
-                Log.e("@#","ASD"+"onSuccess");
+                Log.e("@#","ASD"+"onSuccess-liveRejectCall");
             }
 
             @Override
             public void onError(Message message, RongIMClient.ErrorCode errorCode) {
-                Log.e("@#","ASD"+"onError "+ errorCode.getMessage());
+                Log.e("@#","ASD"+"onError-liveRejectCall "+ errorCode.getMessage());
             }
         });
     }
@@ -128,12 +130,12 @@ public class LiveManager {
 
             @Override
             public void onSuccess(Message message) {
-                Log.e("@#","ASD"+"onSuccess");
+                Log.e("@#","ASD"+"onSuccess-requsetGreateVoiceRoom");
             }
 
             @Override
             public void onError(Message message, RongIMClient.ErrorCode errorCode) {
-                Log.e("@#","ASD"+"onError "+ errorCode.getMessage());
+                Log.e("@#","ASD"+"onError-requsetGreateVoiceRoom "+ errorCode.getMessage());
             }
         });
     }
@@ -151,13 +153,41 @@ public class LiveManager {
 
             @Override
             public void onSuccess(Message message) {
-                Log.e("@#","ASD"+"onSuccess");
+                Log.e("@#","ASD"+"onSuccess-liveAgreeCreatVoiceRoom");
             }
 
             @Override
             public void onError(Message message, RongIMClient.ErrorCode errorCode) {
-                Log.e("@#","ASD"+"onError "+ errorCode.getMessage());
+                Log.e("@#","ASD"+"onError-liveAgreeCreatVoiceRoom "+ errorCode.getMessage());
             }
         });
     }
+
+    /**
+     * 主播回拨观众
+     * @param roomName
+     * @param uid
+     */
+    public static void LiveRingBack(String roomName , String uid){
+        NMRCCallMessage msg = new NMRCCallMessage(MSG_RingBack , roomName , Const.getUserNick() , Const.getUserHeadImg() , Const.getUserID() ,Const.getWyAccount(), ScannerManager.trId);
+        RongIMClient.getInstance().sendMessage(Conversation.ConversationType.PRIVATE, uid, msg, null, null, new IRongCallback.ISendMessageCallback() {
+            @Override
+            public void onAttached(Message message) {
+            }
+
+            @Override
+            public void onSuccess(Message message) {
+                Log.e("@#","ASD"+"onSuccess-LiveRingBack");
+            }
+
+            @Override
+            public void onError(Message message, RongIMClient.ErrorCode errorCode) {
+                Log.e("@#","ASD"+"onError-LiveRingBack "+ errorCode.getMessage());
+            }
+        });
+    }
+
+
+
+
 }

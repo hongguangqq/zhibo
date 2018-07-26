@@ -170,7 +170,7 @@
             android:visibility="gone"
             android:paddingLeft="16dp"
             android:paddingRight="16dp"
-            android:background="@color/white">
+            android:background="#9B040404">
         </android.support.v7.widget.RecyclerView>
     </LinearLayout>
 

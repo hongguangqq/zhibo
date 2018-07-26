@@ -35,5 +35,8 @@ public interface LiveModel extends BaseModel{
 
     void GetBarrageGift(Callback callback);
 
+    void RingBack(String userId , int type , String roomName , Callback callback);
+
+
 
 }

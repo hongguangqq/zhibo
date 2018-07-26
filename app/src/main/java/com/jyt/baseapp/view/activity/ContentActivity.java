@@ -28,6 +28,8 @@ import com.jyt.baseapp.adapter.FactoryPageAdapter;
 import com.jyt.baseapp.adapter.FragmentViewPagerAdapter;
 import com.jyt.baseapp.api.BeanCallback;
 import com.jyt.baseapp.api.Const;
+import com.jyt.baseapp.bean.BaseJson;
+import com.jyt.baseapp.bean.UserBean;
 import com.jyt.baseapp.helper.IntentHelper;
 import com.jyt.baseapp.helper.IntentRequestCode;
 import com.jyt.baseapp.model.LoginModel;
@@ -35,6 +37,7 @@ import com.jyt.baseapp.model.PersonModel;
 import com.jyt.baseapp.model.impl.LoginModelImpl;
 import com.jyt.baseapp.model.impl.PersonModelImpl;
 import com.jyt.baseapp.util.BaseUtil;
+import com.jyt.baseapp.util.HawkUtil;
 import com.jyt.baseapp.view.fragment.FragmentTab1;
 import com.jyt.baseapp.view.fragment.FragmentTab2;
 import com.jyt.baseapp.view.fragment.FragmentTab3;
@@ -176,6 +179,15 @@ public class ContentActivity extends BaseMCVActivity implements View.OnClickList
         mViewPagerAdapter.setFragments(mFragmentList);
         mVpContent.setAdapter(mViewPagerAdapter);
         mVpContent.setOffscreenPageLimit(4);
+        //获取好友ID列表
+        mPersonModel.getFocusIdList(new BeanCallback<BaseJson<List<UserBean>>>() {
+            @Override
+            public void response(boolean success, BaseJson<List<UserBean>> response, int id) {
+                if (success && response.getData()!=null){
+                    HawkUtil.saveFocusList(response.getData());
+                }
+            }
+        });
         MiPushClient.setUserAccount(BaseUtil.getContext(),Const.getUserID(),null);
         MiPushClient.resumePush(BaseUtil.getContext(),null);
         //网易云音视频登录

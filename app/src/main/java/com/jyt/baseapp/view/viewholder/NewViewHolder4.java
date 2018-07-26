@@ -1,6 +1,5 @@
 package com.jyt.baseapp.view.viewholder;
 
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,6 +12,7 @@ import com.jyt.baseapp.App;
 import com.jyt.baseapp.R;
 import com.jyt.baseapp.api.Const;
 import com.jyt.baseapp.bean.CallRecordBean;
+import com.jyt.baseapp.util.TimeUtil;
 import com.jyt.baseapp.view.widget.CircleImageView;
 
 import java.text.ParseException;
@@ -92,12 +92,11 @@ public class NewViewHolder4 extends BaseViewHolder<CallRecordBean> {
         try {
             long endTime = format.parse(data.getEndTime()).getTime();
 
-            Log.e("@#","time"+nowTime);
-            String time = String.valueOf((nowTime - endTime)/1000);
+            String time = TimeUtil.getTimeSlot((nowTime - endTime)/1000000);
             if (data.getState()==1){
-                mTvMark.setText("通话时间 "+time+" 分钟前");
+                mTvMark.setText("通话时间 "+time);
             }else {
-                mTvMark.setText("未接通 "+time+" 分钟前");
+                mTvMark.setText("未接通 "+time);
             }
         } catch (ParseException e) {
             e.printStackTrace();

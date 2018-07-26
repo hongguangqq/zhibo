@@ -28,4 +28,18 @@ public class TimeUtil {
         int h=(int) (time/3600);//时
         return String.format("%02d:%02d:%02d",h,m,s);
     }
+
+    public static String getTimeSlot(long time){
+        String s = null;
+        if (time<60){
+            s=time+"分钟前";
+        }else if (time>=60 && time<24*60){
+            s=(time/60)+"小时前";
+        }else if (time>=24*60){
+            s=(time/(24*60))+"天前";
+        }
+        return s;
+    }
+
+
 }

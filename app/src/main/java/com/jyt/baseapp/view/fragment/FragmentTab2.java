@@ -12,10 +12,13 @@ import com.jyt.baseapp.api.BeanCallback;
 import com.jyt.baseapp.api.Const;
 import com.jyt.baseapp.bean.BaseJson;
 import com.jyt.baseapp.bean.EventBean;
+import com.jyt.baseapp.bean.PushMessageBean;
+import com.jyt.baseapp.bean.UserBean;
 import com.jyt.baseapp.helper.IntentHelper;
 import com.jyt.baseapp.itemDecoration.RecycleViewDivider;
 import com.jyt.baseapp.model.TabModel;
 import com.jyt.baseapp.model.impl.TabModelImpl;
+import com.jyt.baseapp.util.HawkUtil;
 import com.jyt.baseapp.view.widget.CircleImageView;
 import com.jyt.baseapp.view.widget.MyRecycleView;
 import com.xiaomi.mipush.sdk.MiPushMessage;
@@ -61,7 +64,7 @@ public class FragmentTab2 extends BaseFragment {
 
 
     private NewAdapter mAdapter;
-    private List<String> mDataList;
+    private List<UserBean> mDataList;
     private TabModel mTabModel;
     public static int gFriendNewNum;
 
@@ -83,10 +86,10 @@ public class FragmentTab2 extends BaseFragment {
         mTabModel = new TabModelImpl();
         mTabModel.onStart(getActivity());
         EventBus.getDefault().register(this);
-        mDataList.add("");
-        mDataList.add("");
-        mDataList.add("");
-        mDataList.add("");
+//        mDataList.add("");
+//        mDataList.add("");
+//        mDataList.add("");
+//        mDataList.add("");
     }
 
     private void initSetting() {
@@ -110,6 +113,12 @@ public class FragmentTab2 extends BaseFragment {
                 }
             }
         });
+        List<PushMessageBean> pushMessageList = HawkUtil.getPushList();
+        if (pushMessageList != null && pushMessageList.size()>0){
+            mTvMark.setText(pushMessageList.get(0).getMiPushMessage().getDescription());
+        }else {
+            mTvMark.setText("暂无消息");
+        }
 
     }
 
@@ -150,6 +159,7 @@ public class FragmentTab2 extends BaseFragment {
             MiPushMessage msg = (MiPushMessage) bean.getItem1();
             String content = msg.getDescription();
             //设置最新一条系统消息
+            mTvMark.setText(content);
         }
 
     }

@@ -219,6 +219,28 @@ public class PersonModelImpl implements PersonModel {
 
     }
 
+    @Override
+    public void getFocusIdList(Callback callback) {
+        OkHttpUtils.get()
+                .tag(mContext)
+                .url(Path.GetFocusID)
+                .addHeader("token",Const.getUserToken())
+                .build()
+                .execute(callback);
+    }
+
+    @Override
+    public void getUserData(int id, Callback callback) {
+        OkHttpUtils.get()
+                .tag(mContext)
+                .url(Path.GetOtherUserData2)
+                .addHeader("token",Const.getUserToken())
+                .addParams("userId",String.valueOf(id))
+                .build()
+                .execute(callback);
+    }
+
+
 
 
 }

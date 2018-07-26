@@ -41,6 +41,11 @@ public interface PersonModel extends BaseModel{
 
     void FeedBack(String img , String content ,Callback callback);
 
+    void getFocusIdList(Callback callback);
+
+    void getUserData(int id,Callback callback);
+
+
 
 
 

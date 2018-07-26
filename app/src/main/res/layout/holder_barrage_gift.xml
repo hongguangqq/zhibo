@@ -2,6 +2,7 @@
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical"
+    android:gravity="center_horizontal"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:layout_marginLeft="15dp">
@@ -10,4 +11,18 @@
         android:layout_width="50dp"
         android:layout_height="50dp"
         android:src="@mipmap/btn_video"/>
+    <TextView
+        android:id="@+id/tv_holder_gift_money"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="10币"
+        android:textSize="15dp"
+        android:textColor="@color/white"/>
+    <TextView
+        android:id="@+id/tv_holder_gift_item"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="道具"
+        android:textSize="15dp"
+        android:textColor="@color/white"/>
 </LinearLayout>

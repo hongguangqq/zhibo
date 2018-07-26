@@ -13,13 +13,17 @@ import com.jyt.baseapp.bean.AppointBean;
 import com.jyt.baseapp.bean.BaseJson;
 import com.jyt.baseapp.bean.CallRecordBean;
 import com.jyt.baseapp.bean.Tuple;
+import com.jyt.baseapp.bean.UserBean;
 import com.jyt.baseapp.helper.IntentHelper;
 import com.jyt.baseapp.itemDecoration.RecycleViewDivider;
 import com.jyt.baseapp.model.AppointModel;
 import com.jyt.baseapp.model.PersonModel;
 import com.jyt.baseapp.model.impl.AppointModelImpl;
 import com.jyt.baseapp.model.impl.PersonModelImpl;
+import com.jyt.baseapp.service.ScannerManager;
+import com.jyt.baseapp.util.HawkUtil;
 import com.jyt.baseapp.view.dialog.IPhoneDialog;
+import com.jyt.baseapp.view.viewholder.NewViewHolder2;
 import com.jyt.baseapp.view.viewholder.NewViewHolder5;
 import com.lcodecore.tkrefreshlayout.TwinklingRefreshLayout;
 
@@ -83,22 +87,29 @@ public class NewsActivity extends BaseMCVActivity {
         switch (mCode){
             case 1:
                 setTextTitle("好友消息");
+                mDataList = HawkUtil.getFriendtList();
+                mAdapter.notifyData(mDataList);
                 break;
             case 2:
                 setTextTitle("谁看过我");
-                mAppointModel.getWhoLokeMe(new BeanCallback() {
+                mAppointModel.getWhoLokeMe(new BeanCallback<BaseJson<List<UserBean>>>() {
                     @Override
-                    public void response(boolean success, Object response, int id) {
-                       
+                    public void response(boolean success, BaseJson<List<UserBean>> response, int id) {
+                       if (success && response.getCode()==200){
+                           mDataList = response.getData();
+                           mAdapter.notifyData(mDataList);
+                       }
                     }
                 });
                 break;
             case 3:
                 setTextTitle("系统通知");
+                mDataList = HawkUtil.getPushList();
+                mAdapter.notifyData(mDataList);
                 break;
             case 4:
                 setTextTitle("通话记录");
-                mAppointModel.getInOut(new BeanCallback<BaseJson<List<CallRecordBean>>>() {
+                mAppointModel.getInOut(new BeanCallback<BaseJson<List<CallRecordBean>>>(this,true,"") {
                     @Override
                     public void response(boolean success, BaseJson<List<CallRecordBean>> response, int id) {
                         if (success && response.getCode()==200){
@@ -125,11 +136,23 @@ public class NewsActivity extends BaseMCVActivity {
         mAdapter.setOnAppointListener(new NewViewHolder5.OnAppointListener() {
             @Override
             public void CallBack(int id) {
-
+                //回拨
+                mPersonModel.getUserData(id, new BeanCallback<BaseJson<UserBean>>(NewsActivity.this,true,null) {
+                    @Override
+                    public void response(boolean success, BaseJson<UserBean> response, int id) {
+                        if (success && response.getCode() == 200){
+                            ScannerManager.isRingBack = true;
+                            UserBean user = response.getData();
+                            ScannerManager.comID = user.getEasyId();
+                            ScannerManager.uId = String.valueOf(user.getId());
+                        }
+                    }
+                });
             }
 
             @Override
             public void CancelOrder(final int id) {
+                //取消预约
                 IPhoneDialog dialog = new IPhoneDialog(NewsActivity.this);
                 dialog.setTitle("确认取消?");
                 dialog.setInputShow(false);
@@ -152,6 +175,15 @@ public class NewsActivity extends BaseMCVActivity {
                 dialog.show();
             }
         });
+
+        mAdapter.setsetOnOpenVideoListener(new NewViewHolder2.OnOpenVideoListener() {
+            @Override
+            public void Open(UserBean user) {
+
+            }
+        });
+
+
     }
 
     @Override

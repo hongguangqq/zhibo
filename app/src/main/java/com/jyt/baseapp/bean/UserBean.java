@@ -39,6 +39,7 @@ public class UserBean implements Serializable{
     private String easyId;//网易的AccessID
     private String easyToken;
     private String roomName;
+    private long endTime;
 
 
     public int getId() {
@@ -271,6 +272,14 @@ public class UserBean implements Serializable{
 
     public void setRoomName(String roomName) {
         this.roomName = roomName;
+    }
+
+    public long getEndTime() {
+        return endTime;
+    }
+
+    public void setEndTime(long endTime) {
+        this.endTime = endTime;
     }
 
     @Override

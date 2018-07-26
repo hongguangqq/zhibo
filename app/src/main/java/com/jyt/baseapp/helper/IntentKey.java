@@ -33,6 +33,7 @@ public class IntentKey {
     public static final String ComId = "ComId";
     public static final String TrId = "TrId";
     public static final String Type = "Type";
+    public static final String Answer_Id = "Answer_Id";
     public static final String Answer_Name = "Answer_Name";
     public static final String Answer_Hpic = "Answer_Hpic";
     public static final String Answer_IsVoice = "Answer_IsVoice";

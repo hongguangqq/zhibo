@@ -17,6 +17,7 @@ import com.jyt.baseapp.helper.IntentHelper;
 import com.jyt.baseapp.service.ScannerManager;
 import com.jyt.baseapp.util.BaseUtil;
 import com.jyt.baseapp.util.FinishActivityManager;
+import com.jyt.baseapp.util.HawkUtil;
 import com.jyt.baseapp.util.L;
 import com.jyt.baseapp.view.activity.AudienceActivity;
 import com.jyt.baseapp.view.activity.LaunchActivity;
@@ -203,6 +204,8 @@ public class App  extends MultiDexApplication {
                 if (message.getContent() instanceof TextMessage
                         ||message.getContent() instanceof ImageMessage
                         ||message.getContent() instanceof VoiceMessage){
+                    //好友消息加入List
+                    HawkUtil.addComMessage(message);
                     //消息类型为默认类型时触发监听，Tab2刷新消息数量
                     EventBus.getDefault().post(new EventBean(Event_NewArrive));
 
@@ -221,6 +224,7 @@ public class App  extends MultiDexApplication {
                         case 1:
                             //主播收到观众开播请求
                             BaseUtil.e("主播收到观众开播请求");
+                            ScannerManager.isRingBack = false;
                             ScannerManager.comID = msg.getwId();
                             ScannerManager.trId = msg.getTrId();
                             ScannerManager.uId = uId;
@@ -244,6 +248,7 @@ public class App  extends MultiDexApplication {
                             }
                             break;
                         case 5:
+                            ScannerManager.isRingBack = false;
                             ScannerManager.comID = msg.getwId();
                             ScannerManager.trId = msg.getTrId();
                             ScannerManager.uId = uId;
@@ -255,6 +260,13 @@ public class App  extends MultiDexApplication {
                             ScannerManager.mMeetingName  = msg.getRoomName();
                             IntentHelper.OpenAudienceVoiceActivity(mcontext);
                             EventBus.getDefault().post(new EventBean(Const.Event_Launch));//拨打电话界面销毁
+                            break;
+                        case 7:
+                            BaseUtil.e("观众收到主播回拨请求");
+                            ScannerManager.comID = msg.getwId();
+                            ScannerManager.trId = msg.getTrId();
+                            ScannerManager.mMeetingName  = msg.getRoomName();
+                            IntentHelper.OpenAnswerAudienceActivity(App.getContext(),name,hpic,uId,true);
                             break;
 
                     }

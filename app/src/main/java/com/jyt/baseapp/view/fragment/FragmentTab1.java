@@ -155,6 +155,8 @@ public class FragmentTab1 extends BaseFragment {
                                     paramsTheme.addRule(RelativeLayout.BELOW,mLlHotParent.getId());
                                     mLlHotParent.setLayoutParams(paramsHot);
                                     mLlThemeParent.setLayoutParams(paramsTheme);
+                                }else {
+                                    mLlFocus.setVisibility(View.VISIBLE);
                                 }
                                 mFlowFocus.removeAllViews();
                                 setListData(bean,mFlowFocus);

@@ -70,6 +70,7 @@ public class ScannerManager  {
     private static boolean isOpenAudio;//是否开启音频
     private static boolean isOpenVideo;//是否开启视频
     public static boolean isAudienceJoin;//聊天对象是否已进入
+    public static boolean isRingBack;//是否为回拨
     public static int mEavesdropNum;//偷听人数
     public static String uId = "";//用户ID
     public static String trId ="";//通话记录的ID
@@ -205,12 +206,23 @@ public class ScannerManager  {
                         Log.e("@#", "Live join channel success");
                         isStartLive = true;
                         starComTime = System.currentTimeMillis();//主播进入房间，记录开始时间
-                        mLiveModel.AnchorAnswer(trId, mMeetingName, Const.getWyAccount(), new BeanCallback() {
-                            @Override
-                            public void response(boolean success, Object response, int id) {
-                                LiveManager.liveAgreeCreatRoom(mMeetingName,uId);
-                            }
-                        });
+                        if (isRingBack){
+                            //主播回拨
+                            mLiveModel.RingBack(ScannerManager.uId, 2, mMeetingName, new BeanCallback() {
+                                @Override
+                                public void response(boolean success, Object response, int id) {
+                                    LiveManager.LiveRingBack(mMeetingName,uId);
+                                }
+                            });
+                        }else {
+                            //主播接听
+                            mLiveModel.AnchorAnswer(trId, mMeetingName, Const.getWyAccount(), new BeanCallback() {
+                                @Override
+                                public void response(boolean success, Object response, int id) {
+                                    LiveManager.liveAgreeCreatRoom(mMeetingName,uId);
+                                }
+                            });
+                        }
 
                     }
 
@@ -253,8 +265,6 @@ public class ScannerManager  {
             @Override
             public void onSuccess(AVChatData avChatData) {
                 Log.e(TAG , "join channel success"+"/comid="+comId);
-                isOpenAudio = true;
-                isOpenVideo = true;
                 isStartLive = true;
                 isPause = false;
                 AVChatManager.getInstance().setupLocalVideoRender(mLocalRender, false, AVChatVideoScalingType.SCALE_ASPECT_BALANCED);
@@ -298,6 +308,7 @@ public class ScannerManager  {
         isAudienceJoin = false;
         isStartLive = false;
         isPause = true;
+        isRingBack = false;
         mMeetingName = "";
         comID = "";
         uId ="";

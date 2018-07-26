@@ -246,5 +246,25 @@ public class LiveModelImpl implements LiveModel {
                 .execute(callback);
     }
 
+    /**
+     * 回拨
+     * @param userId
+     * @param type
+     * @param roomName
+     * @param callback
+     */
+    @Override
+    public void RingBack(String userId, int type, String roomName, Callback callback) {
+        OkHttpUtils.get()
+                .url(Path.RingBack)
+                .tag(mContext)
+                .addHeader("token",Const.getUserToken())
+                .addParams("userId",userId)
+                .addParams("type",String.valueOf(type))
+                .addParams("roomName",roomName)
+                .build()
+                .execute(callback);
+    }
+
 
 }

@@ -33,6 +33,7 @@ public class Path {
 
     public static final String GetMyUserData = BasePath+"/chat/user/getMySelf";
     public static final String GetOtherUserData = BasePath+"/chat/user/userDetail";
+    public static final String GetOtherUserData2 = BasePath+"/chat/user/userOne";
     public static final String UpDateMyData = BasePath+"/chat/user/saveEdit";
     public static final String ToFollow = BasePath+"/chat/user/follow";
     public static final String CancelFollow = BasePath+"/chat/user/disFollow";
@@ -54,6 +55,7 @@ public class Path {
     public static final String MakeCall = BasePath + "/chat/user/makeCall";
     public static final String HangUp = BasePath + "/chat/user/hangUp";
     public static final String DongHangUp = BasePath + "/chat/user/doneHangUp";
+    public static final String RingBack = BasePath+"/chat/user/ringBack";
     public static final String AnchorAnswer = BasePath + "/chat/user/anchorAnswer";
     public static final String RandomRing = BasePath + "/chat/user/randomRing";
     public static final String EavesdropLive = BasePath + "/chat/user/eavesdrop";
@@ -67,5 +69,6 @@ public class Path {
     public static final String GetBarrageGiftList = BasePath +"/chat/gift/getGiftList";
     public static final String GetVistorNum = BasePath+"/chat/user/countWhoLookMe";//查看时间段内谁看过我用户数量
     public static final String GetVistor = BasePath+"/chat/user/whoLookMe";//查看时间段内谁看过我用户数据
+    public static final String GetFocusID = BasePath+"/chat/user/friendMsg";//获取好友ID列表
 
 }

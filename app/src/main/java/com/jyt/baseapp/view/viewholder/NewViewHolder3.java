@@ -7,6 +7,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.jyt.baseapp.R;
+import com.jyt.baseapp.bean.PushMessageBean;
+import com.jyt.baseapp.util.TimeUtil;
 
 import butterknife.BindView;
 
@@ -15,7 +17,7 @@ import static com.jyt.baseapp.R.id.iv_ff_hpic;
 /**
  * @author LinWei on 2018/5/17 11:10
  */
-public class NewViewHolder3 extends BaseViewHolder<String> {
+public class NewViewHolder3 extends BaseViewHolder<PushMessageBean> {
 
 
     @BindView(iv_ff_hpic)
@@ -36,10 +38,12 @@ public class NewViewHolder3 extends BaseViewHolder<String> {
     }
 
     @Override
-    public void setData(String data) {
+    public void setData(PushMessageBean data) {
         super.setData(data);
         mIvHpic.setImageResource(R.mipmap.icon_guanfangtouxiang);
         mTvState.setVisibility(View.GONE);
         mTvTime.setVisibility(View.VISIBLE);
+        mTvMark.setText(data.getMiPushMessage().getDescription());
+        mTvTime.setText(TimeUtil.getTimeSlot((System.currentTimeMillis()-data.getEndTime())/100000));
     }
 }
