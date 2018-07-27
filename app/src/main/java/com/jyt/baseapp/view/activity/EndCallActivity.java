@@ -34,6 +34,7 @@ public class EndCallActivity extends BaseMCVActivity {
     private boolean mIsLive;
     private String mFinishTime;
     private LiveModel mLiveModel;
+    private int state;
 
 
     @Override
@@ -71,26 +72,75 @@ public class EndCallActivity extends BaseMCVActivity {
         }else {
             mTvTime.setText(mFinishTime);
         }
-        mLiveModel.DoneHangUp(new BeanCallback() {
-            @Override
-            public void response(boolean success, Object response, int id) {
-                mLiveModel.getComFinishMoney(mIsLive, new BeanCallback<BaseJson<SettlementBean>>() {
+        if(ScannerManager.isRingBack){
+            if (!ScannerManager.isAudienceJoin){
+                state = 3;
+                mLiveModel.HangUp(Integer.valueOf(ScannerManager.uId), Integer.valueOf(ScannerManager.trId), new BeanCallback<BaseJson>() {
                     @Override
-                    public void response(boolean success, BaseJson<SettlementBean> response, int id) {
+                    public void response(boolean success, BaseJson response, int id) {
                         if (success && response.getCode()==200){
-                            SettlementBean bean  = response.getData();
                             if (mIsLive){
-                                mTvGMoney.setText("获得金币："+bean.getGiftMoney());
-                                mTvCMoney.setText("获得金币："+bean.getTalkMoney());
+                                mTvGMoney.setText("获得金币：");
+                                mTvCMoney.setText("获得金币：");
                             }else {
-                                mTvGMoney.setText("消费金币："+bean.getGiftMoney());
-                                mTvCMoney.setText("消费金币："+bean.getTalkMoney());
+                                mTvGMoney.setText("消费金币：");
+                                mTvCMoney.setText("消费金币：");
                             }
                         }
                     }
                 });
+            }else {
+                state = 2;
+                mLiveModel.DoneHangUp(new BeanCallback() {
+                    @Override
+                    public void response(boolean success, Object response, int id) {
+                        mLiveModel.getComFinishMoney(mIsLive, new BeanCallback<BaseJson<SettlementBean>>() {
+                            @Override
+                            public void response(boolean success, BaseJson<SettlementBean> response, int id) {
+                                if (success && response.getCode()==200){
+                                    SettlementBean bean  = response.getData();
+                                    if (mIsLive){
+                                        mTvGMoney.setText("获得金币："+bean.getGiftMoney());
+                                        mTvCMoney.setText("获得金币："+bean.getTalkMoney());
+                                    }else {
+                                        mTvGMoney.setText("消费金币："+bean.getGiftMoney());
+                                        mTvCMoney.setText("消费金币："+bean.getTalkMoney());
+                                    }
+                                }
+                            }
+                        });
+                    }
+                });
             }
-        });
+            mLiveModel.ChangeAppointmentState(state, new BeanCallback() {
+                @Override
+                public void response(boolean success, Object response, int id) {
+
+                }
+            });
+        }else {
+            mLiveModel.DoneHangUp(new BeanCallback() {
+                @Override
+                public void response(boolean success, Object response, int id) {
+                    mLiveModel.getComFinishMoney(mIsLive, new BeanCallback<BaseJson<SettlementBean>>() {
+                        @Override
+                        public void response(boolean success, BaseJson<SettlementBean> response, int id) {
+                            if (success && response.getCode()==200){
+                                SettlementBean bean  = response.getData();
+                                if (mIsLive){
+                                    mTvGMoney.setText("获得金币："+bean.getGiftMoney());
+                                    mTvCMoney.setText("获得金币："+bean.getTalkMoney());
+                                }else {
+                                    mTvGMoney.setText("消费金币："+bean.getGiftMoney());
+                                    mTvCMoney.setText("消费金币："+bean.getTalkMoney());
+                                }
+                            }
+                        }
+                    });
+                }
+            });
+        }
+
 
 
     }

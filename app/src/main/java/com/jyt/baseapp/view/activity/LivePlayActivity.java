@@ -141,7 +141,6 @@ public class LivePlayActivity extends BaseMCVActivity {
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
-                ScannerController.getInstance().SwitchLive(true);
                 FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
                 if (ScannerManager.isStartLive){
                     mFlLocalRender.addView(ScannerController.getInstance().getLocalRender(),params);
@@ -362,10 +361,10 @@ public class LivePlayActivity extends BaseMCVActivity {
             finish();
             IntentHelper.OpenEndCallActivity(this,true);
         }else if (Const.Event_HangUp.equals(bean.getCode())){
-            BaseUtil.makeText("观众已挂断");
+            BaseUtil.makeText("观众已挂断或忙碌");
             finish();
         }else if (Const.Event_UserJoin.equals(bean.getCode())){
-            //用户加入
+            //偷听用户/观众加入
             mLiveModel.getEavesdropNum(Integer.valueOf(Const.getUserID()), new BeanCallback() {
                 @Override
                 public void response(boolean success, Object response, int id) {

@@ -65,15 +65,17 @@ public class AnswerAudienceActivity extends BaseMCVActivity {
     private void init() {
         HideActionBar();
         setvMainBackground(R.mipmap.bg_entrance);
-        EventBus.getDefault().register(this);
+
         Tuple tuple = IntentHelper.AnswerActivityAudienceGetPara(getIntent());
         String name = (String) tuple.getItem1();
         String hpic = (String) tuple.getItem2();
         uid = (String) tuple.getItem3();
-        mIsVoice = (boolean) tuple.getItem3();
+        mIsVoice = (boolean) tuple.getItme4();
         downTime = System.currentTimeMillis();
         mTvName.setText(name);
         Glide.with(this).load(hpic).error(R.mipmap.timg).into(mIvHpic);
+        Glide.with(this).load(R.mipmap.icon_nv2).into(mIvSex);
+
 
     }
 
@@ -91,11 +93,12 @@ public class AnswerAudienceActivity extends BaseMCVActivity {
         if (nowTime-downTime>29*1000){
             BaseUtil.makeText("已超过有效时间");
             finish();
+            return;
         }
         if (mIsVoice){
-            IntentHelper.OpenAudienceActivity(this);
-        }else {
             IntentHelper.OpenAudienceVoiceActivity(this);
+        }else {
+            IntentHelper.OpenAudienceActivity(this);
         }
         finish();
     }

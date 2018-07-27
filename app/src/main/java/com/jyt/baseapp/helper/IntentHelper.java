@@ -443,6 +443,7 @@ public class IntentHelper {
         intent.putExtra(IntentKey.Answer_Hpic,hpic);
         intent.putExtra(IntentKey.Answer_Id,uid);
         intent.putExtra(IntentKey.Answer_IsVoice,isVoice);
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         activity.startActivity(intent);
     }
 
@@ -451,7 +452,7 @@ public class IntentHelper {
         String hpic = intent.getStringExtra(IntentKey.Answer_Hpic);
         String uid = intent.getStringExtra(IntentKey.Answer_Id);
         boolean isVoice = intent.getBooleanExtra(IntentKey.Answer_IsVoice,false);
-        return new Tuple(name,hpic,isVoice);
+        return new Tuple(name,hpic,uid,isVoice);
     }
 
 
@@ -593,6 +594,7 @@ public class IntentHelper {
         Intent intent = getIntent(activity, EndCallActivity.class);
         intent.putExtra(Const.IsLive,isLive);
         intent.putExtra(Const.FinishTime,"");
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         activity.startActivity(intent);
     }
 

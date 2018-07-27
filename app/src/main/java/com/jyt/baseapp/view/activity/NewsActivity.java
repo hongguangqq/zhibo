@@ -25,6 +25,7 @@ import com.jyt.baseapp.util.HawkUtil;
 import com.jyt.baseapp.view.dialog.IPhoneDialog;
 import com.jyt.baseapp.view.viewholder.NewViewHolder2;
 import com.jyt.baseapp.view.viewholder.NewViewHolder5;
+import com.lcodecore.tkrefreshlayout.RefreshListenerAdapter;
 import com.lcodecore.tkrefreshlayout.TwinklingRefreshLayout;
 
 import java.util.ArrayList;
@@ -118,6 +119,24 @@ public class NewsActivity extends BaseMCVActivity {
                         }
                     }
                 });
+                mTrlLoad.setOnRefreshListener(new RefreshListenerAdapter() {
+                    @Override
+                    public void onRefresh(TwinklingRefreshLayout refreshLayout) {
+                        super.onRefresh(refreshLayout);
+                        mAppointModel.getInOut(new BeanCallback<BaseJson<List<CallRecordBean>>>() {
+                            @Override
+                            public void response(boolean success, BaseJson<List<CallRecordBean>> response, int id) {
+                                if (success && response.getCode()==200){
+                                    mDataList = response.getData();
+                                    mAdapter.notifyData(mDataList);
+                                    mTrlLoad.finishRefreshing();
+                                }
+                            }
+                        });
+                    }
+
+
+                });
                 break;
             case 5:
                 setTextTitle("我的预约");
@@ -135,7 +154,7 @@ public class NewsActivity extends BaseMCVActivity {
         }
         mAdapter.setOnAppointListener(new NewViewHolder5.OnAppointListener() {
             @Override
-            public void CallBack(int id) {
+            public void CallBack(int id, final int subId) {
                 //回拨
                 mPersonModel.getUserData(id, new BeanCallback<BaseJson<UserBean>>(NewsActivity.this,true,null) {
                     @Override
@@ -145,6 +164,8 @@ public class NewsActivity extends BaseMCVActivity {
                             UserBean user = response.getData();
                             ScannerManager.comID = user.getEasyId();
                             ScannerManager.uId = String.valueOf(user.getId());
+                            ScannerManager.subId = String.valueOf(subId);
+                            IntentHelper.OpenLivePlayActivity(NewsActivity.this);
                         }
                     }
                 });

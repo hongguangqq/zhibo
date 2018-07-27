@@ -17,7 +17,7 @@ import android.widget.TextView;
 
 import com.bigkoo.pickerview.OptionsPickerView;
 import com.jyt.baseapp.R;
-import com.jyt.baseapp.adapter.ItemAdapter;
+import com.jyt.baseapp.adapter.MyGiftAdapter;
 import com.jyt.baseapp.adapter.PagePropagandaAdapter;
 import com.jyt.baseapp.adapter.VisitorAdapter;
 import com.jyt.baseapp.api.BeanCallback;
@@ -91,7 +91,7 @@ public class PersonActivity extends BaseMCVActivity {
     private PersonDialog mDialog;
     private IPhoneDialog mReportDialog;
     private VisitorAdapter mVisitorAdapter;
-    private ItemAdapter mItemAdapter;
+    private MyGiftAdapter mMyGiftAdapter;
     private PagePropagandaAdapter mPropagandaAdapter;
     private List<UserBean> mVisitorList;
     private List<PersonBean.GiftData> mItemList;
@@ -152,7 +152,7 @@ public class PersonActivity extends BaseMCVActivity {
         mReportDialog.setInputShow(true);
         mReportDialog.setInputLine(4);
         mVisitorAdapter = new VisitorAdapter();
-        mItemAdapter = new ItemAdapter();
+        mMyGiftAdapter = new MyGiftAdapter();
         mPropagandaList = new LinkedList<>();
         mHourList = new ArrayList<>();
         mMinuteList = new ArrayList<>();
@@ -210,9 +210,10 @@ public class PersonActivity extends BaseMCVActivity {
     private void initSetting() {
         mRvVisitor.setLayoutManager(new LinearLayoutManager(this,LinearLayoutManager.HORIZONTAL,false));
         mRvVisitor.addItemDecoration(new SpacesItemDecoration(BaseUtil.dip2px(10),4));
+        mRvVisitor.setAdapter(mVisitorAdapter);
         mRvItem.setLayoutManager(new LinearLayoutManager(this,LinearLayoutManager.HORIZONTAL,false));
         mRvItem.addItemDecoration(new SpacesItemDecoration(BaseUtil.dip2px(10),4));
-        mRvVisitor.setAdapter(mVisitorAdapter);
+        mRvItem.setAdapter(mMyGiftAdapter);
         mDialog.setOnMenuClickListener(new PersonDialog.OnMenuClickListener() {
             @Override
             public void ClickMenu0() {
@@ -379,7 +380,7 @@ public class PersonActivity extends BaseMCVActivity {
                         mVisitorList = mPersonData.getRecent();
                         mVisitorAdapter.notifyData(mVisitorList);
                         mItemList = mPersonData.getGiftCounts();
-                        mItemAdapter.notifyData(mItemList);
+                        mMyGiftAdapter.notifyData(mItemList);
                     }
                 }
             }

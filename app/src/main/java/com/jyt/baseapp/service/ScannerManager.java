@@ -19,6 +19,8 @@ import android.view.WindowManager;
 import com.jyt.baseapp.App;
 import com.jyt.baseapp.api.BeanCallback;
 import com.jyt.baseapp.api.Const;
+import com.jyt.baseapp.bean.BaseJson;
+import com.jyt.baseapp.bean.CallBean;
 import com.jyt.baseapp.bean.EventBean;
 import com.jyt.baseapp.helper.IntentHelper;
 import com.jyt.baseapp.manager.LiveManager;
@@ -73,6 +75,7 @@ public class ScannerManager  {
     public static boolean isRingBack;//是否为回拨
     public static int mEavesdropNum;//偷听人数
     public static String uId = "";//用户ID
+    public static String subId = "";//预约条目ID
     public static String trId ="";//通话记录的ID
     public static String comID = "";//聊天对象网易云ID
     public static int LastRequestNum;//一次直播中，只允许有3次查看对方余额的机会
@@ -89,6 +92,7 @@ public class ScannerManager  {
         mhandle = new Handler();
         isOpenAudio = true;
         isOpenVideo = true;
+        isAudienceJoin = false;
         mLiveModel = new LiveModelImpl();
         mLiveModel.onStart(context);
         wmParams = new WindowManager.LayoutParams();
@@ -97,8 +101,8 @@ public class ScannerManager  {
         mRemoterRender = new AVChatSurfaceViewRenderer(context);
         mLocalRender = new AVChatSurfaceViewRenderer(context);
         //false true主播可行  true false观众可行
-        mLocalRender.setZOrderMediaOverlay(true);
-        mRemoterRender.setZOrderMediaOverlay(false);
+//        mLocalRender.setZOrderMediaOverlay(true);
+//        mRemoterRender.setZOrderMediaOverlay(false);
         ViewGroup parent1 = (ViewGroup) mLocalRender.getParent();
         if (parent1!=null){
             parent1.removeView(mLocalRender);
@@ -208,10 +212,14 @@ public class ScannerManager  {
                         starComTime = System.currentTimeMillis();//主播进入房间，记录开始时间
                         if (isRingBack){
                             //主播回拨
-                            mLiveModel.RingBack(ScannerManager.uId, 2, mMeetingName, new BeanCallback() {
+                            mLiveModel.RingBack(ScannerManager.uId, 2, mMeetingName, new BeanCallback<BaseJson<CallBean>>() {
                                 @Override
-                                public void response(boolean success, Object response, int id) {
-                                    LiveManager.LiveRingBack(mMeetingName,uId);
+                                public void response(boolean success, BaseJson<CallBean> response, int id) {
+                                    if (success && response.getCode()==200){
+                                        trId = String.valueOf(response.getData().getId());
+                                        LiveManager.LiveRingBack(mMeetingName,uId);
+                                    }
+
                                 }
                             });
                         }else {
@@ -266,6 +274,7 @@ public class ScannerManager  {
             public void onSuccess(AVChatData avChatData) {
                 Log.e(TAG , "join channel success"+"/comid="+comId);
                 isStartLive = true;
+                isAudienceJoin = true;
                 isPause = false;
                 AVChatManager.getInstance().setupLocalVideoRender(mLocalRender, false, AVChatVideoScalingType.SCALE_ASPECT_BALANCED);
                 starComTime = System.currentTimeMillis();//观众进入房间，记录开始时间
@@ -305,13 +314,10 @@ public class ScannerManager  {
         AVChatManager.getInstance().disableVideo();
         mLocalRender = null;
         mRemoterRender = null;
-        isAudienceJoin = false;
         isStartLive = false;
         isPause = true;
-        isRingBack = false;
         mMeetingName = "";
         comID = "";
-        uId ="";
         LastRequestNum = 0;//重置零
         mEavesdropNum = 0;
 
@@ -448,7 +454,6 @@ public class ScannerManager  {
         //当聊天对象退出时，同时退出房间
         if (!TextUtils.isEmpty(comID) && s.equals(comID)){
             isStartLive = false;
-            isAudienceJoin = false;
             BaseUtil.makeText("聊天对象已退出，请等待退出");
             releaseRtc(null,true,true);//退出操作
         }else {
@@ -576,14 +581,5 @@ public class ScannerManager  {
         }
     };
 
-    public static void SwitchLive(boolean isLive){
-//        if (isLive){
-//            mLocalRender.setZOrderMediaOverlay(true);
-//            mRemoterRender.setZOrderMediaOverlay(false);
-//        }else {
-//            mLocalRender.setZOrderMediaOverlay(true);
-//            mRemoterRender.setZOrderMediaOverlay(false);
-//        }
-    }
 
 }

@@ -255,13 +255,49 @@ public class LiveModelImpl implements LiveModel {
      */
     @Override
     public void RingBack(String userId, int type, String roomName, Callback callback) {
-        OkHttpUtils.get()
+        OkHttpUtils.post()
                 .url(Path.RingBack)
                 .tag(mContext)
                 .addHeader("token",Const.getUserToken())
+                .addParams("subId",ScannerManager.subId)
                 .addParams("userId",userId)
                 .addParams("type",String.valueOf(type))
                 .addParams("roomName",roomName)
+                .build()
+                .execute(callback);
+    }
+
+    /**
+     * 赠送礼物
+     * @param giftId
+     * @param callback
+     */
+    @Override
+    public void sendGift(String giftId, Callback callback) {
+        OkHttpUtils.post()
+                .url(Path.SendGift)
+                .tag(mContext)
+                .addHeader("token",Const.getUserToken())
+                .addParams("userId",ScannerManager.uId)
+                .addParams("giftId",giftId)
+                .addParams("orgin",String.valueOf(2))
+                .addParams("trId",ScannerManager.trId)
+                .build()
+                .execute(callback);
+    }
+
+    /**
+     * 改变预约状态
+     * @param callback
+     */
+    @Override
+    public void ChangeAppointmentState(int state , Callback callback) {
+        OkHttpUtils.post()
+                .url(Path.ChangeAppointeState)
+                .tag(mContext)
+                .addHeader("token",Const.getUserToken())
+                .addParams("subId",ScannerManager.subId)
+                .addParams("state",String.valueOf(state))
                 .build()
                 .execute(callback);
     }

@@ -37,7 +37,7 @@
             android:layout_height="26dp"
             android:layout_alignBottom="@+id/iv_answer_hpic"
             android:layout_alignRight="@+id/iv_answer_hpic"
-            android:src="@mipmap/icon_nv2"/>
+            android:src="@mipmap/icon_nan2"/>
         <TextView
             android:id="@+id/tv_answer_name"
             android:layout_below="@id/iv_answer_hpic"
@@ -45,7 +45,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="11dp"
             android:layout_centerHorizontal="true"
-            android:text="小妮子"
+            android:text=""
             android:textSize="19dp"
             android:textColor="@color/white"/>
         <TextView

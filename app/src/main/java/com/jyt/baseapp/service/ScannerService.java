@@ -143,10 +143,7 @@ public class ScannerService extends Service implements ScannerCallBack,AVChatSta
 //        ScannerManager.closeConnection();
     }
 
-    @Override
-    public void SwitchLive(boolean isLive) {
-        ScannerManager.SwitchLive(isLive);
-    }
+
 
 
     /************************* AVChatStateObserverLite *****************************/

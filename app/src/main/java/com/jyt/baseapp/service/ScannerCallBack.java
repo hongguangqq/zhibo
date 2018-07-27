@@ -28,5 +28,5 @@ public interface ScannerCallBack {
 
     void closeConnection();
 
-    void SwitchLive(boolean isLive);
+
 }

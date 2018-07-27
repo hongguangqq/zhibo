@@ -37,6 +37,10 @@ public interface LiveModel extends BaseModel{
 
     void RingBack(String userId , int type , String roomName , Callback callback);
 
+    void sendGift(String giftId,Callback callback);
+
+    void ChangeAppointmentState(int state , Callback callback);
+
 
 
 }

@@ -70,7 +70,7 @@ public class NewViewHolder5 extends BaseViewHolder<AppointBean> {
                 @Override
                 public void onClick(View view) {
                     if (listener!=null){
-                        listener.CallBack(data.getFromId().getId());
+                        listener.CallBack(data.getFromId().getId(),data.getId());
                     }
                 }
             });
@@ -85,7 +85,7 @@ public class NewViewHolder5 extends BaseViewHolder<AppointBean> {
     }
 
     public interface OnAppointListener{
-        void CallBack(int id);
+        void CallBack(int userId,int subId);
         void CancelOrder(int id);
     }
 

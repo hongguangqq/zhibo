@@ -168,11 +168,18 @@ public class AudienceActivity extends BaseMCVActivity {
         mBarrageGiftAdapter.setDataList(mBarrageGiftList);
         mRvGift.setLayoutManager(new LinearLayoutManager(this,LinearLayoutManager.HORIZONTAL,false));
         mRvGift.setAdapter(mBarrageGiftAdapter);
-
+        //发送礼物
         mBarrageGiftAdapter.setOnViewHolderClickListener(new BaseViewHolder.OnViewHolderClickListener() {
             @Override
             public void onClick(BaseViewHolder holder) {
+
                 BarrageBean gift = (BarrageBean) holder.getData();
+                mLiveModel.sendGift(String.valueOf(gift.getId()), new BeanCallback() {
+                    @Override
+                    public void response(boolean success, Object response, int id) {
+
+                    }
+                });
                 final BarrageMessage bm  = new BarrageMessage(Const.getUserNick(),null,gift.getImg());
                 RongIMClient.getInstance().sendMessage(Conversation.ConversationType.CHATROOM, ScannerManager.mMeetingName, bm, "", null, new IRongCallback.ISendMessageCallback() {
                     @Override
@@ -191,6 +198,7 @@ public class AudienceActivity extends BaseMCVActivity {
                                 mBarrageAdapter.notifyDataSetChanged();
                             }
                         });
+
 
 
                     }
@@ -338,6 +346,8 @@ public class AudienceActivity extends BaseMCVActivity {
                 }
             }
         });
+
+
         mhandle.post(timeRunable);
 
     }

@@ -231,23 +231,30 @@ public class App  extends MultiDexApplication {
                             IntentHelper.OpenAnswerActivity(mcontext,name,hpic,false);
                             break;
                         case 2:
+                            BaseUtil.e("主播同意观众开播请求");
+                            ScannerManager.isRingBack = false;
                             ScannerManager.comID = msg.getwId();
                             ScannerManager.trId = msg.getTrId();
+                            ScannerManager.uId = uId;
+                            ScannerManager.uId = uId;
                             ScannerManager.mMeetingName  = msg.getRoomName();
                             IntentHelper.OpenAudienceActivity(mcontext);
                             EventBus.getDefault().post(new EventBean(Const.Event_Launch));//拨打电话界面销毁
                             break;
                         case 3:
+                            BaseUtil.e("观众未接听挂断");
                             if (FinishActivityManager.getManager().IsActivityExist(LivePlayActivity.class)){
                                 EventBus.getDefault().post(new EventBean(Const.Event_HangUp));
                             }
                             break;
                         case 4:
+                            BaseUtil.e("主播拒听");
                             if (FinishActivityManager.getManager().IsActivityExist(LaunchActivity.class)){
                                 EventBus.getDefault().post(new EventBean(Const.Event_LiveHangUp));
                             }
                             break;
                         case 5:
+                            BaseUtil.e("主播收到观众开播请求-音频");
                             ScannerManager.isRingBack = false;
                             ScannerManager.comID = msg.getwId();
                             ScannerManager.trId = msg.getTrId();
@@ -255,6 +262,7 @@ public class App  extends MultiDexApplication {
                             IntentHelper.OpenAnswerActivity(mcontext,name,hpic,true);
                             break;
                         case 6:
+                            BaseUtil.e("主播同意观众开播请求-音频");
                             ScannerManager.comID = msg.getwId();
                             ScannerManager.trId = msg.getTrId();
                             ScannerManager.mMeetingName  = msg.getRoomName();
@@ -263,10 +271,12 @@ public class App  extends MultiDexApplication {
                             break;
                         case 7:
                             BaseUtil.e("观众收到主播回拨请求");
+                            ScannerManager.isRingBack = true;
                             ScannerManager.comID = msg.getwId();
                             ScannerManager.trId = msg.getTrId();
                             ScannerManager.mMeetingName  = msg.getRoomName();
-                            IntentHelper.OpenAnswerAudienceActivity(App.getContext(),name,hpic,uId,true);
+                            ScannerManager.uId = uId;
+                            IntentHelper.OpenAnswerAudienceActivity(mcontext,name,hpic,uId,false);
                             break;
 
                     }

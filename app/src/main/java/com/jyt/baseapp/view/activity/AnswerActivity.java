@@ -92,6 +92,7 @@ public class AnswerActivity extends BaseMCVActivity {
         if (nowTime-downTime>25*1000){
             BaseUtil.makeText("已超过有效时间");
             finish();
+            return;
         }
         if (mIsVoice){
             IntentHelper.OpenLivePlayVoiceActivity(this);
