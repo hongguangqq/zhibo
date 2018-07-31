@@ -8,6 +8,7 @@ import com.zhy.http.okhttp.callback.Callback;
  */
 public interface PersonModel extends BaseModel{
 
+    void forgetPwd(String tel ,String code ,String pwd ,Callback callback);
 
     void getFansCount(Callback callback);
 
@@ -44,6 +45,8 @@ public interface PersonModel extends BaseModel{
     void getFocusIdList(Callback callback);
 
     void getUserData(int id,Callback callback);
+
+    void mofidyTel(String phone ,String code ,Callback callback);
 
 
 

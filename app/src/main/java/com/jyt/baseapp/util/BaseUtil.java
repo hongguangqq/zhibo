@@ -19,6 +19,7 @@ import android.os.Build;
 import android.os.Environment;
 import android.os.Handler;
 import android.os.StatFs;
+import android.os.Vibrator;
 import android.provider.MediaStore;
 import android.support.design.widget.TabLayout;
 import android.text.TextUtils;
@@ -462,6 +463,12 @@ public class BaseUtil {
         }
 
         return filePic;
+    }
+
+    private void vibratorDing(){
+        Vibrator vibrator = (Vibrator)getContext().getSystemService(getContext().VIBRATOR_SERVICE);
+        long[] patter = {1000, 1000, 2000, 50};
+        vibrator.vibrate(patter, 0);
     }
 
 

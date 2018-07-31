@@ -19,6 +19,8 @@ import com.jyt.baseapp.util.BaseUtil;
 import com.jyt.baseapp.util.FinishActivityManager;
 import com.jyt.baseapp.util.HawkUtil;
 import com.jyt.baseapp.util.L;
+import com.jyt.baseapp.view.activity.AnswerActivity;
+import com.jyt.baseapp.view.activity.AnswerAudienceActivity;
 import com.jyt.baseapp.view.activity.AudienceActivity;
 import com.jyt.baseapp.view.activity.LaunchActivity;
 import com.jyt.baseapp.view.activity.LivePlayActivity;
@@ -244,6 +246,12 @@ public class App  extends MultiDexApplication {
                         case 3:
                             BaseUtil.e("观众未接听挂断");
                             if (FinishActivityManager.getManager().IsActivityExist(LivePlayActivity.class)){
+                                EventBus.getDefault().post(new EventBean(Const.Event_HangUp));
+                            }
+                            if (FinishActivityManager.getManager().IsActivityExist(AnswerActivity.class)){
+                                EventBus.getDefault().post(new EventBean(Const.Event_HangUp));
+                            }
+                            if (FinishActivityManager.getManager().IsActivityExist(AnswerAudienceActivity.class)){
                                 EventBus.getDefault().post(new EventBean(Const.Event_HangUp));
                             }
                             break;

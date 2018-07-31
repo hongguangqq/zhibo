@@ -48,6 +48,8 @@ public class SettingActivity extends BaseMCVActivity {
     RelativeLayout mRlFeedback;
     @BindView(R.id.rl_setting_clean)
     RelativeLayout mRlClean;
+    @BindView(R.id.rl_setting_modifyBind)
+    RelativeLayout mRlModifyBind;
     @BindView(R.id.rl_setting_black)
     RelativeLayout mRlSettingBlack;
     @BindView(R.id.rl_setting_logoff)
@@ -133,6 +135,11 @@ public class SettingActivity extends BaseMCVActivity {
     @OnClick(R.id.rl_setting_logoff)
     public void LogOff(){
         mLogOffDialog.show();
+    }
+
+    @OnClick(R.id.rl_setting_modifyBind)
+    public void clickModifyBind(){
+        IntentHelper.OpenModifyTelActivity(this);
     }
 
 

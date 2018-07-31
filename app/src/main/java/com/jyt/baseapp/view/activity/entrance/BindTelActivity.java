@@ -157,7 +157,7 @@ public class BindTelActivity extends BaseMCVActivity {
         @Override
         public void run() {
             super.run();
-            while (second>=50){
+            while (second>0){
                 try {
                     Thread.sleep(1000);
                     mHandler.post(new Runnable() {

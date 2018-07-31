@@ -29,6 +29,17 @@ public class PersonModelImpl implements PersonModel {
     }
 
 
+    @Override
+    public void forgetPwd(String tel, String code, String pwd, Callback callback) {
+        OkHttpUtils.post()
+                .tag(mContext)
+                .url(Path.ForgetPwd)
+                .addParams("phone",String.valueOf(tel))
+                .addParams("code",String.valueOf(code))
+                .addParams("phone",String.valueOf(pwd))
+                .build()
+                .execute(callback);
+    }
 
     @Override
     public void getFansCount(Callback callback) {
@@ -240,7 +251,23 @@ public class PersonModelImpl implements PersonModel {
                 .execute(callback);
     }
 
-
+    /**
+     * 改绑手机
+     * @param phone
+     * @param code
+     * @param callback
+     */
+    @Override
+    public void mofidyTel(String phone, String code, Callback callback) {
+        OkHttpUtils.post()
+                .tag(mContext)
+                .url(Path.ModifyPhone)
+                .addHeader("token",Const.getUserToken())
+                .addParams("phone",phone)
+                .addParams("code",code)
+                .build()
+                .execute(callback);
+    }
 
 
 }

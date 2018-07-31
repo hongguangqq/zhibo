@@ -10,6 +10,7 @@ import android.support.v4.view.ViewPager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -303,6 +304,8 @@ public class PersonActivity extends BaseMCVActivity {
                         }else {
                             mIvSex.setImageResource(R.mipmap.icon_nv2);
                         }
+                        Log.e("@#","time"+mPersonData.getTotal()/60);
+                        mTvCtime.setText("本周聊天时长"+mPersonData.getWeek()/60+"小时 | 总时长 "+mPersonData.getTotal()/60+"小时");
                         mTvMoney.setText(mUser.getPrice()+"币/分钟");
                         mTvName.setText(mUser.getNickname());
                         if (!TextUtils.isEmpty(mUser.getProfession())){
@@ -312,7 +315,7 @@ public class PersonActivity extends BaseMCVActivity {
                         if (!TextUtils.isEmpty(mUser.getMark())){
                             mTvSign.setText(mUser.getMark());
                         }
-                        mTvAl.setText(mUser.getAge()+" "+mUser.getCityName());
+                        mTvAl.setText(mUser.getAge()+"岁 "+mUser.getCityName());
                         if (mUser.getOnlineState()==1){
                             mTvOnline.setText("在线");
                         }else {

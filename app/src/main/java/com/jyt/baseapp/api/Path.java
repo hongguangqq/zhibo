@@ -17,6 +17,7 @@ public class Path {
     public static final String GetThemeList = BasePath+"/chat/user/getActivityList";
     public static final String EditOnlineState = BasePath+"/chat/user/editOnlineState";
     public static final String GetInOut = BasePath+"/chat/user/inOut";
+    public static final String ForgetPwd = BasePath+"/chat/user/forgetPwd";
     //搜寻，也用于用户列表获取
     public static final String SearchKey = BasePath+"/chat/user/indexSearch";
     public static final String GetFocus = BasePath+"/chat/user/meFollowList";
@@ -42,6 +43,7 @@ public class Path {
     public static final String SetPrice = BasePath+"/chat/user/setUserPrice";
     public static final String BlackList = BasePath+"/chat/user/getMyBlackList";
     public static final String DeleteBlackList = BasePath+"/chat/user/deleteMyBlack";
+    public static final String ModifyPhone = BasePath+"/chat/user/changeBind";
 
 
     public static final String GetFollowList = BasePath+"/chat/user/meFollowList";

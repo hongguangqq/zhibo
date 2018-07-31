@@ -11,6 +11,8 @@ public class PersonBean {
     private List<GiftData> giftCounts;
     private List<UserBean> recent;
     private boolean isFllow;
+    private long total;
+    private long week;
 
     public UserBean getUser() {
         return user;
@@ -62,5 +64,19 @@ public class PersonBean {
         }
     }
 
+    public long getTotal() {
+        return total;
+    }
 
+    public void setTotal(long total) {
+        this.total = total;
+    }
+
+    public long getWeek() {
+        return week;
+    }
+
+    public void setWeek(long week) {
+        this.week = week;
+    }
 }

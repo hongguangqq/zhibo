@@ -8,7 +8,7 @@
     android:orientation="vertical"
     android:paddingTop="21dp"
     android:background="@color/bg_content"
-    tools:context="com.jyt.baseapp.view.activity.FeebackActivity">
+    tools:context="com.jyt.baseapp.view.activity.FeedbackActivity">
 
     <EditText
         android:id="@+id/et_feedback"

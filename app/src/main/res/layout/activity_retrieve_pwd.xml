@@ -80,7 +80,7 @@
 
         </LinearLayout>
         <EditText
-            android:id="@+id/et__retrieve_pwd"
+            android:id="@+id/et_retrieve_pwd"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="29dp"

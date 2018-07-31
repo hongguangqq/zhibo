@@ -31,6 +31,7 @@ import com.jyt.baseapp.view.activity.LivePlayActivity;
 import com.jyt.baseapp.view.activity.LivePlayVoiceActivity;
 import com.jyt.baseapp.view.activity.MateActivity;
 import com.jyt.baseapp.view.activity.ModifyActivity;
+import com.jyt.baseapp.view.activity.ModifyTelActivity;
 import com.jyt.baseapp.view.activity.NewsActivity;
 import com.jyt.baseapp.view.activity.PersonActivity;
 import com.jyt.baseapp.view.activity.PutForwardActivity;
@@ -416,14 +417,15 @@ public class IntentHelper {
 
     /**
      * 主播收到观众电话，跳转接听界面
-     * @param activity
+     * @param context
      */
-    public static void OpenAnswerActivity(Context activity,String name ,String hpic , boolean isVoice){
-        Intent intent =getIntent(activity, AnswerActivity.class);
+    public static void OpenAnswerActivity(Context context,String name ,String hpic , boolean isVoice){
+        Intent intent =getIntent(context, AnswerActivity.class);
         intent.putExtra(IntentKey.Answer_Name,name);
         intent.putExtra(IntentKey.Answer_Hpic,hpic);
         intent.putExtra(IntentKey.Answer_IsVoice,isVoice);
-        activity.startActivity(intent);
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        context.startActivity(intent);
     }
 
     public static Tuple AnswerActivityGetPara(Intent intent){
@@ -462,6 +464,15 @@ public class IntentHelper {
      */
     public static void OpenBlackActivity(Activity activity){
         Intent intent =getIntent(activity, BlackActivity.class);
+        activity.startActivity(intent);
+    }
+
+    /**
+     * 跳转黑名单
+     * @param activity
+     */
+    public static void OpenModifyTelActivity(Activity activity){
+        Intent intent =getIntent(activity, ModifyTelActivity.class);
         activity.startActivity(intent);
     }
 
@@ -599,7 +610,7 @@ public class IntentHelper {
     }
 
     /**
-     * 舔砖通话结束界面，用于偷听观众使用
+     * 跳转通话结束界面，用于偷听观众使用
      * @param activity
      * @param time
      */
@@ -611,7 +622,7 @@ public class IntentHelper {
     }
 
     /**
-     * 舔砖通话结束界面，用于偷听观众使用
+     * 跳转通话结束界面，用于偷听观众使用
      * @param activity
      * @param time
      */
