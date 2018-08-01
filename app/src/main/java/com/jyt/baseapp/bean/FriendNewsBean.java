@@ -3,6 +3,8 @@ package com.jyt.baseapp.bean;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import io.rong.imlib.model.UserInfo;
+
 /**
  * @author LinWei on 2018/7/26 11:34
  */
@@ -18,6 +20,10 @@ public class FriendNewsBean implements Parcelable {
         this.headImg = headImg;
         this.nickname = nickname;
         this.time = time;
+    }
+
+    public FriendNewsBean(){
+
     }
 
     protected FriendNewsBean(Parcel in){
@@ -81,5 +87,12 @@ public class FriendNewsBean implements Parcelable {
 
     public void setContent(String content) {
         this.content = content;
+    }
+
+    public void setUserInfo(UserInfo userInfo){
+        this.time = System.currentTimeMillis();
+        this.id = Integer.valueOf(userInfo.getUserId());
+        this.nickname = userInfo.getName();
+        this.headImg = userInfo.getPortraitUri().toString();
     }
 }

@@ -3,6 +3,7 @@ package com.jyt.baseapp.view.viewholder;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -29,6 +30,8 @@ public class NewViewHolder2 extends BaseViewHolder<UserBean> {
     TextView mTvName;
     @BindView(R.id.tv_ff_mark)
     TextView mTvMark;
+    @BindView(R.id.btn_appoint_text)
+    Button mBtnAppoint;
     @BindView(R.id.iv_ff_video)
     ImageView mIvVideo;
 
@@ -46,7 +49,15 @@ public class NewViewHolder2 extends BaseViewHolder<UserBean> {
             @Override
             public void onClick(View v) {
                 if (listener!=null){
-                    listener.Open(data);
+                    listener.openVideo(data);
+                }
+            }
+        });
+        mBtnAppoint.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (listener!=null){
+                    listener.openCom(data);
                 }
             }
         });
@@ -56,15 +67,19 @@ public class NewViewHolder2 extends BaseViewHolder<UserBean> {
         mTvMark.setText(data.getPrice()+"/分钟  "+time);
         if (Const.getGender()==1){
             mIvVideo.setVisibility(View.VISIBLE);
+            mBtnAppoint.setVisibility(View.GONE);
         }else {
             mIvVideo.setVisibility(View.GONE);
+            mBtnAppoint.setVisibility(View.VISIBLE);
+            mBtnAppoint.setText("私信");
         }
 
     }
 
     public OnOpenVideoListener listener;
     public interface OnOpenVideoListener{
-        void Open(UserBean user);
+        void openVideo(UserBean user);
+        void openCom(UserBean user);
     }
 
     public void setOnOpenVideoListener(OnOpenVideoListener listener){

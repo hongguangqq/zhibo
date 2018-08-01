@@ -60,6 +60,7 @@
                     android:layout_weight="1"
                     android:layout_height="wrap_content"
                     android:singleLine="true"
+                    android:inputType="number"
                     android:imeOptions="actionDone"
                     android:hint="请输入验证码"
                     android:textSize="15dp"

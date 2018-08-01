@@ -1,24 +1,26 @@
 package com.jyt.baseapp.view.fragment;
 
 import android.support.v7.widget.LinearLayoutManager;
+import android.util.Log;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.jyt.baseapp.R;
-import com.jyt.baseapp.adapter.NewAdapter;
+import com.jyt.baseapp.adapter.StrangerAdapter;
 import com.jyt.baseapp.api.BeanCallback;
 import com.jyt.baseapp.api.Const;
 import com.jyt.baseapp.bean.BaseJson;
 import com.jyt.baseapp.bean.EventBean;
+import com.jyt.baseapp.bean.FriendNewsBean;
 import com.jyt.baseapp.bean.PushMessageBean;
-import com.jyt.baseapp.bean.UserBean;
 import com.jyt.baseapp.helper.IntentHelper;
 import com.jyt.baseapp.itemDecoration.RecycleViewDivider;
 import com.jyt.baseapp.model.TabModel;
 import com.jyt.baseapp.model.impl.TabModelImpl;
 import com.jyt.baseapp.util.HawkUtil;
+import com.jyt.baseapp.view.viewholder.StrangerViewHolder;
 import com.jyt.baseapp.view.widget.CircleImageView;
 import com.jyt.baseapp.view.widget.MyRecycleView;
 import com.xiaomi.mipush.sdk.MiPushMessage;
@@ -27,7 +29,6 @@ import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
@@ -63,8 +64,8 @@ public class FragmentTab2 extends BaseFragment {
     TextView mTvVistorNum;
 
 
-    private NewAdapter mAdapter;
-    private List<UserBean> mDataList;
+    private StrangerAdapter mAdapter;
+    private List<FriendNewsBean> mDataList;
     private TabModel mTabModel;
     public static int gFriendNewNum;
 
@@ -81,15 +82,12 @@ public class FragmentTab2 extends BaseFragment {
     }
 
     private void init() {
-        mAdapter = new NewAdapter(2);
-        mDataList = new ArrayList<>();
+        mAdapter = new StrangerAdapter();
+        mDataList = HawkUtil.getStrangerList();
         mTabModel = new TabModelImpl();
         mTabModel.onStart(getActivity());
         EventBus.getDefault().register(this);
-//        mDataList.add("");
-//        mDataList.add("");
-//        mDataList.add("");
-//        mDataList.add("");
+
     }
 
     private void initSetting() {
@@ -119,6 +117,18 @@ public class FragmentTab2 extends BaseFragment {
         }else {
             mTvMark.setText("暂无消息");
         }
+
+        mAdapter.setsetOnOpenVideoListener(new StrangerViewHolder.OnOpenVideoListener() {
+            @Override
+            public void openVideo(FriendNewsBean user) {
+                IntentHelper.OpenLaunchActivity(getActivity(),user.getId(),2, Const.getUserNick(),Const.getUserHeadImg());
+            }
+
+            @Override
+            public void openCom(FriendNewsBean user) {
+                IntentHelper.OpenCommunicationActivity(user.getId(),getActivity());
+            }
+        });
 
     }
 
@@ -153,13 +163,18 @@ public class FragmentTab2 extends BaseFragment {
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void EventOver(EventBean bean) {
         if (Const.Event_NewArrive.equals(bean.getCode())){
+            Log.e("@#","好友消息："+gFriendNewNum);
             gFriendNewNum++;
             mTvFriendNum.setText(String.valueOf(gFriendNewNum));
+            mTvFriendNum.setVisibility(View.VISIBLE);
         } else if (Const.Event_SystemFirst.equals(bean.getCode())){
             MiPushMessage msg = (MiPushMessage) bean.getItem1();
             String content = msg.getDescription();
             //设置最新一条系统消息
             mTvMark.setText(content);
+        }else if (Const.Event_StrangeArrive.equals(bean.getCode())){
+            mDataList = HawkUtil.getStrangerList();
+            mAdapter.notifyData(mDataList);
         }
 
     }

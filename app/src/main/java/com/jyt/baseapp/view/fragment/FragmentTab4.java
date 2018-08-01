@@ -1,5 +1,6 @@
 package com.jyt.baseapp.view.fragment;
 
+import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -124,6 +125,9 @@ public class FragmentTab4 extends BaseFragment {
                             mTvAu.setText("已认证");
                         }else if (Const.getAnchorState()==3){
                             mTvAu.setText("认证失败");
+                        }
+                        if (Const.getGender()==1){
+                            mTvAu.setVisibility(View.GONE);
                         }
                         mPriceDialog.setCurrent((int) user.getPrice());
                     }

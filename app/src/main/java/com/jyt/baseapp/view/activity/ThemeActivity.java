@@ -9,12 +9,14 @@ import android.view.View;
 import com.jyt.baseapp.R;
 import com.jyt.baseapp.adapter.ThemeAdapter;
 import com.jyt.baseapp.api.BeanCallback;
+import com.jyt.baseapp.api.Const;
 import com.jyt.baseapp.bean.BaseJson;
 import com.jyt.baseapp.bean.ThemeBean;
 import com.jyt.baseapp.itemDecoration.SpacesItemDecoration;
 import com.jyt.baseapp.model.TabModel;
 import com.jyt.baseapp.model.impl.TabModelImpl;
 import com.jyt.baseapp.util.BaseUtil;
+import com.jyt.baseapp.view.viewholder.ThemeViewHolder;
 import com.lcodecore.tkrefreshlayout.RefreshListenerAdapter;
 import com.lcodecore.tkrefreshlayout.TwinklingRefreshLayout;
 
@@ -134,6 +136,20 @@ public class ThemeActivity extends BaseMCVActivity {
                         }, 1500);
                     }
                 });
+            }
+        });
+
+        mAdapter.setOnClickJoinListener(new ThemeViewHolder.OnClickJoinListener() {
+            @Override
+            public void Join(int activityId) {
+                if (Const.getGender()==2){
+                    mTabModel.joinActivity(activityId, new BeanCallback<BaseJson>() {
+                        @Override
+                        public void response(boolean success, BaseJson response, int id) {
+
+                        }
+                    });
+                }
             }
         });
     }

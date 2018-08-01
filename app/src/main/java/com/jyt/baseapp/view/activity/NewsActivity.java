@@ -9,9 +9,11 @@ import android.view.View;
 import com.jyt.baseapp.R;
 import com.jyt.baseapp.adapter.NewAdapter;
 import com.jyt.baseapp.api.BeanCallback;
+import com.jyt.baseapp.api.Const;
 import com.jyt.baseapp.bean.AppointBean;
 import com.jyt.baseapp.bean.BaseJson;
 import com.jyt.baseapp.bean.CallRecordBean;
+import com.jyt.baseapp.bean.FriendNewsBean;
 import com.jyt.baseapp.bean.Tuple;
 import com.jyt.baseapp.bean.UserBean;
 import com.jyt.baseapp.helper.IntentHelper;
@@ -23,12 +25,14 @@ import com.jyt.baseapp.model.impl.PersonModelImpl;
 import com.jyt.baseapp.service.ScannerManager;
 import com.jyt.baseapp.util.HawkUtil;
 import com.jyt.baseapp.view.dialog.IPhoneDialog;
+import com.jyt.baseapp.view.viewholder.BaseViewHolder;
 import com.jyt.baseapp.view.viewholder.NewViewHolder2;
 import com.jyt.baseapp.view.viewholder.NewViewHolder5;
 import com.lcodecore.tkrefreshlayout.RefreshListenerAdapter;
 import com.lcodecore.tkrefreshlayout.TwinklingRefreshLayout;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import butterknife.BindView;
@@ -89,7 +93,15 @@ public class NewsActivity extends BaseMCVActivity {
             case 1:
                 setTextTitle("好友消息");
                 mDataList = HawkUtil.getFriendtList();
+                Collections.reverse(mDataList);
                 mAdapter.notifyData(mDataList);
+                mAdapter.setOnViewHolderClickListener(new BaseViewHolder.OnViewHolderClickListener() {
+                    @Override
+                    public void onClick(BaseViewHolder holder) {
+                        FriendNewsBean friend = (FriendNewsBean) holder.getData();
+                        IntentHelper.OpenCommunicationActivity(friend.getId(),NewsActivity.this);
+                    }
+                });
                 break;
             case 2:
                 setTextTitle("谁看过我");
@@ -102,10 +114,22 @@ public class NewsActivity extends BaseMCVActivity {
                        }
                     }
                 });
+                mAdapter.setsetOnOpenVideoListener(new NewViewHolder2.OnOpenVideoListener() {
+                    @Override
+                    public void openVideo(UserBean user) {
+                        IntentHelper.OpenLaunchActivity(NewsActivity.this,user.getId(),2, Const.getUserNick(),Const.getUserHeadImg());
+                    }
+
+                    @Override
+                    public void openCom(UserBean user) {
+                        IntentHelper.OpenCommunicationActivity(user.getId(),NewsActivity.this);
+                    }
+                });
                 break;
             case 3:
                 setTextTitle("系统通知");
                 mDataList = HawkUtil.getPushList();
+                Collections.reverse(mDataList);
                 mAdapter.notifyData(mDataList);
                 break;
             case 4:
@@ -145,6 +169,7 @@ public class NewsActivity extends BaseMCVActivity {
                     public void response(boolean success, BaseJson<List<AppointBean>> response, int id) {
                         if (success && response.getCode()==200){
                             mDataList = response.getData();
+                            Collections.reverse(mDataList);
                             mAdapter.notifyData(mDataList);
                         }
                     }
@@ -197,12 +222,7 @@ public class NewsActivity extends BaseMCVActivity {
             }
         });
 
-        mAdapter.setsetOnOpenVideoListener(new NewViewHolder2.OnOpenVideoListener() {
-            @Override
-            public void Open(UserBean user) {
 
-            }
-        });
 
 
     }

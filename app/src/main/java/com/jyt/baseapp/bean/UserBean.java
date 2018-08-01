@@ -40,6 +40,7 @@ public class UserBean implements Serializable{
     private String easyToken;
     private String roomName;
     private long endTime;
+    private int activityId;
 
 
     public int getId() {
@@ -280,6 +281,14 @@ public class UserBean implements Serializable{
 
     public void setEndTime(long endTime) {
         this.endTime = endTime;
+    }
+
+    public int getActivityId() {
+        return activityId;
+    }
+
+    public void setActivityId(int activityId) {
+        this.activityId = activityId;
     }
 
     @Override

@@ -64,8 +64,6 @@ import io.rong.push.RongPushClient;
 import io.rong.push.common.RongException;
 import okhttp3.OkHttpClient;
 
-import static com.jyt.baseapp.api.Const.Event_NewArrive;
-
 /**
  * Created by chenweiqi on 2017/10/30.
  */
@@ -208,8 +206,6 @@ public class App  extends MultiDexApplication {
                         ||message.getContent() instanceof VoiceMessage){
                     //好友消息加入List
                     HawkUtil.addComMessage(message);
-                    //消息类型为默认类型时触发监听，Tab2刷新消息数量
-                    EventBus.getDefault().post(new EventBean(Event_NewArrive));
 
                     //广播-同步更新文本通讯界面的消息
                     Intent intent = new Intent();

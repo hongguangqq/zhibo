@@ -66,6 +66,8 @@ public class Const {
     public static final String UserGender = "UserGender";
     //MiPush
     public static final String MiPush = "MiPush";
+    //参加的活动ID
+    public static final String MyJoinActivityId = "MyJoinActivityId";
 
     public static final String Reciver_Tab1 ="Reciver_Tab1";
     public static final String Reciver_Message="Reciver_Message";
@@ -88,7 +90,8 @@ public class Const {
     public static final String Event_LiveHangUp = "Event_LiveHangUp";//主播拒听
     public static final String Event_UserJoin = "Event_UserJoin";//用户加入
     public static final String Event_UserLeave = "Event_UserLeave";//用户离开
-    public static final String Event_NewArrive = "Event_NewArrive";//消息到达
+    public static final String Event_NewArrive = "Event_NewArrive";//好友消息到达
+    public static final String Event_StrangeArrive = "Event_StrangeArrive";//陌生人消息到达
     public static final String Event_SystemFirst = "Event_SystemFirst";//第一条系统消息
 
 
@@ -105,6 +108,7 @@ public class Const {
         BaseUtil.setSpString(MiPush,user.getMiPush());
         BaseUtil.setSpString(WyAccount,user.getEasyId());
         BaseUtil.setSpString(WyToken,user.getEasyToken());
+        BaseUtil.setSpNumInt(MyJoinActivityId,user.getActivityId());
         MiPushClient.setAlias(BaseUtil.getContext(), user.getId()+"",null);
         MiPushClient.setUserAccount(BaseUtil.getContext(), user.getId()+"",null);
 
@@ -156,6 +160,10 @@ public class Const {
 
     public static void setUserOnLineState(int Online){
         BaseUtil.setSpNumInt(UserOnLineState,Online);
+    }
+
+    public static int getMyActivityId(){
+        return BaseUtil.getSpInt(MyJoinActivityId);
     }
 
     public static int getGender(){

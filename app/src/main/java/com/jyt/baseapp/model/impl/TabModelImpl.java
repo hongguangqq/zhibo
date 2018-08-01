@@ -154,6 +154,16 @@ public class TabModelImpl implements TabModel {
     }
 
 
+    @Override
+    public void joinActivity(int id, Callback callback) {
+        OkHttpUtils.get()
+                .url(Path.JoinActivity)
+                .tag(mContext)
+                .addHeader("token", Const.getUserToken())
+                .addParams("id",String.valueOf(id))
+                .build()
+                .execute(callback);
+    }
 
 
     @Override

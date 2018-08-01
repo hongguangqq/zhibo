@@ -350,7 +350,7 @@ public class ModifyActivity extends BaseMCVActivity {
                 .setLinkage(true)//设置是否联动，默认true
 
                 .setOutSideCancelable(true)//点击外部dismiss default true
-        );
+        ,true);
 
 
         setOnNextListener(new OnNextListener() {

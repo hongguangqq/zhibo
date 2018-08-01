@@ -19,6 +19,8 @@ public interface TabModel extends BaseModel{
 
     void getVistorNum(long time , Callback callback);
 
+    void joinActivity(int id ,Callback callback);
+
 
 
 }

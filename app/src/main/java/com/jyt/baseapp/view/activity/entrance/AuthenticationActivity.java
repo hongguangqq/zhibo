@@ -96,6 +96,10 @@ public class AuthenticationActivity extends BaseMCVActivity {
                     BaseUtil.makeText("身份证号码不能为空");
                     return;
                 }
+                if (infoCard.length()!=18){
+                    BaseUtil.makeText("身份证号码长度有误");
+                    return;
+                }
                 if (mCardFile ==null){
                     BaseUtil.makeText("请上传手持身份证");
                     return;

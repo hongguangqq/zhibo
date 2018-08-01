@@ -20,6 +20,8 @@ import com.jyt.baseapp.view.activity.BaseMCVActivity;
 import butterknife.BindView;
 import butterknife.OnClick;
 
+import static io.rong.imlib.statistics.UserData.phone;
+
 public class RegisterActivity extends BaseMCVActivity {
 
 
@@ -90,6 +92,10 @@ public class RegisterActivity extends BaseMCVActivity {
                     BaseUtil.makeText("手机号码不能为空");
                     mEtTel.setFocusable(true);
                     mEtTel.requestFocus();
+                    return;
+                }
+                if (BaseUtil.checkCellphone(inputTel)){
+                    BaseUtil.makeText("手机号码格式不正确");
                     return;
                 }
                 if (TextUtils.isEmpty(inputVCode)){

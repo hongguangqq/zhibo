@@ -44,6 +44,8 @@ public class Path {
     public static final String BlackList = BasePath+"/chat/user/getMyBlackList";
     public static final String DeleteBlackList = BasePath+"/chat/user/deleteMyBlack";
     public static final String ModifyPhone = BasePath+"/chat/user/changeBind";
+    public static final String JoinActivity = BasePath+"/chat/activity/joinActivity";
+    public static final String GetActivityUser = BasePath+"/chat/activity/getActivityUser";
 
 
     public static final String GetFollowList = BasePath+"/chat/user/meFollowList";

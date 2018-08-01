@@ -27,13 +27,17 @@ public class CityPickerView extends OptionsPickerView {
     private ArrayList<ArrayList<ArrayList<String>>> mListArea = new ArrayList<>();
     private JSONObject mJsonObj;
 
-    public CityPickerView(Context context,Builder builder) {
+    public CityPickerView(Context context,Builder builder, boolean isempty) {
         super(builder);
         mContext = context;
         // 初始化Json对象
         initJsonData();
         // 初始化Json数据
         initJsonDatas();
+        if (isempty){
+            mListProvince.remove(0);
+            mListCity.remove(0);
+        }
         initCitySelect();
     }
 

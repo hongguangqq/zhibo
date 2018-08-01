@@ -13,7 +13,13 @@ public class ThemeAdapter extends BaseRcvAdapter {
     BaseViewHolder createCustomViewHolder(ViewGroup parent, int viewType) {
         ThemeViewHolder holder = new ThemeViewHolder(parent);
         holder.setOnViewHolderClickListener(onViewHolderClickListener);
+        holder.setOnClickJoinListener(listener);
         return holder;
+    }
+
+    private ThemeViewHolder.OnClickJoinListener listener;
+    public void setOnClickJoinListener(ThemeViewHolder.OnClickJoinListener listener){
+        this.listener = listener;
     }
 
 }

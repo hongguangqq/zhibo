@@ -59,6 +59,7 @@ import io.rong.imlib.IRongCallback;
 import io.rong.imlib.RongIMClient;
 import io.rong.imlib.model.Conversation;
 import io.rong.imlib.model.Message;
+import io.rong.imlib.model.UserInfo;
 import io.rong.message.ImageMessage;
 import io.rong.message.TextMessage;
 import io.rong.message.VoiceMessage;
@@ -106,6 +107,7 @@ public class CommunicationActivity extends BaseMCVActivity {
                     Log.e("@#","录音成功");
                     int second = msg.arg1;
                     VoiceMessage voiceMessage = VoiceMessage.obtain(Uri.fromFile(mAudioFile),second);
+                    voiceMessage.setUserInfo(mUserInfo);
                     RongIMClient.getInstance().sendMessage(Conversation.ConversationType.PRIVATE, comid, voiceMessage, null, null, new IRongCallback.ISendMessageCallback() {
                         @Override
                         public void onAttached(Message message) {
@@ -175,6 +177,7 @@ public class CommunicationActivity extends BaseMCVActivity {
 
 
     private String comid;
+    private UserInfo mUserInfo;
     private ComAdapter mComAdapter;
     private List<Message> mMessageList;
     private ImagePicker mImagePicker;
@@ -206,6 +209,7 @@ public class CommunicationActivity extends BaseMCVActivity {
         setvMainBackgroundColor(R.color.bg_content);
         Tuple tuple = IntentHelper.CommunicationActivityGetPara(getIntent());
         comid = String.valueOf(tuple.getItem1());
+        mUserInfo = new UserInfo(Const.getUserID(),Const.getUserNick(),Uri.parse(Const.getUserHeadImg()));
         mMessageList = new ArrayList<>();
         mComAdapter = new ComAdapter();
         mRecordDialog = new RecordDialog(this);
@@ -216,6 +220,7 @@ public class CommunicationActivity extends BaseMCVActivity {
         IntentFilter filter = new IntentFilter();
         filter.addAction(Const.Reciver_Message);
         registerReceiver(mMessageBroreceiver,filter);
+
 
     }
 
@@ -334,6 +339,7 @@ public class CommunicationActivity extends BaseMCVActivity {
         String content = mEtInput.getText().toString();
         if (!TextUtils.isEmpty(content)){
             TextMessage textMessage = new TextMessage(content);
+            textMessage.setUserInfo(mUserInfo);
             RongIMClient.getInstance().sendMessage(Conversation.ConversationType.PRIVATE, comid, textMessage, null, null, new IRongCallback.ISendMessageCallback() {
                 @Override
                 public void onAttached(Message message) {
@@ -363,6 +369,7 @@ public class CommunicationActivity extends BaseMCVActivity {
                 try {
                     mImgFile = new File(new URI(imageUri.toString()));
                     ImageMessage imageMessage = ImageMessage.obtain(Uri.parse("file://" + mImgFile),Uri.parse("file://" + mImgFile));
+                    imageMessage.setUserInfo(mUserInfo);
                     RongIMClient.getInstance().sendImageMessage(Conversation.ConversationType.PRIVATE, comid, imageMessage, null, null, new RongIMClient.SendImageMessageCallback() {
                         @Override
                         public void onAttached(Message message) {

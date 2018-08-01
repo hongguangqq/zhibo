@@ -203,7 +203,7 @@ public class SearchActivity extends BaseMCVActivity {
                 .setContentTextSize(18)//滚轮文字大小
                 .setLinkage(true)//设置是否联动，默认true
                 .setOutSideCancelable(true)//点击外部dismiss default true
-        );
+        ,false);
         //金币
         mMoneyOptions = new  OptionsPickerView.Builder(SearchActivity.this, new OptionsPickerView.OnOptionsSelectListener() {
             @Override

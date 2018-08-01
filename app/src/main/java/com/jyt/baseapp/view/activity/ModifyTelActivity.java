@@ -9,7 +9,9 @@ import android.widget.TextView;
 
 import com.jyt.baseapp.R;
 import com.jyt.baseapp.api.BeanCallback;
+import com.jyt.baseapp.api.Const;
 import com.jyt.baseapp.bean.BaseJson;
+import com.jyt.baseapp.helper.IntentHelper;
 import com.jyt.baseapp.model.PersonModel;
 import com.jyt.baseapp.model.RegisterModel;
 import com.jyt.baseapp.model.impl.PersonModelImpl;
@@ -72,17 +74,21 @@ public class ModifyTelActivity extends BaseMCVActivity {
                     BaseUtil.makeText("请输入新的手机号码");
                     return;
                 }
-//                if (TextUtils.isEmpty(code)){
-//                    BaseUtil.makeText("验证码不能为空");
-//                    return;
-//                }
+                if (BaseUtil.checkCellphone(phone)){
+                    BaseUtil.makeText("手机号码格式不正确");
+                    return;
+                }
+                if (TextUtils.isEmpty(code)){
+                    BaseUtil.makeText("验证码不能为空");
+                    return;
+                }
                 mPersonModel.mofidyTel(phone, code, new BeanCallback<BaseJson>() {
                     @Override
                     public void response(boolean success, BaseJson response, int id) {
                         if (success && response.getCode()==200){
                             BaseUtil.makeText("改绑成功，请重新登录");
-//                            Const.LogOff(getContext());
-//                            IntentHelper.OpenLoginActivity(ModifyTelActivity.this);
+                            Const.LogOff(getContext());
+                            IntentHelper.OpenLoginActivity(ModifyTelActivity.this);
                         }
                     }
                 });
