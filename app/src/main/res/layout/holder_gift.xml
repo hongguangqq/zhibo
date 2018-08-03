@@ -22,7 +22,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="11dp"
         android:paddingLeft="45dp"
-        android:paddingRight="45dp">
+        android:paddingRight="25dp">
         <com.jyt.baseapp.view.widget.CircleImageView
             android:id="@+id/iv_hgift_send"
             android:layout_width="33dp"

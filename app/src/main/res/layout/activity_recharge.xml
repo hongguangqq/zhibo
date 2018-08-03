@@ -130,7 +130,7 @@
             android:layout_marginLeft="3dp"
             android:singleLine="true"
             android:hint="请输入充值金额"
-            android:inputType="number"
+            android:inputType="number|numberDecimal"
             android:textColor="@color/white"
             android:textColorHint="@color/et_hint2"
             android:background="@null"/>

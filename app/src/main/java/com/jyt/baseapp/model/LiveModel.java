@@ -41,6 +41,8 @@ public interface LiveModel extends BaseModel{
 
     void ChangeAppointmentState(int state , Callback callback);
 
+    void getLiveInCome(Callback callback);
+
 
 
 }

@@ -44,4 +44,15 @@ public class WalletModelImpl implements WalletModel {
                 .build()
                 .execute(callback);
     }
+
+    @Override
+    public void aliPay(String amount, Callback callback) {
+        OkHttpUtils.post()
+                .url(Path.AliPay)
+                .tag(mContext)
+                .addHeader("token", Const.getUserToken())
+                .addParams("amount",String.valueOf(amount))
+                .build()
+                .execute(callback);
+    }
 }

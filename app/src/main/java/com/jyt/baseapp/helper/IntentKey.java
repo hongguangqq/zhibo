@@ -12,7 +12,6 @@ public class IntentKey {
     public static String TAB1_PAGE_CODE = "TAB1_PAGE_CODE";
     public static String User_ID = "User_ID";
 
-    //注册
     public static final String RegisterTel = "RegisterTel";
     public static final String RegisterInviteCode = "RegisterInviteCode";
     public static final String RegisterPwd = "RegisterPwd";
@@ -30,6 +29,7 @@ public class IntentKey {
     public static final String SearchResult = "SearchResult";
     public static final String SearchCondition = "SearchCondition";
     public static final String FFPage = "FFPage";
+    public static final String ActivityID = "ActivityID";
     public static final String ComId = "ComId";
     public static final String TrId = "TrId";
     public static final String Type = "Type";

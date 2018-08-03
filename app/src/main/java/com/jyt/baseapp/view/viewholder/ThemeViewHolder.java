@@ -43,9 +43,9 @@ public class ThemeViewHolder extends BaseViewHolder<ThemeBean.ThemeBeanDta> {
         mTvThemeName.setText(data.getTitle());
         mTvThemeMark.setText(data.getContent());
         if (Const.getMyActivityId()==data.getId()){
-            mTvJoin.setText("已参加");
+            mTvJoin.setText("取消参加");
         }else {
-            mTvJoin.setText("参加");
+            mTvJoin.setText("报名参加");
         }
         mTvJoin.setOnClickListener(new View.OnClickListener() {
             @Override

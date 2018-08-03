@@ -154,6 +154,9 @@ public class LivePlayActivity extends BaseMCVActivity {
         mBarrageAdapter.setDataList(mBarrageMessageList);
         mRvDanmu.setLayoutManager(new LinearLayoutManager(this,LinearLayoutManager.VERTICAL,false));
         mRvDanmu.setAdapter(mBarrageAdapter);
+        if (ScannerManager.isStartLive){
+            mhandle.postDelayed(timeRunable,60*1000);
+        }
 
 
     }
@@ -176,6 +179,7 @@ public class LivePlayActivity extends BaseMCVActivity {
                             mFlRemoterRender.addView(ScannerController.getInstance().getRemoteRender(),params);
                             mBtnStar.setVisibility(View.GONE);//隐藏直播开启按钮
                             JoinDanmuRoom();
+                            mhandle.postDelayed(timeRunable,60*1000);
                         }
 
                     }
@@ -299,29 +303,10 @@ public class LivePlayActivity extends BaseMCVActivity {
             }
         });
 
-        //监听聊天室消息的到来
-//        RongIMClient.setOnReceiveMessageListener(new RongIMClient.OnReceiveMessageListener() {
-//            @Override
-//            public boolean onReceived(final io.rong.imlib.model.Message message, int i) {
-//                if (message.getTargetId().equals(ScannerManager.mMeetingName)){
-//                    if ("app:BarrageMsg".equals(message.getObjectName())) {
-//                        mRvDanmu.post(new Runnable() {
-//                            @Override
-//                            public void run() {
-//                                BarrageMessage barrageMessage = (BarrageMessage) message.getContent();
-//                                mBarrageMessageList.add(barrageMessage);
-//                                mBarrageAdapter.notifyDataSetChanged();
-//                                mRvDanmu.smoothScrollToPosition(mBarrageAdapter.getItemCount());
-//                            }
-//                        });
-//
-//                    }
-//
-//                }
-//                return false;
-//            }
-//        });
+
     }
+
+
 
     /**
      * 加入弹幕房
@@ -390,14 +375,19 @@ public class LivePlayActivity extends BaseMCVActivity {
 
 
     //计时器
-    private  Handler mhandle;
+    private  Handler mhandle = new Handler();
     private  boolean isPause = false;//是否暂停
     private  Runnable timeRunable = new Runnable() {
         @Override
         public void run() {
             if (!isPause) {
                 //联网报告
-
+                mLiveModel.getLiveInCome(new BeanCallback<BaseJson<Double>>() {
+                    @Override
+                    public void response(boolean success, BaseJson<Double> response, int id) {
+                        mTvMoney.setText("当前收入："+response.getData());
+                    }
+                });
                 //递归调用本runable对象，实现每隔60秒一次执行任务
                 mhandle.postDelayed(this, 60*1000);
 
@@ -468,6 +458,7 @@ public class LivePlayActivity extends BaseMCVActivity {
         if(EventBus.getDefault().isRegistered(this)) {
             EventBus.getDefault().unregister(this);
         }
+        isPause = true;
 
         super.onDestroy();
     }

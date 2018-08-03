@@ -230,7 +230,9 @@ public class CommunicationActivity extends BaseMCVActivity {
         mComAdapter.setDataList(mMessageList);
         mRvContent.setAdapter(mComAdapter);
         mImagePicker.setCropImage(false);
-        mRvContent.setLayoutManager(new LinearLayoutManager(getContext(),LinearLayoutManager.VERTICAL,false));
+        LinearLayoutManager manager = new LinearLayoutManager(getContext(),LinearLayoutManager.VERTICAL,false);
+        manager.setStackFromEnd(true);
+        mRvContent.setLayoutManager(manager);
         mRvContent.addItemDecoration(new SpacesItemDecoration(0, BaseUtil.dip2px(25)));
         mEtInput.addTextChangedListener(new TextWatcher() {
             @Override

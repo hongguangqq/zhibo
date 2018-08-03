@@ -43,6 +43,7 @@ import com.jyt.baseapp.view.activity.SearchResultActivity;
 import com.jyt.baseapp.view.activity.SelImageActivity;
 import com.jyt.baseapp.view.activity.SettingActivity;
 import com.jyt.baseapp.view.activity.ThemeActivity;
+import com.jyt.baseapp.view.activity.ThemeListActivity;
 import com.jyt.baseapp.view.activity.VideoActivity;
 import com.jyt.baseapp.view.activity.WalletActivity;
 import com.jyt.baseapp.view.activity.entrance.AuthenticationActivity;
@@ -378,6 +379,22 @@ public class IntentHelper {
         Intent intent =getIntent(activity, ThemeActivity.class);
         activity.startActivity(intent);
     }
+
+    /**
+     * 跳转主题界面
+     * @param activity
+     */
+    public static void OpenThemeListActivity(Activity activity,int id){
+        Intent intent =getIntent(activity, ThemeListActivity.class);
+        intent.putExtra(IntentKey.ActivityID,id);
+        activity.startActivity(intent);
+    }
+
+    public static Tuple ThemeListActivityGetPara(Intent intent){
+        int id = intent.getIntExtra(IntentKey.ActivityID,0);
+        return new Tuple(id);
+    }
+
 
     /**
      * 跳转动态界面

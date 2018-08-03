@@ -173,6 +173,11 @@ public class FragmentTab2 extends BaseFragment {
             //设置最新一条系统消息
             mTvMark.setText(content);
         }else if (Const.Event_StrangeArrive.equals(bean.getCode())){
+            //陌生人消息到来
+            mDataList = HawkUtil.getStrangerList();
+            mAdapter.notifyData(mDataList);
+        }else if (Const.Event_NewUpData.equals(bean.getCode())){
+            //好友列表发生变动
             mDataList = HawkUtil.getStrangerList();
             mAdapter.notifyData(mDataList);
         }

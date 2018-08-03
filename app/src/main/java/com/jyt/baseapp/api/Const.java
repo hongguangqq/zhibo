@@ -93,6 +93,7 @@ public class Const {
     public static final String Event_NewArrive = "Event_NewArrive";//好友消息到达
     public static final String Event_StrangeArrive = "Event_StrangeArrive";//陌生人消息到达
     public static final String Event_SystemFirst = "Event_SystemFirst";//第一条系统消息
+    public static final String Event_NewUpData = "Event_NewUpData";//关注/未关注消息重新排列
 
 
     public static void SaveUser(UserBean user , LoginModel loginModel){

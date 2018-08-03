@@ -4,6 +4,8 @@ import android.view.LayoutInflater;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
+import com.jyt.baseapp.App;
 import com.jyt.baseapp.R;
 import com.jyt.baseapp.bean.GiftBean;
 import com.jyt.baseapp.view.widget.CircleImageView;
@@ -32,6 +34,9 @@ public class GiftViewHolder extends BaseViewHolder<GiftBean> {
     @Override
     public void setData(GiftBean data) {
         super.setData(data);
-
+        mTvHgiftSend.setText(data.getFromNickName());
+        mTvHgiftReceiver.setText(data.getNickName());
+        Glide.with(App.getContext()).load(data.getFromImg()).error(R.mipmap.timg).into(mIvHgiftSend);
+        Glide.with(App.getContext()).load(data.getHeadImg()).error(R.mipmap.timg).into(mIvHgiftReceiver);
     }
 }

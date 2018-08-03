@@ -5,6 +5,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.jyt.baseapp.App;
 import com.jyt.baseapp.R;
 import com.jyt.baseapp.adapter.GiftAdapter;
@@ -71,9 +72,6 @@ public class GiftFragment extends BaseFragment {
 
         mGiftList = new ArrayList<>();
         mAdapter = new GiftAdapter();
-        for (int i = 0; i < 10; i++) {
-            mGiftList.add(new GiftBean());
-        }
         mTvMoney.setTypeface(App.getInstace().getTypeface());
         mAdapter.setDataList(mGiftList);
         mBandModel = new BandModelImpl();
@@ -96,7 +94,6 @@ public class GiftFragment extends BaseFragment {
                                 if (response.getData()!=null && response.getData().size()!=0){
                                     mGiftList = response.getData();
 
-
                                 }
                             }
                         }
@@ -105,17 +102,22 @@ public class GiftFragment extends BaseFragment {
                             public void run() {
                                 //取出第一条数据
                                 GiftBean firstBean = mGiftList.remove(0);
-
                                 mAdapter.notifyData(mGiftList);
                                 mTrlLoad.finishRefreshing();
+                                mTvSend.setText(firstBean.getFromNickName());
+                                mTvReceiver.setText(firstBean.getNickName());
+                                Glide.with(App.getContext()).load(firstBean.getFromImg()).error(R.mipmap.timg).into(mIvSend);
+                                Glide.with(App.getContext()).load(firstBean.getHeadImg()).error(R.mipmap.timg).into(mIvReceiver);
+                                mTvMoney.setText(firstBean.getPrice()+"");
                             }
-                        }, 1500);
+                        }, 1000);
 
                     }
                 });
             }
         });
         mTrlLoad.startRefresh();
+
     }
 
 

@@ -180,27 +180,28 @@ public class FragmentTab4 extends BaseFragment {
     @Override
     public void onResume() {
         super.onResume();
+        mWalletModel.getBalance(new BeanCallback<BaseJson<Double>>() {
+            @Override
+            public void response(boolean success, BaseJson<Double> response, int id) {
+                mTvBalance.setText(String.valueOf(response.getData()));
+            }
+        });
+
+        mPersonModel.getFansCount(new BeanCallback<BaseJson<Integer>>() {
+            @Override
+            public void response(boolean success, BaseJson<Integer> response, int id) {
+                mTvFans.setText(String.valueOf(response.getData()));
+            }
+        });
+
+        mPersonModel.getFollowCount(new BeanCallback<BaseJson<Integer>>() {
+            @Override
+            public void response(boolean success, BaseJson<Integer> response, int id) {
+                mTvFollow.setText(String.valueOf(response.getData()));
+            }
+        });
         if (!isFirst){
-            mWalletModel.getBalance(new BeanCallback<BaseJson<Double>>() {
-                @Override
-                public void response(boolean success, BaseJson<Double> response, int id) {
-                    mTvBalance.setText(String.valueOf(response.getData()));
-                }
-            });
 
-            mPersonModel.getFansCount(new BeanCallback<BaseJson<Integer>>() {
-                @Override
-                public void response(boolean success, BaseJson<Integer> response, int id) {
-                    mTvFans.setText(String.valueOf(response.getData()));
-                }
-            });
-
-            mPersonModel.getFollowCount(new BeanCallback<BaseJson<Integer>>() {
-                @Override
-                public void response(boolean success, BaseJson<Integer> response, int id) {
-                    mTvFollow.setText(String.valueOf(response.getData()));
-                }
-            });
         }else {
             isFirst=false;
         }

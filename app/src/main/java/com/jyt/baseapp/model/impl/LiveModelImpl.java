@@ -302,5 +302,20 @@ public class LiveModelImpl implements LiveModel {
                 .execute(callback);
     }
 
+    /**
+     * 直播中获取当前收入
+     * @param callback
+     */
+    @Override
+    public void getLiveInCome(Callback callback) {
+        OkHttpUtils.post()
+                .url(Path.ChangeAppointeState)
+                .tag(mContext)
+                .addHeader("token",Const.getUserToken())
+                .addParams("trId",ScannerManager.trId)
+                .build()
+                .execute(callback);
+    }
+
 
 }

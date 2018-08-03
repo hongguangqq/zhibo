@@ -21,6 +21,8 @@ public interface TabModel extends BaseModel{
 
     void joinActivity(int id ,Callback callback);
 
+    void getActivityUser(int id ,int page ,Callback callback);
+
 
 
 }

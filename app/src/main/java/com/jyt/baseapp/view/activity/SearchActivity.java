@@ -213,7 +213,7 @@ public class SearchActivity extends BaseMCVActivity {
                 if (options1==0){
                     mStrMoney = null;
                 }else {
-                    mStrMoney = mMoneyList.get(options1);
+                    mStrMoney = String.valueOf(options1);
                 }
 
             }

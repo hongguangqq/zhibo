@@ -153,7 +153,11 @@ public class TabModelImpl implements TabModel {
 
     }
 
-
+    /**
+     * 参加活动
+     * @param id
+     * @param callback
+     */
     @Override
     public void joinActivity(int id, Callback callback) {
         OkHttpUtils.get()
@@ -161,6 +165,18 @@ public class TabModelImpl implements TabModel {
                 .tag(mContext)
                 .addHeader("token", Const.getUserToken())
                 .addParams("id",String.valueOf(id))
+                .build()
+                .execute(callback);
+    }
+
+    @Override
+    public void getActivityUser(int id, int page, Callback callback) {
+        OkHttpUtils.get()
+                .url(Path.GetActivityUser)
+                .tag(mContext)
+                .addHeader("token", Const.getUserToken())
+                .addParams("id",String.valueOf(id))
+                .addParams("page",String.valueOf(page))
                 .build()
                 .execute(callback);
     }

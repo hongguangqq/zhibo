@@ -79,6 +79,7 @@ public class EavesdropActivity extends BaseMCVActivity implements AVChatStateObs
     private LiveModel mLiveModel;
     private UserBean mUserBean;
     private boolean isHangUp;//是否挂断电话
+    private boolean isStartLive;//是否处于连线
     private boolean isReady;//是否处于准备状态
     private BarrageSanAdapter mSanAdapter1;
     private BarrageSanAdapter mSanAdapter2;
@@ -300,6 +301,7 @@ public class EavesdropActivity extends BaseMCVActivity implements AVChatStateObs
                                     public void onSuccess(AVChatData avChatData) {
                                         Log.e("@#", "join channel success");
                                         AVChatManager.getInstance().enableAudienceRole(true);
+                                        isStartLive = true;
                                         mhandle.post(timeRunable);
                                         //加入弹幕聊天室
                                         RongIMClient.getInstance().joinChatRoom(mUserBean.getRoomName(), -1, new RongIMClient.OperationCallback() {
@@ -394,7 +396,12 @@ public class EavesdropActivity extends BaseMCVActivity implements AVChatStateObs
     public void CloseEavesDrop() {
         //挂断电话
         isHangUp = true;
-        LeaveEavesdropRoom();
+        if (isStartLive){
+            LeaveEavesdropRoom();
+        }else {
+            finish();
+        }
+
     }
 
     @OnClick(R.id.btn_eavesdrop_switch)

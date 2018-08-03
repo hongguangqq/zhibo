@@ -112,7 +112,7 @@ dependencies {
     compile 'com.tencent.mm.opensdk:wechat-sdk-android-without-mta:+'
     compile 'com.upyun:upyun-android-sdk:2.0.5'
     compile 'com.android.support.constraint:constraint-layout:1.0.2'
-    compile 'com.jzxiang.pickerview:TimePickerDialog:0.9.2'
+    compile 'com.jzxiang.pickerview:TimePickerDialog:1.0.1'
     compile 'com.contrarywind:Android-PickerView:3.2.6'
     compile 'org.greenrobot:eventbus:3.0.0'
     compile 'io.reactivex.rxjava2:rxandroid:2.0.1'
@@ -123,4 +123,5 @@ dependencies {
     annotationProcessor 'com.jakewharton:butterknife-compiler:8.5.1'
     debugCompile 'com.squareup.leakcanary:leakcanary-android:1.5'
     releaseCompile 'com.squareup.leakcanary:leakcanary-android-no-op:1.5'
+    compile files('libs/alipaySdk-20180601.jar')
 }

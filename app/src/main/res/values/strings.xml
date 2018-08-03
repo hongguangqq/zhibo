@@ -4,15 +4,11 @@
     <string name="share">分享</string>
     <string-array name="money">
         <item>不限</item>
-        <item>100</item>
-        <item>200</item>
-        <item>300</item>
-        <item>400</item>
-        <item>500</item>
-        <item>600</item>
-        <item>700</item>
-        <item>800</item>
-        <item>900</item>
+        <item>0-200</item>
+        <item>201-400</item>
+        <item>401-600</item>
+        <item>601-800</item>
+        <item>801-1000</item>
     </string-array>
     <string-array name="type">
         <item>不限</item>

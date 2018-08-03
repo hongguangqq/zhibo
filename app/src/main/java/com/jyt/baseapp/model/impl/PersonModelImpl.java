@@ -106,7 +106,10 @@ public class PersonModelImpl implements PersonModel {
                 value[i] = fields[i].get(user);//cHis 是实体类名称
                 System.out.println(value[i]);
                 if (fields[i].get(user)!=null){
-                    builder.addParams(fields[i].getName(),  fields[i].get(user)+"");
+                    if (!"endTime".equals(fields[i].getName())){
+                        builder.addParams(fields[i].getName(),  fields[i].get(user)+"");
+                    }
+
                 }
             }
         } catch (Exception e) {

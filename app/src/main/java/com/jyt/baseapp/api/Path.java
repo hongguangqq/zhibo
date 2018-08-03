@@ -4,8 +4,8 @@ package com.jyt.baseapp.api;
  * @author LinWei on 2018/5/24 15:59
  */
 public class Path {
-    public static final String BasePath = "http://192.168.3.124:8999";
-//    public static final String BasePath = "http://119.23.66.37:8999";
+//    public static final String BasePath = "http://192.168.3.124:8999";
+    public static final String BasePath = "http://119.23.66.37:8999";
     public static final String TelRegister = BasePath+"/chat/user/telRegister";
     public static final String QWRegister = BasePath+"/chat/user/WXQQRegister";
     public static final String GetVerification = BasePath+"/chat/user/getVerification";
@@ -46,6 +46,7 @@ public class Path {
     public static final String ModifyPhone = BasePath+"/chat/user/changeBind";
     public static final String JoinActivity = BasePath+"/chat/activity/joinActivity";
     public static final String GetActivityUser = BasePath+"/chat/activity/getActivityUser";
+    public static final String AliPay = BasePath+"/chat/user/aliPay";
 
 
     public static final String GetFollowList = BasePath+"/chat/user/meFollowList";

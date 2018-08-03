@@ -61,12 +61,12 @@
                             app:border_color="@color/white"/>
                         <TextView
                             android:id="@+id/tv_gift_send"
-                            android:layout_width="60dp"
+                            android:layout_width="100dp"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="2dp"
                             android:singleLine="true"
                             android:gravity="center_horizontal"
-                            android:text="皮老总"
+                            android:text=""
                             android:textSize="16dp"
                             android:textColor="@color/white"/>
                     </LinearLayout>
@@ -74,7 +74,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_toRightOf="@+id/ll_gift_send"
-                        android:layout_marginLeft="20dp"
+                        android:layout_marginLeft="0dp"
                         android:layout_marginTop="20dp"
                         android:text="送"
                         android:textSize="16dp"
@@ -95,7 +95,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="2dp"
-                            android:text="1666K"
+                            android:text=""
                             android:textSize="23dp"
                             android:textColor="@color/text_press"/>
                     </LinearLayout>
@@ -116,12 +116,12 @@
                             app:border_color="@color/white"/>
                         <TextView
                             android:id="@+id/tv_gift_receiver"
-                            android:layout_width="60dp"
+                            android:layout_width="100dp"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="2dp"
                             android:gravity="center_horizontal"
                             android:singleLine="true"
-                            android:text="VIVI"
+                            android:text=""
                             android:textSize="16dp"
                             android:textColor="@color/white"/>
                     </LinearLayout>
@@ -130,7 +130,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_toLeftOf="@+id/ll_gift_receiver"
-                        android:layout_marginRight="23dp"
+                        android:layout_marginRight="0dp"
                         android:layout_marginTop="20dp"
                         android:text="给"
                         android:textSize="16dp"

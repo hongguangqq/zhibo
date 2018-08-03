@@ -81,11 +81,12 @@ public class AppointModelImpl implements AppointModel {
      * @param callback
      */
     @Override
-    public void getInOut(Callback callback) {
+    public void getInOut(int page,Callback callback) {
         OkHttpUtils.get()
                 .url(Path.GetInOut)
                 .tag(mContext)
                 .addHeader("token", Const.getUserToken())
+                .addParams("page",String.valueOf(page))
                 .build()
                 .execute(callback);
     }

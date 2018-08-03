@@ -236,6 +236,22 @@
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
+        <!--支付宝-->
+        <activity
+            android:name="com.alipay.sdk.app.H5PayActivity"
+            android:configChanges="orientation|keyboardHidden|navigation|screenSize"
+            android:exported="false"
+            android:screenOrientation="behind"
+            android:windowSoftInputMode="adjustResize|stateHidden" >
+        </activity>
+        <activity
+            android:name="com.alipay.sdk.app.H5AuthActivity"
+            android:configChanges="orientation|keyboardHidden|navigation"
+            android:exported="false"
+            android:screenOrientation="behind"
+            android:windowSoftInputMode="adjustResize|stateHidden" >
+        </activity>
+
         <activity android:name=".view.activity.ContentActivity">
         </activity>
         <activity android:name=".view.activity.entrance.RegisterActivity">
@@ -322,7 +338,8 @@
         </activity>
         <activity
             android:name=".view.activity.CommunicationActivity"
-            android:launchMode="singleTask">
+            android:launchMode="singleTask"
+            android:windowSoftInputMode="stateHidden|adjustResize">
         </activity>
         <activity android:name=".view.activity.LivePlayActivity">
 

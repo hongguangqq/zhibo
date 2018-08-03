@@ -13,7 +13,7 @@ public interface AppointModel extends BaseModel {
 
     void CancelOrder(int id , Callback callback);
 
-    void getInOut(Callback callback);
+    void getInOut(int page,Callback callback);
 
     void getWhoLokeMe(Callback callback);
 }

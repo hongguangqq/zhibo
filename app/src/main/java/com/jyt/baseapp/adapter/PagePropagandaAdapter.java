@@ -57,54 +57,54 @@ public class PagePropagandaAdapter extends PagerAdapter {
     public Object instantiateItem(ViewGroup container, int position) {
 //        position=position%data.size();
         PropagationBean bean = data.get(position);
-      String path=data.get(position).getPath();
-        if (!bean.isVideo()){
-            ImageView imageView = new ImageView(mContext);
-            imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
-            Glide.with(mContext).load(path).into(imageView);
-            container.addView(imageView);
-            return imageView;
-        }else{
-            try {
-                mMediaPlayer = new MediaPlayer();
-//                mMediaPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
-                // 设置播放的视频源
-                mMediaPlayer.setDataSource(path);
-                // 设置显示视频的SurfaceHolder
+          String path=data.get(position).getPath();
+            if (!bean.isVideo()){
+                ImageView imageView = new ImageView(mContext);
+                imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
+                Glide.with(mContext).load(path).into(imageView);
+                container.addView(imageView);
+                return imageView;
+            }else{
+                try {
+                    mMediaPlayer = new MediaPlayer();
+    //                mMediaPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
+                    // 设置播放的视频源
+                    mMediaPlayer.setDataSource(path);
+                    // 设置显示视频的SurfaceHolder
 
-                mMediaPlayer.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
-                    @Override
-                    public void onPrepared(MediaPlayer mp) {
-                        mMediaPlayer.setDisplay(mSurfaceView.getHolder());
-                        mMediaPlayer.start();
-                        mLoadingPar.setVisibility(View.GONE);
-                    }
-                });
-                mMediaPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
-                    @Override
-                    public void onCompletion(MediaPlayer mp) {
-//                        mMediaPlayer.seekTo(0);
-//                        mMediaPlayer.start();
-                        mMediaPlayer.stop();
-                        mIvPlay.setVisibility(View.VISIBLE);
-                    }
-                });
-                mIvPlay.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
+                    mMediaPlayer.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
+                        @Override
+                        public void onPrepared(MediaPlayer mp) {
+                            mMediaPlayer.setDisplay(mSurfaceView.getHolder());
+                            mMediaPlayer.start();
+                            mLoadingPar.setVisibility(View.GONE);
+                        }
+                    });
+                    mMediaPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
+                        @Override
+                        public void onCompletion(MediaPlayer mp) {
+    //                        mMediaPlayer.seekTo(0);
+    //                        mMediaPlayer.start();
+                            mMediaPlayer.stop();
+                            mIvPlay.setVisibility(View.VISIBLE);
+                        }
+                    });
+                    mIvPlay.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
 
-                        mMediaPlayer.prepareAsync();
-                        mLoadingPar.setVisibility(View.VISIBLE);
-                        mIvPlay.setVisibility(View.GONE);
-                    }
-                });
-                container.addView(mView);
-                return mView;
-            } catch (Exception e) {
-                e.printStackTrace();
+                            mMediaPlayer.prepareAsync();
+                            mLoadingPar.setVisibility(View.VISIBLE);
+                            mIvPlay.setVisibility(View.GONE);
+                        }
+                    });
+                    container.addView(mView);
+                    return mView;
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+
             }
-
-        }
         return null;
     }
 

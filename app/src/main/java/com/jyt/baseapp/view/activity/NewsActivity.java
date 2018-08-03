@@ -23,6 +23,7 @@ import com.jyt.baseapp.model.PersonModel;
 import com.jyt.baseapp.model.impl.AppointModelImpl;
 import com.jyt.baseapp.model.impl.PersonModelImpl;
 import com.jyt.baseapp.service.ScannerManager;
+import com.jyt.baseapp.util.BaseUtil;
 import com.jyt.baseapp.util.HawkUtil;
 import com.jyt.baseapp.view.dialog.IPhoneDialog;
 import com.jyt.baseapp.view.viewholder.BaseViewHolder;
@@ -51,6 +52,7 @@ public class NewsActivity extends BaseMCVActivity {
     private PersonModel mPersonModel;
     private NewAdapter mAdapter;
     private List mDataList;
+    private int mPage;
 
 
     @Override
@@ -134,32 +136,54 @@ public class NewsActivity extends BaseMCVActivity {
                 break;
             case 4:
                 setTextTitle("通话记录");
-                mAppointModel.getInOut(new BeanCallback<BaseJson<List<CallRecordBean>>>(this,true,"") {
+                mTrlLoad.setEnableLoadmore(true);
+                mAppointModel.getInOut(mPage,new BeanCallback<BaseJson<List<CallRecordBean>>>(this,true,"") {
                     @Override
                     public void response(boolean success, BaseJson<List<CallRecordBean>> response, int id) {
                         if (success && response.getCode()==200){
                             mDataList = response.getData();
                             mAdapter.notifyData(mDataList);
+                            mPage++;
                         }
                     }
                 });
                 mTrlLoad.setOnRefreshListener(new RefreshListenerAdapter() {
                     @Override
                     public void onRefresh(TwinklingRefreshLayout refreshLayout) {
-                        super.onRefresh(refreshLayout);
-                        mAppointModel.getInOut(new BeanCallback<BaseJson<List<CallRecordBean>>>() {
+                        mPage = 0;
+                        mAppointModel.getInOut(mPage,new BeanCallback<BaseJson<List<CallRecordBean>>>() {
                             @Override
                             public void response(boolean success, BaseJson<List<CallRecordBean>> response, int id) {
                                 if (success && response.getCode()==200){
                                     mDataList = response.getData();
                                     mAdapter.notifyData(mDataList);
                                     mTrlLoad.finishRefreshing();
+                                    mPage++;
+                                }else {
+                                    BaseUtil.makeText("刷新失败");
+                                    mTrlLoad.finishRefreshing();
                                 }
                             }
                         });
                     }
 
-
+                    @Override
+                    public void onLoadMore(TwinklingRefreshLayout refreshLayout) {
+                        mAppointModel.getInOut(mPage,new BeanCallback<BaseJson<List<CallRecordBean>>>() {
+                            @Override
+                            public void response(boolean success, BaseJson<List<CallRecordBean>> response, int id) {
+                                if (success && response.getCode()==200){
+                                    mDataList.addAll(response.getData());
+                                    mAdapter.notifyDataSetChanged();
+                                    mTrlLoad.finishLoadmore();
+                                    mPage++;
+                                }else {
+                                    mTrlLoad.finishLoadmore();
+                                    BaseUtil.makeText("没有更多数据");
+                                }
+                            }
+                        });
+                    }
                 });
                 break;
             case 5:

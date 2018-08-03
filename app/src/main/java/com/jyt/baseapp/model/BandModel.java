@@ -10,4 +10,6 @@ public interface BandModel extends BaseModel{
     void getBangList(int type, int page, int size, Callback callback);
 
     void getGiftData(int code, int page, int size, Callback callback);
+
+    void getGiftList(Callback callback);
 }

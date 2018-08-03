@@ -10,4 +10,6 @@ public interface WalletModel extends BaseModel {
     void getBalance(Callback callback);
 
     void getWalletAccount(int page, int size, Callback callback);
+
+    void aliPay(String amount , Callback callback);
 }

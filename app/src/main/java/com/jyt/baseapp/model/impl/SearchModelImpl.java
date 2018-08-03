@@ -33,7 +33,7 @@ public class SearchModelImpl implements SearchModel {
             content.append("cityName="+condition.getCity()+"&");
         }
         if (!TextUtils.isEmpty(condition.getMoney())){
-            content.append("price="+condition.getMoney()+"&");
+            content.append("range="+condition.getMoney()+"&");
         }
         if (!TextUtils.isEmpty(condition.getType())){
             content.append("type="+condition.getType()+"&");

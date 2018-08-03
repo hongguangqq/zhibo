@@ -101,8 +101,8 @@ public class ScannerManager  {
         mRemoterRender = new AVChatSurfaceViewRenderer(context);
         mLocalRender = new AVChatSurfaceViewRenderer(context);
         //false true主播可行  true false观众可行
-//        mLocalRender.setZOrderMediaOverlay(true);
-//        mRemoterRender.setZOrderMediaOverlay(false);
+        mLocalRender.setZOrderMediaOverlay(true);
+        mRemoterRender.setZOrderMediaOverlay(false);
         ViewGroup parent1 = (ViewGroup) mLocalRender.getParent();
         if (parent1!=null){
             parent1.removeView(mLocalRender);

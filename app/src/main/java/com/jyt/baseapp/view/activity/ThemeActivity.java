@@ -12,10 +12,12 @@ import com.jyt.baseapp.api.BeanCallback;
 import com.jyt.baseapp.api.Const;
 import com.jyt.baseapp.bean.BaseJson;
 import com.jyt.baseapp.bean.ThemeBean;
+import com.jyt.baseapp.helper.IntentHelper;
 import com.jyt.baseapp.itemDecoration.SpacesItemDecoration;
 import com.jyt.baseapp.model.TabModel;
 import com.jyt.baseapp.model.impl.TabModelImpl;
 import com.jyt.baseapp.util.BaseUtil;
+import com.jyt.baseapp.view.viewholder.BaseViewHolder;
 import com.jyt.baseapp.view.viewholder.ThemeViewHolder;
 import com.lcodecore.tkrefreshlayout.RefreshListenerAdapter;
 import com.lcodecore.tkrefreshlayout.TwinklingRefreshLayout;
@@ -24,6 +26,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
+
+import static com.jyt.baseapp.api.Const.MyJoinActivityId;
 
 
 public class ThemeActivity extends BaseMCVActivity {
@@ -59,9 +63,9 @@ public class ThemeActivity extends BaseMCVActivity {
 
     private void init(){
         setTextTitle("主题活动");
+        setvMainBackground(R.mipmap.bg_entrance);
         mTabModel = new TabModelImpl();
         mTabModel.onStart(this);
-        setvMainBackground(R.mipmap.bg_entrance);
         mThemeList = new ArrayList<>();
         mAdapter = new ThemeAdapter();
 
@@ -142,16 +146,36 @@ public class ThemeActivity extends BaseMCVActivity {
         mAdapter.setOnClickJoinListener(new ThemeViewHolder.OnClickJoinListener() {
             @Override
             public void Join(int activityId) {
-                if (Const.getGender()==2){
-                    mTabModel.joinActivity(activityId, new BeanCallback<BaseJson>() {
-                        @Override
-                        public void response(boolean success, BaseJson response, int id) {
-
-                        }
-                    });
+                if (Const.getMyActivityId()!=activityId){
+                    if (Const.getGender()==2){
+                        mTabModel.joinActivity(activityId, new BeanCallback<BaseJson<Integer>>(ThemeActivity.this,true,"正在加入") {
+                            @Override
+                            public void response(boolean success, BaseJson<Integer> response, int id) {
+                                if (success && response.getCode()==200){
+                                    BaseUtil.setSpNumInt(MyJoinActivityId,response.getData());
+                                    BaseUtil.makeText("加入成功");
+                                    mAdapter.notifyDataSetChanged();
+                                }else {
+                                    BaseUtil.makeText("加入失败");
+                                }
+                            }
+                        });
+                    }else {
+//                        BaseUtil.makeText("您已参加当前活动");
+                    }
                 }
+
             }
         });
+        mAdapter.setOnViewHolderClickListener(new BaseViewHolder.OnViewHolderClickListener() {
+            @Override
+            public void onClick(BaseViewHolder holder) {
+                ThemeBean.ThemeBeanDta data = (ThemeBean.ThemeBeanDta) holder.getData();
+                IntentHelper.OpenThemeListActivity(ThemeActivity.this,data.getId());
+            }
+        });
+
+
     }
 
     @Override

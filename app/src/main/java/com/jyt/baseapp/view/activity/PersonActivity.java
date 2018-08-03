@@ -2,6 +2,7 @@ package com.jyt.baseapp.view.activity;
 
 import android.content.Intent;
 import android.graphics.Color;
+import android.graphics.PixelFormat;
 import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.os.Handler;
@@ -35,8 +36,10 @@ import com.jyt.baseapp.model.PersonModel;
 import com.jyt.baseapp.model.impl.AppointModelImpl;
 import com.jyt.baseapp.model.impl.PersonModelImpl;
 import com.jyt.baseapp.util.BaseUtil;
+import com.jyt.baseapp.util.HawkUtil;
 import com.jyt.baseapp.view.dialog.IPhoneDialog;
 import com.jyt.baseapp.view.dialog.PersonDialog;
+import com.jyt.baseapp.view.viewholder.BaseViewHolder;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -72,6 +75,8 @@ public class PersonActivity extends BaseMCVActivity {
     TextView mTvCtime;
     @BindView(R.id.tv_person_sign)
     TextView mTvSign;
+    @BindView(R.id.tv_person_gift)
+    TextView mTvGift;
     @BindView(R.id.iv_person_yuyin)
     ImageView mIvYuyin;
     @BindView(R.id.rv_person_item)
@@ -88,6 +93,8 @@ public class PersonActivity extends BaseMCVActivity {
     LinearLayout mLlPerson3;
     @BindView(R.id.ll_person4)
     LinearLayout mLlPerson4;
+    @BindView(R.id.ll_person5)
+    LinearLayout mLlPerson5;
 
     private PersonDialog mDialog;
     private IPhoneDialog mReportDialog;
@@ -185,6 +192,8 @@ public class PersonActivity extends BaseMCVActivity {
                         public void response(boolean success, BaseJson response, int id) {
                             if (success && response.getCode()==200){
                                 BaseUtil.makeText("预约成功");
+                            }else {
+                                BaseUtil.makeText("预约失败"+response.getMessage());
                             }
                         }
                     });
@@ -209,6 +218,7 @@ public class PersonActivity extends BaseMCVActivity {
     }
 
     private void initSetting() {
+        getWindow().setFormat(PixelFormat.TRANSLUCENT);
         mRvVisitor.setLayoutManager(new LinearLayoutManager(this,LinearLayoutManager.HORIZONTAL,false));
         mRvVisitor.addItemDecoration(new SpacesItemDecoration(BaseUtil.dip2px(10),4));
         mRvVisitor.setAdapter(mVisitorAdapter);
@@ -276,6 +286,13 @@ public class PersonActivity extends BaseMCVActivity {
                 mReportDialog.dismiss();
             }
         });
+        mVisitorAdapter.setOnViewHolderClickListener(new BaseViewHolder.OnViewHolderClickListener() {
+            @Override
+            public void onClick(BaseViewHolder holder) {
+                UserBean user = (UserBean) holder.getData();
+                IntentHelper.OpenPersonActivity(PersonActivity.this,user.getId());
+            }
+        });
 
         getUserData();
 
@@ -283,7 +300,7 @@ public class PersonActivity extends BaseMCVActivity {
 
 
     private void getUserData(){
-        mPersonModel.getOtherData(id, new BeanCallback<BaseJson<PersonBean>>(this,false,null) {
+        mPersonModel.getOtherData(id, new BeanCallback<BaseJson<PersonBean>>() {
             @Override
             public void response(boolean success, BaseJson<PersonBean> response, int id) {
                 if (success){
@@ -292,17 +309,25 @@ public class PersonActivity extends BaseMCVActivity {
                         mUser = mPersonData.getUser();
                         //异性显示
                         if (Const.getGender()!=mUser.getGender()){
-                            mLlBottom.setVisibility(View.VISIBLE);
+
+                            if (Const.getGender()==1){
+                                mLlPerson5.setVisibility(View.GONE);
+                                mLlBottom.setVisibility(View.VISIBLE);
+                            }else {
+                                mLlPerson5.setVisibility(View.VISIBLE);
+                                mLlBottom.setVisibility(View.GONE);
+                            }
                         }
-                        //当前界面为用户自身的介绍页，隐藏
-                        if (mUser.getId()==Integer.valueOf(Const.getUserID())){
-                            mLlBottom.setVisibility(View.GONE);
-                        }
+
 
                         if (mUser.getGender()==1){
                             mIvSex.setImageResource(R.mipmap.icon_nan2);
+                            mTvGift.setVisibility(View.GONE);
+
                         }else {
                             mIvSex.setImageResource(R.mipmap.icon_nv2);
+                            mTvGift.setVisibility(View.VISIBLE);
+
                         }
                         Log.e("@#","time"+mPersonData.getTotal()/60);
                         mTvCtime.setText("本周聊天时长"+mPersonData.getWeek()/60+"小时 | 总时长 "+mPersonData.getTotal()/60+"小时");
@@ -394,7 +419,7 @@ public class PersonActivity extends BaseMCVActivity {
     @OnClick(R.id.tv_person_focus)
     public void TofollowUser(){
         if (mPersonData.isFllow()){
-            //当前处于关注状态，取消关注
+            //当前处于关注状态
             mPersonModel.CancelFollow(mUser.getId(), new BeanCallback<BaseJson>(PersonActivity.this,false,null) {
                 @Override
                 public void response(boolean success, BaseJson response, int id) {
@@ -402,11 +427,22 @@ public class PersonActivity extends BaseMCVActivity {
                         mTvFocus.setText("未关注");
                         mPersonData.setFllow(false);
                         sendBroadcast( new Intent().setAction(Const.Reciver_Tab1));
+                        HawkUtil.upFocusData(mUser.getId(),false);
+                        //获取好友ID列表
+//                        mPersonModel.getFocusIdList(new BeanCallback<BaseJson<List<UserBean>>>() {
+//                            @Override
+//                            public void response(boolean success, BaseJson<List<UserBean>> response, int id) {
+//                                if (success && response.getData()!=null){
+//                                    HawkUtil.saveFocusList(response.getData());
+//
+//                                }
+//                            }
+//                        });
                     }
                 }
             });
         }else {
-            //当前处于未关注状态，关注
+            //当前处于未关注状态
             mPersonModel.ToFollow(mUser.getId(), new BeanCallback<BaseJson>(PersonActivity.this,false,null) {
                 @Override
                 public void response(boolean success, BaseJson response, int id) {
@@ -414,6 +450,28 @@ public class PersonActivity extends BaseMCVActivity {
                         mTvFocus.setText("已关注");
                         mPersonData.setFllow(true);
                         sendBroadcast( new Intent().setAction(Const.Reciver_Tab1));
+                        HawkUtil.upFocusData(mUser.getId(),true);
+                        //获取好友ID列表
+//                        mPersonModel.getFocusIdList(new BeanCallback<BaseJson<List<UserBean>>>() {
+//                            @Override
+//                            public void response(boolean success, BaseJson<List<UserBean>> response, int id) {
+//
+//
+//                                Log.e("UserBean","su="+success);
+//                                if (response.getData()!=null){
+//                                    Log.e("UserBean","response"+response.getData() .size());
+//
+//                                }else {
+//                                    Log.e("UserBean"," null");
+//
+//                                }
+//                               ;
+//                                if (success && response.getData()!=null){
+//                                    HawkUtil.saveFocusList(response.getData());
+//
+//                                }
+//                            }
+//                        });
                     }
                 }
             });
@@ -421,7 +479,7 @@ public class PersonActivity extends BaseMCVActivity {
 
     }
 
-    @OnClick(R.id.ll_person1)
+    @OnClick({R.id.ll_person1,R.id.ll_person5})
     public void OpenCommunicationActivity(){
         IntentHelper.OpenCommunicationActivity(mUser.getId(),this);
     }

@@ -326,7 +326,8 @@ public class ModifyActivity extends BaseMCVActivity {
                 .setCancelStringId("取消")
                 .setCyclic(false)
                 .setMinMillseconds(33804000)
-                .setSelectorMillseconds(System.currentTimeMillis())
+                .setCurrentMillseconds(System.currentTimeMillis())
+                .setMaxMillseconds(System.currentTimeMillis())
                 .setType(Type.YEAR_MONTH_DAY)
                 .setWheelItemTextSize(18)
                 .build();

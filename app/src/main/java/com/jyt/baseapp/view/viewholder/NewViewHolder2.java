@@ -64,14 +64,23 @@ public class NewViewHolder2 extends BaseViewHolder<UserBean> {
         Glide.with(App.getContext()).load(data.getHeadImg()).error(R.mipmap.timg).into(mIVHpic);
         mTvName.setText(data.getNickname());
         String time = TimeUtil.getTimeSlot((System.currentTimeMillis()-data.getEndTime())/100000);
-        mTvMark.setText(data.getPrice()+"/分钟  "+time);
+        if (data.getGender()==1){
+            mTvMark.setText(time);
+        }else {
+            mTvMark.setText(data.getPrice()+"/分钟  "+time);
+        }
         if (Const.getGender()==1){
-            mIvVideo.setVisibility(View.VISIBLE);
+
             mBtnAppoint.setVisibility(View.GONE);
+            if (data.getGender()!=1){
+                mIvVideo.setVisibility(View.VISIBLE);
+            }else {
+                mIvVideo.setVisibility(View.GONE);
+            }
         }else {
             mIvVideo.setVisibility(View.GONE);
-            mBtnAppoint.setVisibility(View.VISIBLE);
             mBtnAppoint.setText("私信");
+            mBtnAppoint.setVisibility(View.VISIBLE);
         }
 
     }

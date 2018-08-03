@@ -52,4 +52,15 @@ public class BandModelImpl implements BandModel {
                 .execute(callback);
     }
 
+    @Override
+    public void getGiftList(Callback callback) {
+        OkHttpUtils.get()
+                .url(Path.GetHot)
+                .tag(mContext)
+                .addHeader("token", Const.getUserToken())
+                .addParams("type","6")
+                .build()
+                .execute(callback);
+    }
+
 }

@@ -1,6 +1,9 @@
 package com.jyt.baseapp.util;
 
 
+import android.util.Log;
+
+import com.jyt.baseapp.api.Const;
 import com.jyt.baseapp.bean.EventBean;
 import com.jyt.baseapp.bean.FriendNewsBean;
 import com.jyt.baseapp.bean.PushMessageBean;
@@ -48,7 +51,7 @@ public class HawkUtil {
     }
 
     public static void clearHistory(){
-        Hawk.deleteAll();
+        Hawk.delete(KEY_PSD);
     }
 
     public static void updateHistory(List<String> list){
@@ -130,7 +133,6 @@ public class HawkUtil {
             shash.put(friend.getId(),friend);
             Hawk.put(KEY_STRANGER,shash);
             EventBus.getDefault().post(new EventBean(Event_StrangeArrive));
-
         }
     }
 
@@ -154,6 +156,33 @@ public class HawkUtil {
             }
         }
         return list;
+    }
+
+    public static void upFocusData(int id,boolean toFocus){
+        HashMap<Integer,FriendNewsBean> map1 = Hawk.get(KEY_STRANGER);
+        HashMap<Integer,FriendNewsBean> map2 = Hawk.get(KEY_FRIEND);
+        if (map1==null){
+            map1 = new HashMap<>();
+        }
+        if (map2==null){
+            map2 = new HashMap<>();
+        }
+        FriendNewsBean bean = null;
+        if (toFocus){
+            bean = map1.remove(id);
+            if (bean!=null){
+                map2.put(id,bean);
+            }
+        }else {
+            bean = map2.remove(id);
+            if (bean!=null){
+                map1.put(id,bean);
+            }
+        }
+        Hawk.put(KEY_STRANGER,map1);
+        Hawk.put(KEY_FRIEND,map2);
+
+        EventBus.getDefault().post(new EventBean(Const.Event_NewUpData));
     }
 
 

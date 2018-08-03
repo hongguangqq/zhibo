@@ -25,6 +25,7 @@ public class NewAdapter  extends BaseRcvAdapter{
         switch (code){
             case 1:
                 NewViewHolder1 holder1 = new NewViewHolder1(parent);
+                holder1.setOnViewHolderClickListener(onViewHolderClickListener);
                 return holder1;
             case 2:
                 NewViewHolder2 holder2 = new NewViewHolder2(parent);

@@ -22,10 +22,14 @@ import com.jyt.baseapp.api.Const;
 import com.jyt.baseapp.bean.BaseJson;
 import com.jyt.baseapp.bean.ListBean;
 import com.jyt.baseapp.bean.ThemeBean;
+import com.jyt.baseapp.bean.UserBean;
 import com.jyt.baseapp.helper.IntentHelper;
+import com.jyt.baseapp.model.PersonModel;
 import com.jyt.baseapp.model.TabModel;
+import com.jyt.baseapp.model.impl.PersonModelImpl;
 import com.jyt.baseapp.model.impl.TabModelImpl;
 import com.jyt.baseapp.util.BaseUtil;
+import com.jyt.baseapp.util.HawkUtil;
 import com.jyt.baseapp.view.widget.SlFlowLayout;
 import com.jyt.baseapp.view.widget.SwitchView;
 
@@ -181,16 +185,23 @@ public class FragmentTab1 extends BaseFragment {
                     }
                     break;
                 case HandLer_Net_Theme:
-                    ThemeBean themeBean = (ThemeBean) msg.obj;
+                    final ThemeBean themeBean = (ThemeBean) msg.obj;
                     for (int i = 0; i < themeBean.getContent().size(); i++) {
+                        final ThemeBean.ThemeBeanDta themeData =themeBean.getContent().get(i);
                         ImageView iv = new ImageView(getActivity());
-                        String imgs = themeBean.getContent().get(i).getImgs();
+                        String imgs = themeData.getImgs();
                         iv.setScaleType(ImageView.ScaleType.FIT_XY);
                         if (imgs==null){
                             Glide.with(getActivity()).load(R.mipmap.timg).into(iv);
                         }else {
                             Glide.with(getActivity()).load(imgs).error(R.mipmap.timg).into(iv);
                         }
+                        iv.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View view) {
+                                IntentHelper.OpenThemeListActivity(getActivity(),themeData.getId());
+                            }
+                        });
                         ViewGroup.LayoutParams params = new ViewGroup.LayoutParams(width_iv, BaseUtil.dip2px(140));
                         mFlowTheme.addView(iv, params);
                     }
@@ -205,6 +216,7 @@ public class FragmentTab1 extends BaseFragment {
     private PageBannerAdapter mBannerAdapter;
     private int mPreviousPs;//上一个被选中的点
     private TabModel mTab1Model;
+    private PersonModel mPersonModel;
     private ImageClickListener mlistener;
     private boolean isFirst = true;
     private UpdataPicReceiver mReceiver;
@@ -229,6 +241,8 @@ public class FragmentTab1 extends BaseFragment {
         width_iv = (BaseUtil.getScannerWidth() - BaseUtil.dip2px(5)) / 2;
         mTab1Model = new TabModelImpl();
         mTab1Model.onStart(getActivity());
+        mPersonModel = new PersonModelImpl();
+        mPersonModel.onStart(getActivity());
         if (Const.getOnLineState()==2){
             mSvState.open();
             mTvStateOff.setVisibility(View.VISIBLE);
@@ -461,6 +475,15 @@ public class FragmentTab1 extends BaseFragment {
 
                     }
                 });
+                mPersonModel.getFocusIdList(new BeanCallback<BaseJson<List<UserBean>>>() {
+                    @Override
+                    public void response(boolean success, BaseJson<List<UserBean>> response, int id) {
+                        if (success && response.getData()!=null){
+                            HawkUtil.saveFocusList(response.getData());
+
+                        }
+                    }
+                });
             }
         }
     }
@@ -469,6 +492,7 @@ public class FragmentTab1 extends BaseFragment {
     public void onDestroy() {
         super.onDestroy();
         mTab1Model.onDestroy();
+        mPersonModel.onDestroy();
         getActivity().unregisterReceiver(mReceiver);
         if (mWorking){
             mWorking=false;
