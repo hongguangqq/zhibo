@@ -36,11 +36,12 @@ public class WalletModelImpl implements WalletModel {
     @Override
     public void getWalletAccount(int page, int size, Callback callback) {
         OkHttpUtils.get()
-                .url(Path.GetWalletAccount)
+                .url(Path.GetChargeData)
                 .tag(mContext)
                 .addHeader("token", Const.getUserToken())
                 .addParams("page",page+"")
                 .addParams("size",size+"")
+                .addParams("type","4")
                 .build()
                 .execute(callback);
     }

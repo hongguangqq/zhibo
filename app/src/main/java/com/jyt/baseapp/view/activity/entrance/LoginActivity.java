@@ -1,8 +1,14 @@
 package com.jyt.baseapp.view.activity.entrance;
 
+import android.Manifest;
+import android.content.DialogInterface;
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.provider.Settings;
+import android.support.v7.app.AlertDialog;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
@@ -23,7 +29,9 @@ import com.jyt.baseapp.model.impl.LoginModelImpl;
 import com.jyt.baseapp.util.BaseUtil;
 import com.jyt.baseapp.view.activity.BaseMCVActivity;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -33,8 +41,9 @@ import cn.sharesdk.framework.ShareSDK;
 import cn.sharesdk.onekeyshare.OnekeyShare;
 import cn.sharesdk.tencent.qq.QQ;
 import cn.sharesdk.wechat.friends.Wechat;
+import pub.devrel.easypermissions.EasyPermissions;
 
-public class LoginActivity extends BaseMCVActivity implements PlatformActionListener {
+public class LoginActivity extends BaseMCVActivity implements PlatformActionListener,EasyPermissions.PermissionCallbacks  {
 
 
     @BindView(R.id.et_login_account)
@@ -102,6 +111,15 @@ public class LoginActivity extends BaseMCVActivity implements PlatformActionList
             }
         }
     };
+    // 相机权限、多个权限
+    private final String[] PERMISSIONS = new String[]{
+            Manifest.permission.SYSTEM_ALERT_WINDOW,
+            Manifest.permission.WRITE_EXTERNAL_STORAGE,
+            Manifest.permission.ACCESS_COARSE_LOCATION,
+            Manifest.permission.CAMERA
+    };
+    // 打开相机请求Code，多个权限请求Code
+    private final int REQUEST_CODE_PERMISSIONS = 100;
 
 
 
@@ -128,9 +146,8 @@ public class LoginActivity extends BaseMCVActivity implements PlatformActionList
         HideActionBar();
         setvMainBackground(R.mipmap.bg_entrance);
         mLoginModel = new LoginModelImpl();
-        if (!TextUtils.isEmpty(Const.getUserID())){
-            IntentHelper.OpenContentActivity(this);
-        }
+        checkPermission();
+
     }
 
     private void initSetting(){
@@ -166,6 +183,7 @@ public class LoginActivity extends BaseMCVActivity implements PlatformActionList
         });
 
     }
+
 
     @OnClick(R.id.btn_login_register)
     public void OpenRegisterActivity(){
@@ -269,6 +287,86 @@ public class LoginActivity extends BaseMCVActivity implements PlatformActionList
         message.what = 3;
         message.obj = platform;
         mHandler.sendMessage(message);
+    }
+
+
+
+    // 自定义申请多个权限
+    private void checkPermission() {
+        if (EasyPermissions.hasPermissions(this, PERMISSIONS)) {
+            if (!TextUtils.isEmpty(Const.getUserID())){
+                IntentHelper.OpenContentActivity(this);
+            }
+        } else {
+            List<String> permissionList = new ArrayList<>();
+            for (int i = 0; i < PERMISSIONS.length; i++)
+                if (!EasyPermissions.hasPermissions(this, PERMISSIONS[i])){
+                    permissionList.add(PERMISSIONS[i]);
+                }
+            EasyPermissions.requestPermissions(this, "App应用需要您赋予权限", REQUEST_CODE_PERMISSIONS, permissionList.toArray(new String[permissionList.size()]));
+        }
+    }
+
+    //显示对话框提示用户缺少权限
+    private void showMissingPermissionDialog() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("帮助");//提示帮助
+        builder.setMessage("当前应用缺少必要权限。\n\n请点击\"设置\"-\"权限\"-打开所需权限。");
+
+        //如果是拒绝授权，则退出应用
+        //退出
+        builder.setNegativeButton("退出", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                finish();
+            }
+        });
+        //打开设置，让用户选择打开权限
+        builder.setPositiveButton("设置", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                startAppSettings();//打开设置
+            }
+        });
+        builder.setCancelable(false);
+        builder.show();
+    }
+
+    //打开系统应用设置(ACTION_APPLICATION_DETAILS_SETTINGS:系统设置权限)
+    private void startAppSettings() {
+        Intent intent = new Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
+        intent.setData(Uri.parse("package:" + getPackageName()));
+        startActivityForResult(intent, 0);
+    }
+
+    @Override
+    public void onPermissionsGranted(int requestCode, List<String> perms) {
+        if (EasyPermissions.hasPermissions(this, PERMISSIONS)) {
+            IntentHelper.OpenContentActivity(this);
+        }
+    }
+
+    @Override
+    public void onPermissionsDenied(int requestCode, List<String> perms) {
+        showMissingPermissionDialog();
+    }
+
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String[] permissions,
+                                           int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        EasyPermissions.onRequestPermissionsResult(requestCode, permissions, grantResults, this);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (EasyPermissions.hasPermissions(this, PERMISSIONS)) {
+            IntentHelper.OpenContentActivity(this);
+        } else {
+            showMissingPermissionDialog();
+        }
     }
 
     /**

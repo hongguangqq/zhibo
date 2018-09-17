@@ -4,8 +4,8 @@ package com.jyt.baseapp.api;
  * @author LinWei on 2018/5/24 15:59
  */
 public class Path {
-//    public static final String BasePath = "http://192.168.3.124:8999";
-    public static final String BasePath = "http://119.23.66.37:8999";
+    public static final String BasePath = "http://192.168.3.128:8999";
+//    public static final String BasePath = "http://119.23.66.37:8999";
     public static final String TelRegister = BasePath+"/chat/user/telRegister";
     public static final String QWRegister = BasePath+"/chat/user/WXQQRegister";
     public static final String GetVerification = BasePath+"/chat/user/getVerification";
@@ -77,5 +77,6 @@ public class Path {
     public static final String GetVistor = BasePath+"/chat/user/whoLookMe";//查看时间段内谁看过我用户数据
     public static final String GetFocusID = BasePath+"/chat/user/friendMsg";//获取好友ID列表
     public static final String ChangeAppointeState = BasePath+"/chat/sub/changeState";//获取好友ID列表
+    public static final String GetChargeData = BasePath+"/chat/charge/getPageCharge";//获取充值记录
 
 }

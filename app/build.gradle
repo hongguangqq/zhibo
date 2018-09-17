@@ -15,7 +15,7 @@ android {
     defaultConfig {
         applicationId "com.jyt.zhibo"
         minSdkVersion 19
-        targetSdkVersion 22
+        targetSdkVersion 23
         versionCode 1
         versionName "1.0"
         multiDexEnabled true
@@ -124,4 +124,5 @@ dependencies {
     debugCompile 'com.squareup.leakcanary:leakcanary-android:1.5'
     releaseCompile 'com.squareup.leakcanary:leakcanary-android-no-op:1.5'
     compile files('libs/alipaySdk-20180601.jar')
+    compile 'pub.devrel:easypermissions:1.0.1'
 }

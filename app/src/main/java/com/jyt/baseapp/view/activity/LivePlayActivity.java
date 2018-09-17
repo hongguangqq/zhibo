@@ -162,6 +162,7 @@ public class LivePlayActivity extends BaseMCVActivity {
     }
 
     private void initListener(){
+        mBtnStar.setVisibility(View.GONE);//隐藏直播开启按钮
         mBtnStar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -177,7 +178,7 @@ public class LivePlayActivity extends BaseMCVActivity {
                             }
                             mFlLocalRender.addView(ScannerController.getInstance().getLocalRender(),params);
                             mFlRemoterRender.addView(ScannerController.getInstance().getRemoteRender(),params);
-                            mBtnStar.setVisibility(View.GONE);//隐藏直播开启按钮
+
                             JoinDanmuRoom();
                             mhandle.postDelayed(timeRunable,60*1000);
                         }
@@ -295,15 +296,13 @@ public class LivePlayActivity extends BaseMCVActivity {
                 IntentHelper.OpenNewActivity(LivePlayActivity.this, 5);
             }
         });
-
         mTvB4.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 mExitDialog.show();
             }
         });
-
-
+        mBtnStar.performClick();
     }
 
 

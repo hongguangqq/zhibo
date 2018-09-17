@@ -114,6 +114,10 @@ public class ContentActivity extends BaseMCVActivity implements View.OnClickList
     private LoginModel mLoginModel;
     private AlertDialog dialog;
 
+
+    // 打开相机请求Code，多个权限请求Code
+    private final int REQUEST_CODE_PERMISSIONS = 100;
+
     @Override
     protected int getLayoutId() {
         return R.layout.activity_content;

@@ -52,10 +52,6 @@ public class AccountActivity extends BaseMCVActivity {
         mWalletModel.onStart(this);
         mAccountAdapter = new AccountAdapter();
         mDataList = new ArrayList<>();
-        mDataList.add("");
-        mDataList.add("");
-        mDataList.add("");
-        mDataList.add("");
     }
 
     private void initSetting() {
@@ -66,7 +62,9 @@ public class AccountActivity extends BaseMCVActivity {
         mWalletModel.getWalletAccount(0, 6, new BeanCallback() {
             @Override
             public void response(boolean success, Object response, int id) {
+                if (success){
 
+                }
             }
         });
     }

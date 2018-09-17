@@ -101,14 +101,17 @@ public class GiftFragment extends BaseFragment {
                             @Override
                             public void run() {
                                 //取出第一条数据
-                                GiftBean firstBean = mGiftList.remove(0);
-                                mAdapter.notifyData(mGiftList);
-                                mTrlLoad.finishRefreshing();
-                                mTvSend.setText(firstBean.getFromNickName());
-                                mTvReceiver.setText(firstBean.getNickName());
-                                Glide.with(App.getContext()).load(firstBean.getFromImg()).error(R.mipmap.timg).into(mIvSend);
-                                Glide.with(App.getContext()).load(firstBean.getHeadImg()).error(R.mipmap.timg).into(mIvReceiver);
-                                mTvMoney.setText(firstBean.getPrice()+"");
+                                if (mGiftList.size()>1){
+                                    GiftBean firstBean = mGiftList.remove(0);
+                                    mAdapter.notifyData(mGiftList);
+                                    mTrlLoad.finishRefreshing();
+                                    mTvSend.setText(firstBean.getFromNickName());
+                                    mTvReceiver.setText(firstBean.getNickName());
+                                    Glide.with(App.getContext()).load(firstBean.getFromImg()).error(R.mipmap.timg).into(mIvSend);
+                                    Glide.with(App.getContext()).load(firstBean.getHeadImg()).error(R.mipmap.timg).into(mIvReceiver);
+                                    mTvMoney.setText(firstBean.getPrice()+"");
+                                }
+
                             }
                         }, 1000);
 
