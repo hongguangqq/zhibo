@@ -26,88 +26,7 @@
     <option name="TOOL_WINDOW_CONFIGURED_FILTER" value="zhibo" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="b9576373-08b7-4acc-8a7a-48496bda33da" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/MobCommons_2018_0816_1650.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/ShareSDK_Wechat_3_2_1_2.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/ShareSDK_Wechat_Core_3_2_1_2.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/easypermissions_1_0_1.xml" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/.idea/libraries/MobCommons_2018_0704_1311.xml" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/.idea/libraries/ShareSDK_Wechat_3_2_1_1.xml" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/.idea/libraries/ShareSDK_Wechat_Core_3_2_1_1.xml" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/.idea/libraries/wechat_sdk_android_without_mta_5_1_4.xml" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/IMLib/build/intermediates/bundles/debug/classes.jar" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/IMLib/build/intermediates/bundles/debug/jni/arm64-v8a/libRongIMLib.so" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/IMLib/build/intermediates/bundles/debug/jni/armeabi-v7a/libRongIMLib.so" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/IMLib/build/intermediates/bundles/debug/jni/armeabi/libRongIMLib.so" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/IMLib/build/intermediates/bundles/debug/jni/x86/libRongIMLib.so" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/IMLib/build/intermediates/bundles/debug/libs/Rong_IMLib.jar" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/IMLib/build/intermediates/classes/debug/android/support/compat/R$attr.class" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/IMLib/build/intermediates/classes/debug/android/support/compat/R$bool.class" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/IMLib/build/intermediates/classes/debug/android/support/compat/R$color.class" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/IMLib/build/intermediates/classes/debug/android/support/compat/R$dimen.class" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/IMLib/build/intermediates/classes/debug/android/support/compat/R$drawable.class" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/IMLib/build/intermediates/classes/debug/android/support/compat/R$id.class" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/IMLib/build/intermediates/classes/debug/android/support/compat/R$integer.class" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/IMLib/build/intermediates/classes/debug/android/support/compat/R$layout.class" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/IMLib/build/intermediates/classes/debug/android/support/compat/R$string.class" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/IMLib/build/intermediates/classes/debug/android/support/compat/R$style.class" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/IMLib/build/intermediates/classes/debug/android/support/compat/R$styleable.class" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/IMLib/build/intermediates/classes/debug/android/support/compat/R.class" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/IMLib/build/intermediates/classes/debug/io/rong/imlib/BuildConfig.class" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/IMLib/build/intermediates/classes/debug/io/rong/imlib/R$array.class" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/IMLib/build/intermediates/classes/debug/io/rong/imlib/R$attr.class" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/IMLib/build/intermediates/classes/debug/io/rong/imlib/R$bool.class" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/IMLib/build/intermediates/classes/debug/io/rong/imlib/R$color.class" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/IMLib/build/intermediates/classes/debug/io/rong/imlib/R$dimen.class" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/IMLib/build/intermediates/classes/debug/io/rong/imlib/R$drawable.class" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/IMLib/build/intermediates/classes/debug/io/rong/imlib/R$id.class" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/IMLib/build/intermediates/classes/debug/io/rong/imlib/R$integer.class" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/IMLib/build/intermediates/classes/debug/io/rong/imlib/R$layout.class" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/IMLib/build/intermediates/classes/debug/io/rong/imlib/R$string.class" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/IMLib/build/intermediates/classes/debug/io/rong/imlib/R$style.class" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/IMLib/build/intermediates/classes/debug/io/rong/imlib/R$styleable.class" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/IMLib/build/intermediates/classes/debug/io/rong/imlib/R.class" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/IMLib/build/intermediates/incremental-safeguard/debug/tag.txt" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/IMLib/build/intermediates/incremental/mergeDebugJniLibFolders/merger.xml" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/IMLib/build/intermediates/jniLibs/debug/Rong_IMLib.jar" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/IMLib/build/intermediates/jniLibs/debug/arm64-v8a/libRongIMLib.so" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/IMLib/build/intermediates/jniLibs/debug/armeabi-v7a/libRongIMLib.so" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/IMLib/build/intermediates/jniLibs/debug/armeabi/libRongIMLib.so" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/IMLib/build/intermediates/jniLibs/debug/x86/libRongIMLib.so" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/IMLib/build/intermediates/transforms/mergeJniLibs/debug/folders/2000/3/main/lib/arm64-v8a/libRongIMLib.so" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/IMLib/build/intermediates/transforms/mergeJniLibs/debug/folders/2000/3/main/lib/armeabi-v7a/libRongIMLib.so" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/IMLib/build/intermediates/transforms/mergeJniLibs/debug/folders/2000/3/main/lib/armeabi/libRongIMLib.so" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/IMLib/build/intermediates/transforms/mergeJniLibs/debug/folders/2000/3/main/lib/x86/libRongIMLib.so" afterPath="" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.gradle/2.14.1/taskArtifacts/cache.properties.lock" afterPath="$PROJECT_DIR$/.gradle/2.14.1/taskArtifacts/cache.properties.lock" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.gradle/2.14.1/taskArtifacts/fileHashes.bin" afterPath="$PROJECT_DIR$/.gradle/2.14.1/taskArtifacts/fileHashes.bin" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.gradle/2.14.1/taskArtifacts/fileSnapshots.bin" afterPath="$PROJECT_DIR$/.gradle/2.14.1/taskArtifacts/fileSnapshots.bin" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.gradle/2.14.1/taskArtifacts/fileSnapshotsToTreeSnapshotsIndex.bin" afterPath="$PROJECT_DIR$/.gradle/2.14.1/taskArtifacts/fileSnapshotsToTreeSnapshotsIndex.bin" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.gradle/2.14.1/taskArtifacts/taskArtifacts.bin" afterPath="$PROJECT_DIR$/.gradle/2.14.1/taskArtifacts/taskArtifacts.bin" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/IMLib/build/outputs/aar/IMLib-debug.aar" afterPath="$PROJECT_DIR$/IMLib/build/outputs/aar/IMLib-debug.aar" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/IMLib/build/outputs/aar/IMLib-release.aar" afterPath="$PROJECT_DIR$/IMLib/build/outputs/aar/IMLib-release.aar" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/build/generated/mockable-android-26.jar" afterPath="$PROJECT_DIR$/build/generated/mockable-android-26.jar" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/IMLib/build/intermediates/incremental/mergeDebugAndroidTestResources/compile-file-map.properties" afterPath="$PROJECT_DIR$/IMLib/build/intermediates/incremental/mergeDebugAndroidTestResources/compile-file-map.properties" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/IMLib/build/intermediates/incremental/mergeDebugResources/compile-file-map.properties" afterPath="$PROJECT_DIR$/IMLib/build/intermediates/incremental/mergeDebugResources/compile-file-map.properties" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/IMLib/build/intermediates/incremental/mergeReleaseResources/compile-file-map.properties" afterPath="$PROJECT_DIR$/IMLib/build/intermediates/incremental/mergeReleaseResources/compile-file-map.properties" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/IMLib/build/intermediates/incremental/packageDebugResources/compile-file-map.properties" afterPath="$PROJECT_DIR$/IMLib/build/intermediates/incremental/packageDebugResources/compile-file-map.properties" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/IMLib/build/intermediates/incremental/packageReleaseResources/compile-file-map.properties" afterPath="$PROJECT_DIR$/IMLib/build/intermediates/incremental/packageReleaseResources/compile-file-map.properties" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/app.iml" afterPath="$PROJECT_DIR$/app/app.iml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/build.gradle" afterPath="$PROJECT_DIR$/app/build.gradle" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/com/jyt/baseapp/api/Path.java" afterPath="$PROJECT_DIR$/app/src/main/java/com/jyt/baseapp/api/Path.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/com/jyt/baseapp/model/WalletModel.java" afterPath="$PROJECT_DIR$/app/src/main/java/com/jyt/baseapp/model/WalletModel.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/com/jyt/baseapp/model/impl/WalletModelImpl.java" afterPath="$PROJECT_DIR$/app/src/main/java/com/jyt/baseapp/model/impl/WalletModelImpl.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/com/jyt/baseapp/view/activity/AccountActivity.java" afterPath="$PROJECT_DIR$/app/src/main/java/com/jyt/baseapp/view/activity/AccountActivity.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/com/jyt/baseapp/view/activity/ContentActivity.java" afterPath="$PROJECT_DIR$/app/src/main/java/com/jyt/baseapp/view/activity/ContentActivity.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/com/jyt/baseapp/view/activity/LivePlayActivity.java" afterPath="$PROJECT_DIR$/app/src/main/java/com/jyt/baseapp/view/activity/LivePlayActivity.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/com/jyt/baseapp/view/activity/entrance/LoginActivity.java" afterPath="$PROJECT_DIR$/app/src/main/java/com/jyt/baseapp/view/activity/entrance/LoginActivity.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/com/jyt/baseapp/view/fragment/GiftFragment.java" afterPath="$PROJECT_DIR$/app/src/main/java/com/jyt/baseapp/view/fragment/GiftFragment.java" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/.idea/libraries/MobGUI_2018_0704_1157.xml" afterPath="$PROJECT_DIR$/.idea/libraries/MobGUI_2018_0813_1036.xml" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/.idea/libraries/MobTools_2018_0704_1157.xml" afterPath="$PROJECT_DIR$/.idea/libraries/MobTools_2018_0813_1036.xml" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/.idea/libraries/OneKeyShare_3_2_1_1.xml" afterPath="$PROJECT_DIR$/.idea/libraries/OneKeyShare_3_2_1_2.xml" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/.idea/libraries/ShareSDK_3_2_1_1.xml" afterPath="$PROJECT_DIR$/.idea/libraries/ShareSDK_3_2_1_2.xml" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/.idea/libraries/ShareSDK_QQ_3_2_1_1.xml" afterPath="$PROJECT_DIR$/.idea/libraries/ShareSDK_QQ_3_2_1_2.xml" />
-    </list>
+    <list default="true" id="b9576373-08b7-4acc-8a7a-48496bda33da" name="Default" comment="" />
     <ignored path="zhibo.iws" />
     <ignored path=".idea/workspace.xml" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -151,7 +70,9 @@
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="76">
               <caret line="17" column="3" selection-start-line="17" selection-start-column="3" selection-end-line="17" selection-end-column="3" />
-              <folding />
+              <folding>
+                <element signature="imports" expanded="false" />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -216,14 +137,22 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="LoginActivity.java" pinned="false" current-in-tab="true">
+      <file leaf-file-name="LoginActivity.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/app/src/main/java/com/jyt/baseapp/view/activity/entrance/LoginActivity.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="342">
-              <caret line="45" column="120" selection-start-line="45" selection-start-column="85" selection-end-line="45" selection-end-column="120" />
-              <folding>
-                <element signature="imports" expanded="true" />
-              </folding>
+            <state relative-caret-position="209">
+              <caret line="38" column="52" selection-start-line="38" selection-start-column="52" selection-end-line="38" selection-end-column="52" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="ModifyActivity.java" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/app/src/main/java/com/jyt/baseapp/view/activity/ModifyActivity.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="312">
+              <caret line="510" column="11" selection-start-line="448" selection-start-column="7" selection-end-line="510" selection-end-column="11" />
+              <folding />
             </state>
           </provider>
         </entry>
@@ -247,18 +176,6 @@
             <state relative-caret-position="2394">
               <caret line="126" column="46" selection-start-line="126" selection-start-column="12" selection-end-line="126" selection-end-column="46" />
               <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="ScannerService.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/app/src/main/java/com/jyt/baseapp/service/ScannerService.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="608">
-              <caret line="51" column="61" selection-start-line="51" selection-start-column="61" selection-end-line="51" selection-end-column="61" />
-              <folding>
-                <element signature="imports" expanded="false" />
-              </folding>
             </state>
           </provider>
         </entry>
@@ -3303,10 +3220,10 @@
     </option>
   </component>
   <component name="ProjectFrameBounds">
-    <option name="x" value="-8" />
-    <option name="y" value="-8" />
-    <option name="width" value="1874" />
-    <option name="height" value="1096" />
+    <option name="x" value="1912" />
+    <option name="y" value="87" />
+    <option name="width" value="1382" />
+    <option name="height" value="784" />
   </component>
   <component name="ProjectLevelVcsManager" settingsEditedManually="true">
     <OptionsSetting value="true" id="Add" />
@@ -3583,7 +3500,7 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
-              <option name="myItemId" value="activity" />
+              <option name="myItemId" value="fragment" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
@@ -3630,10 +3547,6 @@
             </PATH_ELEMENT>
             <PATH_ELEMENT>
               <option name="myItemId" value="activity" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="entrance" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
@@ -4541,8 +4454,8 @@
     </todo-panel>
   </component>
   <component name="ToolWindowManager">
-    <frame x="-8" y="-8" width="1874" height="1096" extended-state="6" />
-    <editor active="false" />
+    <frame x="1912" y="87" width="1382" height="784" extended-state="6" />
+    <editor active="true" />
     <layout>
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32937366" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.27105832" sideWeight="0.45143488" order="12" side_tool="false" content_ui="tabs" />
@@ -4557,7 +4470,7 @@
       <window_info id="Captures" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Capture Tool" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Gradle Console" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.20734341" sideWeight="0.54635763" order="10" side_tool="true" content_ui="tabs" />
-      <window_info id="Project" active="true" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.1285872" sideWeight="0.489154" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.28257576" sideWeight="0.489154" order="0" side_tool="false" content_ui="combo" />
       <window_info id="Gradle" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3294702" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Android Model" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="8" side_tool="true" content_ui="tabs" />
@@ -4827,13 +4740,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/jyt/baseapp/view/activity/ModifyActivity.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="5149">
-          <caret line="336" column="42" selection-start-line="336" selection-start-column="42" selection-end-line="336" selection-end-column="42" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/java/com/jyt/baseapp/view/fragment/FragmentTab1.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="1738">
@@ -4845,13 +4751,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="133">
           <caret line="12" column="13" selection-start-line="12" selection-start-column="13" selection-end-line="12" selection-end-column="13" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/jyt/baseapp/view/fragment/FragmentTab4.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1558">
-          <caret line="102" column="21" selection-start-line="102" selection-start-column="21" selection-end-line="102" selection-end-column="21" />
         </state>
       </provider>
     </entry>
@@ -5018,6 +4917,7 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="95">
           <caret line="31" column="13" selection-start-line="31" selection-start-column="13" selection-end-line="31" selection-end-column="13" />
+          <folding />
         </state>
       </provider>
     </entry>
@@ -5025,7 +4925,9 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="76">
           <caret line="17" column="3" selection-start-line="17" selection-start-column="3" selection-end-line="17" selection-end-column="3" />
-          <folding />
+          <folding>
+            <element signature="imports" expanded="false" />
+          </folding>
         </state>
       </provider>
     </entry>
@@ -5085,13 +4987,30 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/jyt/baseapp/view/fragment/FragmentTab4.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="582">
+          <caret line="84" column="20" selection-start-line="84" selection-start-column="8" selection-end-line="84" selection-end-column="20" />
+          <folding>
+            <element signature="e#2614#3083#0" expanded="false" />
+            <element signature="e#3082#3083#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/java/com/jyt/baseapp/view/activity/entrance/LoginActivity.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="342">
-          <caret line="45" column="120" selection-start-line="45" selection-start-column="85" selection-end-line="45" selection-end-column="120" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
+        <state relative-caret-position="209">
+          <caret line="38" column="52" selection-start-line="38" selection-start-column="52" selection-end-line="38" selection-end-column="52" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/jyt/baseapp/view/activity/ModifyActivity.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="312">
+          <caret line="510" column="11" selection-start-line="448" selection-start-column="7" selection-end-line="510" selection-end-column="11" />
+          <folding />
         </state>
       </provider>
     </entry>
