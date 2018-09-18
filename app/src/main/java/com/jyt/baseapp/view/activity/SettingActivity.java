@@ -149,6 +149,7 @@ public class SettingActivity extends BaseMCVActivity {
         }else {
             mSvV3.close();
         }
+        
 
     }
 
@@ -184,6 +185,79 @@ public class SettingActivity extends BaseMCVActivity {
 
             }
         });
+        mSvN1.onChangeListener(new SwitchView.OnChangeListener() {
+            @Override
+            public void onChange(SwitchView switchView, boolean isOpened) {
+                Const.setVisitorSound(isOpened);
+            }
+        });
+        mSvN2.onChangeListener(new SwitchView.OnChangeListener() {
+            @Override
+            public void onChange(SwitchView switchView, boolean isOpened) {
+                Const.setVisitorVibrate(isOpened);
+            }
+        });
+        mSvN3.onChangeListener(new SwitchView.OnChangeListener() {
+            @Override
+            public void onChange(SwitchView switchView, boolean isOpened) {
+                Const.setVisitorToast(isOpened);
+            }
+        });
+        mSvT1.onChangeListener(new SwitchView.OnChangeListener() {
+            @Override
+            public void onChange(SwitchView switchView, boolean isOpened) {
+                Const.setTxtSound(isOpened);
+            }
+        });
+        mSvT2.onChangeListener(new SwitchView.OnChangeListener() {
+            @Override
+            public void onChange(SwitchView switchView, boolean isOpened) {
+                Const.setTxtVibrate(isOpened);
+            }
+        });
+        mSvT3.onChangeListener(new SwitchView.OnChangeListener() {
+            @Override
+            public void onChange(SwitchView switchView, boolean isOpened) {
+                Const.setTxtToast(isOpened);
+            }
+        });
+        mSvM1.onChangeListener(new SwitchView.OnChangeListener() {
+            @Override
+            public void onChange(SwitchView switchView, boolean isOpened) {
+                Const.setSoundSound(isOpened);
+            }
+        });
+        mSvM2.onChangeListener(new SwitchView.OnChangeListener() {
+            @Override
+            public void onChange(SwitchView switchView, boolean isOpened) {
+                Const.setSoundVibrate(isOpened);
+            }
+        });
+        mSvM3.onChangeListener(new SwitchView.OnChangeListener() {
+            @Override
+            public void onChange(SwitchView switchView, boolean isOpened) {
+                Const.setSoundToast(isOpened);
+            }
+        });
+        mSvV1.onChangeListener(new SwitchView.OnChangeListener() {
+            @Override
+            public void onChange(SwitchView switchView, boolean isOpened) {
+                Const.setVideoSound(isOpened);
+            }
+        });
+        mSvV2.onChangeListener(new SwitchView.OnChangeListener() {
+            @Override
+            public void onChange(SwitchView switchView, boolean isOpened) {
+                Const.setVideoVibrate(isOpened);
+            }
+        });
+        mSvV3.onChangeListener(new SwitchView.OnChangeListener() {
+            @Override
+            public void onChange(SwitchView switchView, boolean isOpened) {
+                Const.setVideoToast(isOpened);
+            }
+        });
+
     }
 
     @OnClick(R.id.rl_setting_feedback)

@@ -75,6 +75,7 @@ public class GiftFragment extends BaseFragment {
         mTvMoney.setTypeface(App.getInstace().getTypeface());
         mAdapter.setDataList(mGiftList);
         mBandModel = new BandModelImpl();
+        mBandModel.onStart(getActivity());
 
     }
 
