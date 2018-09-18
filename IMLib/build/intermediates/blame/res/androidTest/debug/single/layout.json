@@ -1,22 +1,22 @@
 [
     {
-        "merged": "E:\\Android\\Projects\\Projects\\zhibo\\IMLib\\build\\intermediates\\res\\merged\\androidTest\\debug\\layout\\notification_template_part_chronometer.xml",
-        "source": "E:\\Android\\Projects\\Projects\\zhibo\\IMLib\\build\\intermediates\\exploded-aar\\com.android.support\\support-compat\\26.0.0\\res\\layout\\notification_template_part_chronometer.xml"
+        "merged": "G:\\Android\\Projects\\Projects\\zhibo\\IMLib\\build\\intermediates\\res\\merged\\androidTest\\debug\\layout\\notification_template_part_chronometer.xml",
+        "source": "C:\\Users\\lw\\.android\\build-cache\\36f1c80a206d033aab8d561e0e30bfc79f95a3be\\output\\res\\layout\\notification_template_part_chronometer.xml"
     },
     {
-        "merged": "E:\\Android\\Projects\\Projects\\zhibo\\IMLib\\build\\intermediates\\res\\merged\\androidTest\\debug\\layout\\notification_action.xml",
-        "source": "E:\\Android\\Projects\\Projects\\zhibo\\IMLib\\build\\intermediates\\exploded-aar\\com.android.support\\support-compat\\26.0.0\\res\\layout\\notification_action.xml"
+        "merged": "G:\\Android\\Projects\\Projects\\zhibo\\IMLib\\build\\intermediates\\res\\merged\\androidTest\\debug\\layout\\notification_template_part_time.xml",
+        "source": "C:\\Users\\lw\\.android\\build-cache\\36f1c80a206d033aab8d561e0e30bfc79f95a3be\\output\\res\\layout\\notification_template_part_time.xml"
     },
     {
-        "merged": "E:\\Android\\Projects\\Projects\\zhibo\\IMLib\\build\\intermediates\\res\\merged\\androidTest\\debug\\layout\\notification_template_part_time.xml",
-        "source": "E:\\Android\\Projects\\Projects\\zhibo\\IMLib\\build\\intermediates\\exploded-aar\\com.android.support\\support-compat\\26.0.0\\res\\layout\\notification_template_part_time.xml"
+        "merged": "G:\\Android\\Projects\\Projects\\zhibo\\IMLib\\build\\intermediates\\res\\merged\\androidTest\\debug\\layout\\notification_template_icon_group.xml",
+        "source": "C:\\Users\\lw\\.android\\build-cache\\36f1c80a206d033aab8d561e0e30bfc79f95a3be\\output\\res\\layout\\notification_template_icon_group.xml"
     },
     {
-        "merged": "E:\\Android\\Projects\\Projects\\zhibo\\IMLib\\build\\intermediates\\res\\merged\\androidTest\\debug\\layout\\notification_action_tombstone.xml",
-        "source": "E:\\Android\\Projects\\Projects\\zhibo\\IMLib\\build\\intermediates\\exploded-aar\\com.android.support\\support-compat\\26.0.0\\res\\layout\\notification_action_tombstone.xml"
+        "merged": "G:\\Android\\Projects\\Projects\\zhibo\\IMLib\\build\\intermediates\\res\\merged\\androidTest\\debug\\layout\\notification_action_tombstone.xml",
+        "source": "C:\\Users\\lw\\.android\\build-cache\\36f1c80a206d033aab8d561e0e30bfc79f95a3be\\output\\res\\layout\\notification_action_tombstone.xml"
     },
     {
-        "merged": "E:\\Android\\Projects\\Projects\\zhibo\\IMLib\\build\\intermediates\\res\\merged\\androidTest\\debug\\layout\\notification_template_icon_group.xml",
-        "source": "E:\\Android\\Projects\\Projects\\zhibo\\IMLib\\build\\intermediates\\exploded-aar\\com.android.support\\support-compat\\26.0.0\\res\\layout\\notification_template_icon_group.xml"
+        "merged": "G:\\Android\\Projects\\Projects\\zhibo\\IMLib\\build\\intermediates\\res\\merged\\androidTest\\debug\\layout\\notification_action.xml",
+        "source": "C:\\Users\\lw\\.android\\build-cache\\36f1c80a206d033aab8d561e0e30bfc79f95a3be\\output\\res\\layout\\notification_action.xml"
     }
 ]

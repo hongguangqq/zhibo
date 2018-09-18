@@ -8,6 +8,7 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.jyt.baseapp.R;
+import com.jyt.baseapp.api.Const;
 import com.jyt.baseapp.bean.UserBean;
 import com.jyt.baseapp.util.BaseUtil;
 import com.jyt.baseapp.view.widget.CircleImageView;
@@ -45,10 +46,15 @@ public class FFViewHolder extends BaseViewHolder<UserBean> {
             @Override
             public void onClick(View v) {
                 if (mListener!=null){
-                    mListener.OnClick(data.getId());
+                    mListener.OnClick(data);
                 }
             }
         });
+        if (Const.getGender() ==1){
+            mIvVideo.setVisibility(View.VISIBLE);
+        }else {
+            mIvVideo.setVisibility(View.INVISIBLE);
+        }
         if (data.getOnlineState()==1){
             mTvState.setText("在线");
         }else {
@@ -62,6 +68,6 @@ public class FFViewHolder extends BaseViewHolder<UserBean> {
         this.mListener = listener;
     }
     public interface OnVideoClickListener{
-        void OnClick(int id);
+        void OnClick(UserBean data);
     }
 }

@@ -1,22 +1,22 @@
 [
     {
-        "merged": "E:\\Android\\Projects\\Projects\\zhibo\\IMLib\\build\\intermediates\\res\\merged\\release\\drawable-xhdpi-v4\\notify_panel_notification_icon_bg.png",
-        "source": "E:\\Android\\Projects\\Projects\\zhibo\\IMLib\\build\\intermediates\\exploded-aar\\com.android.support\\support-compat\\26.0.0\\res\\drawable-xhdpi-v4\\notify_panel_notification_icon_bg.png"
+        "merged": "G:\\Android\\Projects\\Projects\\zhibo\\IMLib\\build\\intermediates\\res\\merged\\release\\drawable-xhdpi-v4\\notification_bg_normal.9.png",
+        "source": "C:\\Users\\lw\\.android\\build-cache\\36f1c80a206d033aab8d561e0e30bfc79f95a3be\\output\\res\\drawable-xhdpi-v4\\notification_bg_normal.9.png"
     },
     {
-        "merged": "E:\\Android\\Projects\\Projects\\zhibo\\IMLib\\build\\intermediates\\res\\merged\\release\\drawable-xhdpi-v4\\notification_bg_normal_pressed.9.png",
-        "source": "E:\\Android\\Projects\\Projects\\zhibo\\IMLib\\build\\intermediates\\exploded-aar\\com.android.support\\support-compat\\26.0.0\\res\\drawable-xhdpi-v4\\notification_bg_normal_pressed.9.png"
+        "merged": "G:\\Android\\Projects\\Projects\\zhibo\\IMLib\\build\\intermediates\\res\\merged\\release\\drawable-xhdpi-v4\\notify_panel_notification_icon_bg.png",
+        "source": "C:\\Users\\lw\\.android\\build-cache\\36f1c80a206d033aab8d561e0e30bfc79f95a3be\\output\\res\\drawable-xhdpi-v4\\notify_panel_notification_icon_bg.png"
     },
     {
-        "merged": "E:\\Android\\Projects\\Projects\\zhibo\\IMLib\\build\\intermediates\\res\\merged\\release\\drawable-xhdpi-v4\\notification_bg_low_normal.9.png",
-        "source": "E:\\Android\\Projects\\Projects\\zhibo\\IMLib\\build\\intermediates\\exploded-aar\\com.android.support\\support-compat\\26.0.0\\res\\drawable-xhdpi-v4\\notification_bg_low_normal.9.png"
+        "merged": "G:\\Android\\Projects\\Projects\\zhibo\\IMLib\\build\\intermediates\\res\\merged\\release\\drawable-xhdpi-v4\\notification_bg_normal_pressed.9.png",
+        "source": "C:\\Users\\lw\\.android\\build-cache\\36f1c80a206d033aab8d561e0e30bfc79f95a3be\\output\\res\\drawable-xhdpi-v4\\notification_bg_normal_pressed.9.png"
     },
     {
-        "merged": "E:\\Android\\Projects\\Projects\\zhibo\\IMLib\\build\\intermediates\\res\\merged\\release\\drawable-xhdpi-v4\\notification_bg_low_pressed.9.png",
-        "source": "E:\\Android\\Projects\\Projects\\zhibo\\IMLib\\build\\intermediates\\exploded-aar\\com.android.support\\support-compat\\26.0.0\\res\\drawable-xhdpi-v4\\notification_bg_low_pressed.9.png"
+        "merged": "G:\\Android\\Projects\\Projects\\zhibo\\IMLib\\build\\intermediates\\res\\merged\\release\\drawable-xhdpi-v4\\notification_bg_low_pressed.9.png",
+        "source": "C:\\Users\\lw\\.android\\build-cache\\36f1c80a206d033aab8d561e0e30bfc79f95a3be\\output\\res\\drawable-xhdpi-v4\\notification_bg_low_pressed.9.png"
     },
     {
-        "merged": "E:\\Android\\Projects\\Projects\\zhibo\\IMLib\\build\\intermediates\\res\\merged\\release\\drawable-xhdpi-v4\\notification_bg_normal.9.png",
-        "source": "E:\\Android\\Projects\\Projects\\zhibo\\IMLib\\build\\intermediates\\exploded-aar\\com.android.support\\support-compat\\26.0.0\\res\\drawable-xhdpi-v4\\notification_bg_normal.9.png"
+        "merged": "G:\\Android\\Projects\\Projects\\zhibo\\IMLib\\build\\intermediates\\res\\merged\\release\\drawable-xhdpi-v4\\notification_bg_low_normal.9.png",
+        "source": "C:\\Users\\lw\\.android\\build-cache\\36f1c80a206d033aab8d561e0e30bfc79f95a3be\\output\\res\\drawable-xhdpi-v4\\notification_bg_low_normal.9.png"
     }
 ]

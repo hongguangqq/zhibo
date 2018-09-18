@@ -95,6 +95,117 @@ public class Const {
     public static final String Event_SystemFirst = "Event_SystemFirst";//第一条系统消息
     public static final String Event_NewUpData = "Event_NewUpData";//关注/未关注消息重新排列
 
+    public static final String VISITOR_VIBRATE = "VISITOR_VIBRATE";//新访客-声音
+    public static final String VISITOR_SOUND   = "VISITOR_SOUND";//新访客-震动
+    public static final String VISITOR_TOAST   = "VISITOR_TOAST";//新访客-通知
+    public static final String TXT_VIBRATE     = "TXT_VIBRATE";//文字通讯-声音
+    public static final String TXT_SOUND       = "TXT_SOUND";//文字通讯-震动
+    public static final String TXT_TOAST       = "TXT_TOAST";//文字通讯-通知
+    public static final String SOUND_VIBRATE   = "SOUND_VIBRATE";//语音通话-声音
+    public static final String SOUND_SOUND     = "SOUND_SOUND";//语音通话-震动
+    public static final String SOUND_TOAST     = "SOUND_TOAST";//语音通话-通知
+    public static final String VIDEO_VIBRATE   = "VIDEO_VIBRATE";//视频通话-声音
+    public static final String VIDEO_SOUND     = "VIDEO_SOUND";//视频通话-震动
+    public static final String VIDEO_TOAST     = "VIDEO_TOAST";//视频通话-通知
+
+    public static boolean getVisitorVibrate(){
+        return BaseUtil.getSpBoolean(VISITOR_VIBRATE);
+    }
+
+    public static boolean getVisitorSound(){
+        return BaseUtil.getSpBoolean(VISITOR_SOUND);
+    }
+
+    public static boolean getVisitorToast(){
+        return BaseUtil.getSpBoolean(VISITOR_TOAST);
+    }
+
+    public static boolean getTxtVibrate(){
+        return BaseUtil.getSpBoolean(TXT_VIBRATE);
+    }
+
+    public static boolean getTxtSound(){
+        return BaseUtil.getSpBoolean(TXT_SOUND);
+    }
+
+    public static boolean getTxtToast(){
+        return BaseUtil.getSpBoolean(TXT_TOAST);
+    }
+
+    public static boolean getSoundVibrate(){
+        return BaseUtil.getSpBoolean(SOUND_VIBRATE);
+    }
+
+    public static boolean getSoundSound(){
+        return BaseUtil.getSpBoolean(SOUND_SOUND);
+    }
+
+    public static boolean getSoundToast(){
+        return BaseUtil.getSpBoolean(SOUND_TOAST);
+    }
+
+    public static boolean getVideoVibrate(){
+        return BaseUtil.getSpBoolean(VIDEO_VIBRATE);
+    }
+
+    public static boolean getVideoSound(){
+        return BaseUtil.getSpBoolean(VIDEO_SOUND);
+    }
+
+    public static boolean getVideoToast(){
+        return BaseUtil.getSpBoolean(VIDEO_TOAST);
+    }
+
+
+    public static void setVisitorVibrate(boolean isopen){
+         BaseUtil.setSpBoolean(VISITOR_VIBRATE,isopen);
+    }
+
+    public static void setVisitorSound(boolean isopen){
+         BaseUtil.setSpBoolean(VISITOR_SOUND,isopen);
+    }
+
+    public static void setVisitorToast(boolean isopen){
+         BaseUtil.setSpBoolean(VISITOR_TOAST,isopen);
+    }
+
+    public static void setTxtVibrate(boolean isopen){
+         BaseUtil.setSpBoolean(TXT_VIBRATE,isopen);
+    }
+
+    public static void setTxtSound(boolean isopen){
+         BaseUtil.setSpBoolean(TXT_SOUND,isopen);
+    }
+
+    public static void setTxtToast(boolean isopen){
+         BaseUtil.setSpBoolean(TXT_TOAST,isopen);
+    }
+
+    public static void setSoundVibrate(boolean isopen){
+         BaseUtil.setSpBoolean(SOUND_VIBRATE,isopen);
+    }
+
+    public static void setSoundSound(boolean isopen){
+         BaseUtil.setSpBoolean(SOUND_SOUND,isopen);
+    }
+
+    public static void setSoundToast(boolean isopen){
+         BaseUtil.setSpBoolean(SOUND_TOAST,isopen);
+    }
+
+    public static void setVideoVibrate(boolean isopen){
+         BaseUtil.setSpBoolean(VIDEO_VIBRATE,isopen);
+    }
+
+    public static void setVideoSound(boolean isopen){
+         BaseUtil.setSpBoolean(VIDEO_SOUND,isopen);
+    }
+
+    public static void setVideoToast(boolean isopen){
+         BaseUtil.setSpBoolean(VIDEO_TOAST,isopen);
+    }
+
+
 
     public static void SaveUser(UserBean user , LoginModel loginModel){
 
@@ -112,10 +223,6 @@ public class Const {
         BaseUtil.setSpNumInt(MyJoinActivityId,user.getActivityId());
         MiPushClient.setAlias(BaseUtil.getContext(), user.getId()+"",null);
         MiPushClient.setUserAccount(BaseUtil.getContext(), user.getId()+"",null);
-
-
-
-
 
     }
 

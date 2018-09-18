@@ -31,6 +31,15 @@
             android:textColorHint="#66FFFFFF"
             android:background="@null"
             android:gravity="left"/>
+        <TextView
+            android:id="@+id/tv_release_maxLength"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="right"
+            android:maxLength="128"
+            android:text="0/128"
+            android:textSize="13dp"
+            android:textColor="@color/white"/>
         <RelativeLayout
             android:id="@+id/rl_release_videio"
             android:visibility="gone"

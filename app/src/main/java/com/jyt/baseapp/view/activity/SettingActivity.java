@@ -86,6 +86,70 @@ public class SettingActivity extends BaseMCVActivity {
         mPatter = new long[]{1000, 1000, 2000, 50};
         mLogOffDialog = new IPhoneDialog(this);
 
+        if (Const.getVisitorSound()){
+            mSvN1.open();
+        }else {
+            mSvN1.close();
+        }
+        if (Const.getVisitorVibrate()){
+            mSvN2.open();
+        }else {
+            mSvN2.close();
+        }
+        if (Const.getVisitorToast()){
+            mSvN3.open();
+        }else {
+            mSvN3.close();
+        }
+
+        if (Const.getTxtSound()){
+            mSvT1.open();
+        }else {
+            mSvT1.close();
+        }
+        if (Const.getTxtVibrate()){
+            mSvT2.open();
+        }else {
+            mSvT2.close();
+        }
+        if (Const.getTxtToast()){
+            mSvT3.open();
+        }else {
+            mSvT3.close();
+        }
+
+        if (Const.getSoundSound()){
+            mSvM1.open();
+        }else {
+            mSvM1.close();
+        }
+        if (Const.getSoundVibrate()){
+            mSvM2.open();
+        }else {
+            mSvM2.close();
+        }
+        if (Const.getSoundToast()){
+            mSvM3.open();
+        }else {
+            mSvM3.close();
+        }
+
+        if (Const.getVideoSound()){
+            mSvV1.open();
+        }else {
+            mSvV1.close();
+        }
+        if (Const.getVideoVibrate()){
+            mSvV2.open();
+        }else {
+            mSvV2.close();
+        }
+        if (Const.getVideoToast()){
+            mSvV3.open();
+        }else {
+            mSvV3.close();
+        }
+
     }
 
     private void initSetting() {

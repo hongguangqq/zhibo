@@ -8,6 +8,7 @@ import android.graphics.Typeface;
 import android.os.Handler;
 import android.os.Message;
 import android.os.Process;
+import android.os.Vibrator;
 import android.support.multidex.MultiDexApplication;
 import android.util.Log;
 
@@ -200,7 +201,16 @@ public class App  extends MultiDexApplication {
             @Override
             public boolean onReceived(io.rong.imlib.model.Message message, int i) {
                 Log.e("@#","onReceived");
+                if (Const.getTxtSound()){
 
+                }
+                if (Const.getTxtVibrate()){
+                    Vibrator vibrator = (Vibrator)getSystemService(VIBRATOR_SERVICE);
+                    vibrator.vibrate(1000);
+                }
+                if (Const.getTxtToast()){
+
+                }
                 if (message.getContent() instanceof TextMessage
                         ||message.getContent() instanceof ImageMessage
                         ||message.getContent() instanceof VoiceMessage){

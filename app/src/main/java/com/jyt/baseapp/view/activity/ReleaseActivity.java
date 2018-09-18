@@ -11,6 +11,7 @@ import android.os.Message;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.RecyclerView;
+import android.text.Editable;
 import android.text.TextUtils;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,6 +19,7 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.jyt.baseapp.R;
@@ -59,6 +61,7 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.OnClick;
 import butterknife.OnLongClick;
+import butterknife.OnTextChanged;
 
 public class ReleaseActivity extends BaseMCVActivity {
 
@@ -72,6 +75,8 @@ public class ReleaseActivity extends BaseMCVActivity {
     ImageView mIvX;
     @BindView(R.id.iv_release_d)
     ImageView mIvD;
+    @BindView(R.id.tv_release_maxLength)
+    TextView mTvMaxLength;
     @BindView(R.id.rl_release_videio)
     RelativeLayout mRlVideo;
     @BindView(R.id.iv_release_video)
@@ -314,58 +319,6 @@ public class ReleaseActivity extends BaseMCVActivity {
 
                         }
                     });
-
-//                    long expires = System.currentTimeMillis() / 1000 + 3600 * 24 * 30 * 12 * 10;
-//                    String uploadToken = null;
-//                    try {
-//                        uploadToken = Util.getToken("asset", "test/" + Const.getUserID() + "/" + mFileVideo.getName(), expires, Const.WyAccessKey, Const.WySecretKey);
-//                        WanNOSObject wanNOSObject = new WanNOSObject();
-//                        wanNOSObject.setNosBucketName("asset");
-//                        wanNOSObject.setNosObjectName("test/" + Const.getUserID() + "/" + mFileVideo.getName());
-//                        wanNOSObject.setContentType("video/mpeg4");    // 请根据实际情况设置正确的MIME-TYPE
-//                        wanNOSObject.setUploadToken(uploadToken);
-//                        String uploadContext = Util.getData(ReleaseActivity.this, mFileVideo.getAbsolutePath());
-//                        executor = WanAccelerator.putFileByHttp(ReleaseActivity.this, mFileVideo, mFileVideo.getAbsolutePath(), uploadContext, wanNOSObject, new Callback() {
-//                            @Override
-//                            public void onUploadContextCreate(Object o, String s, String s1) {
-//
-//                            }
-//
-//                            @Override
-//                            public void onProcess(Object o, long l, long l1) {
-//
-//                            }
-//
-//                            @Override
-//                            public void onSuccess(CallRet ret) {
-//                                Message message = new Message();
-//                                message.obj = inputText;
-//                                message.what = CODE_UPLOAD;
-//                                mHandler.sendMessage(message);
-//                                executor = null;
-//
-//
-//                            }
-//
-//                            @Override
-//                            public void onFailure(CallRet ret) {
-//                                executor = null;
-//                            }
-//
-//                            @Override
-//                            public void onCanceled(CallRet callRet) {
-//
-//                            }
-//                        });
-//                    } catch (NoSuchAlgorithmException e) {
-//                        e.printStackTrace();
-//                    } catch (InvalidKeyException e) {
-//                        e.printStackTrace();
-//                    } catch (JSONException e) {
-//                        e.printStackTrace();
-//                    } catch (InvalidParameterException e) {
-//                        e.printStackTrace();
-//                    }
 
                 }
                 //上传图片操作
@@ -612,7 +565,11 @@ public class ReleaseActivity extends BaseMCVActivity {
             BaseUtil.makeText("不允许视频与图片一同发布");
         }
 
+    }
 
+    @OnTextChanged(value = R.id.et_release_input,callback = OnTextChanged.Callback.AFTER_TEXT_CHANGED)
+    public void afterTextChanged(Editable s){
+        mTvMaxLength.setText(s.length()+"/128");
     }
 
     @OnClick(R.id.rl_release_videio)

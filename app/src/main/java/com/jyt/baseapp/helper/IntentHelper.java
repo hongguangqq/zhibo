@@ -657,14 +657,6 @@ public class IntentHelper {
     }
 
 
-
-
-
-
-
-
-
-
     /**
      * 跳转到录制小视频界面
      * @param activity

@@ -1,18 +1,18 @@
 [
     {
-        "merged": "E:\\Android\\Projects\\Projects\\zhibo\\IMLib\\build\\intermediates\\res\\merged\\release\\drawable\\notification_icon_background.xml",
-        "source": "E:\\Android\\Projects\\Projects\\zhibo\\IMLib\\build\\intermediates\\exploded-aar\\com.android.support\\support-compat\\26.0.0\\res\\drawable\\notification_icon_background.xml"
+        "merged": "G:\\Android\\Projects\\Projects\\zhibo\\IMLib\\build\\intermediates\\res\\merged\\release\\drawable\\notification_bg_low.xml",
+        "source": "C:\\Users\\lw\\.android\\build-cache\\36f1c80a206d033aab8d561e0e30bfc79f95a3be\\output\\res\\drawable\\notification_bg_low.xml"
     },
     {
-        "merged": "E:\\Android\\Projects\\Projects\\zhibo\\IMLib\\build\\intermediates\\res\\merged\\release\\drawable\\notification_bg_low.xml",
-        "source": "E:\\Android\\Projects\\Projects\\zhibo\\IMLib\\build\\intermediates\\exploded-aar\\com.android.support\\support-compat\\26.0.0\\res\\drawable\\notification_bg_low.xml"
+        "merged": "G:\\Android\\Projects\\Projects\\zhibo\\IMLib\\build\\intermediates\\res\\merged\\release\\drawable\\notification_tile_bg.xml",
+        "source": "C:\\Users\\lw\\.android\\build-cache\\36f1c80a206d033aab8d561e0e30bfc79f95a3be\\output\\res\\drawable\\notification_tile_bg.xml"
     },
     {
-        "merged": "E:\\Android\\Projects\\Projects\\zhibo\\IMLib\\build\\intermediates\\res\\merged\\release\\drawable\\notification_tile_bg.xml",
-        "source": "E:\\Android\\Projects\\Projects\\zhibo\\IMLib\\build\\intermediates\\exploded-aar\\com.android.support\\support-compat\\26.0.0\\res\\drawable\\notification_tile_bg.xml"
+        "merged": "G:\\Android\\Projects\\Projects\\zhibo\\IMLib\\build\\intermediates\\res\\merged\\release\\drawable\\notification_icon_background.xml",
+        "source": "C:\\Users\\lw\\.android\\build-cache\\36f1c80a206d033aab8d561e0e30bfc79f95a3be\\output\\res\\drawable\\notification_icon_background.xml"
     },
     {
-        "merged": "E:\\Android\\Projects\\Projects\\zhibo\\IMLib\\build\\intermediates\\res\\merged\\release\\drawable\\notification_bg.xml",
-        "source": "E:\\Android\\Projects\\Projects\\zhibo\\IMLib\\build\\intermediates\\exploded-aar\\com.android.support\\support-compat\\26.0.0\\res\\drawable\\notification_bg.xml"
+        "merged": "G:\\Android\\Projects\\Projects\\zhibo\\IMLib\\build\\intermediates\\res\\merged\\release\\drawable\\notification_bg.xml",
+        "source": "C:\\Users\\lw\\.android\\build-cache\\36f1c80a206d033aab8d561e0e30bfc79f95a3be\\output\\res\\drawable\\notification_bg.xml"
     }
 ]

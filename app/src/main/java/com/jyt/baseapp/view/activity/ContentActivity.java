@@ -38,6 +38,8 @@ import com.jyt.baseapp.model.impl.LoginModelImpl;
 import com.jyt.baseapp.model.impl.PersonModelImpl;
 import com.jyt.baseapp.util.BaseUtil;
 import com.jyt.baseapp.util.HawkUtil;
+import com.jyt.baseapp.util.NetworkUtils;
+import com.jyt.baseapp.util.T;
 import com.jyt.baseapp.view.fragment.FragmentTab1;
 import com.jyt.baseapp.view.fragment.FragmentTab2;
 import com.jyt.baseapp.view.fragment.FragmentTab3;
@@ -115,8 +117,6 @@ public class ContentActivity extends BaseMCVActivity implements View.OnClickList
     private AlertDialog dialog;
 
 
-    // 打开相机请求Code，多个权限请求Code
-    private final int REQUEST_CODE_PERMISSIONS = 100;
 
     @Override
     protected int getLayoutId() {
@@ -183,66 +183,77 @@ public class ContentActivity extends BaseMCVActivity implements View.OnClickList
         mViewPagerAdapter.setFragments(mFragmentList);
         mVpContent.setAdapter(mViewPagerAdapter);
         mVpContent.setOffscreenPageLimit(4);
-        //获取好友ID列表
-        mPersonModel.getFocusIdList(new BeanCallback<BaseJson<List<UserBean>>>() {
-            @Override
-            public void response(boolean success, BaseJson<List<UserBean>> response, int id) {
-                if (success && response.getData()!=null){
-                    HawkUtil.saveFocusList(response.getData());
+
+
+        if(!NetworkUtils.isNetworkAvailable(getContext())) {
+            T.showShort(this,"网络中断，请检查您的网络状态");
+            finish();
+        }else {
+            //获取好友ID列表
+            mPersonModel.getFocusIdList(new BeanCallback<BaseJson<List<UserBean>>>() {
+                @Override
+                public void response(boolean success, BaseJson<List<UserBean>> response, int id) {
+                    if (success && response.getData()!=null){
+                        HawkUtil.saveFocusList(response.getData());
+                    }
                 }
-            }
-        });
-        MiPushClient.setUserAccount(BaseUtil.getContext(),Const.getUserID(),null);
-        MiPushClient.resumePush(BaseUtil.getContext(),null);
-        //网易云音视频登录
-        LoginInfo loginInfo = new LoginInfo(Const.getWyAccount(),Const.getWyToken());
-        NIMClient.getService(AuthService.class).login(loginInfo).setCallback(new RequestCallback() {
-            @Override
-            public void onSuccess(Object param) {
-                Log.e("@#","WY-accId："+Const.getWyAccount());
-            }
-
-            @Override
-            public void onFailed(int code) {
-                Log.e("@#","Wy-onFailed-code:"+code);
-            }
-
-            @Override
-            public void onException(Throwable exception) {
-                Log.e("@#","Wy-onException:"+exception.getMessage());
-            }
-        });
-        //融云登录
-        mLoginModel.GetRongID(new BeanCallback<String>() {
-            @Override
-            public void response(boolean success, String response, int id) {
-                try {
-                    JSONObject job = new JSONObject(response);
-                    String token = job.getString("token");
-                    BaseUtil.setSpString(Const.RongToken,token);
-                    RongIMClient.connect(token, new RongIMClient.ConnectCallback() {
-                        @Override
-                        public void onTokenIncorrect() {
-                            Log.e("@#","Token错误");
-                        }
-
-                        @Override
-                        public void onSuccess(String s) {
-                            BaseUtil.e("onSuccess---id="+s);
-
-
-                        }
-
-                        @Override
-                        public void onError(RongIMClient.ErrorCode errorCode) {
-                            BaseUtil.e(errorCode.getMessage());
-                        }
-                    });
-                } catch (JSONException e) {
-                    e.printStackTrace();
+            });
+            //融云登录
+            MiPushClient.setUserAccount(BaseUtil.getContext(),Const.getUserID(),null);
+            MiPushClient.resumePush(BaseUtil.getContext(),null);
+            //网易云音视频登录
+            LoginInfo loginInfo = new LoginInfo(Const.getWyAccount(),Const.getWyToken());
+            NIMClient.getService(AuthService.class).login(loginInfo).setCallback(new RequestCallback() {
+                @Override
+                public void onSuccess(Object param) {
+                    Log.e("@#","WY-accId："+Const.getWyAccount());
                 }
-            }
-        });
+
+                @Override
+                public void onFailed(int code) {
+                    Log.e("@#","Wy-onFailed-code:"+code);
+                }
+
+                @Override
+                public void onException(Throwable exception) {
+                    Log.e("@#","Wy-onException:"+exception.getMessage());
+                }
+            });
+            mLoginModel.GetRongID(new BeanCallback<String>() {
+                @Override
+                public void response(boolean success, String response, int id) {
+                    try {
+                        if (success){
+                            JSONObject job = new JSONObject(response);
+                            String token = job.getString("token");
+                            BaseUtil.setSpString(Const.RongToken,token);
+                            RongIMClient.connect(token, new RongIMClient.ConnectCallback() {
+                                @Override
+                                public void onTokenIncorrect() {
+                                    Log.e("@#","Token错误");
+                                }
+
+                                @Override
+                                public void onSuccess(String s) {
+                                    BaseUtil.e("onSuccess---id="+s);
+
+
+                                }
+
+                                @Override
+                                public void onError(RongIMClient.ErrorCode errorCode) {
+                                    BaseUtil.e(errorCode.getMessage());
+                                }
+                            });
+                        }
+
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                }
+            });
+        }
+
 
 
     }

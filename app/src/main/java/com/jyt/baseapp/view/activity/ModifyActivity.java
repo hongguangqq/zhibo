@@ -173,7 +173,7 @@ public class ModifyActivity extends BaseMCVActivity {
 
                                 @Override
                                 public void onFailure(CallRet callRet) {
-
+                                    BaseUtil.makeText("上传失败");
                                 }
 
                                 @Override
@@ -475,7 +475,7 @@ public class ModifyActivity extends BaseMCVActivity {
 
                         @Override
                         public void onFailure(CallRet callRet) {
-
+                            BaseUtil.makeText("上传失败");
                         }
 
                         @Override
@@ -548,6 +548,7 @@ public class ModifyActivity extends BaseMCVActivity {
                         @Override
                         public void onFailure(CallRet callRet) {
                             Log.e("@#","fail:"+callRet.getException());
+                            BaseUtil.makeText("上传失败");
                         }
 
                         @Override
@@ -880,9 +881,11 @@ public class ModifyActivity extends BaseMCVActivity {
             if (time >= 3) {
                 //录音成功,发Message
                 mHandler.sendEmptyMessage(Const.RECORD_SUCCESS);
-            } else {
+            } else if (time<30){
                 mAudioFile = null;
                 mHandler.sendEmptyMessage(Const.RECORD_TOO_SHORT);
+            }else {
+                BaseUtil.makeText("录音不能超过30秒");
             }
             //录音完成释放资源
             releaseRecorder();

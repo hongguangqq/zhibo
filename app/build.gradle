@@ -6,12 +6,12 @@ android {
         config {
             keyAlias 'zhibo'
             keyPassword '123456'
-            storeFile file('E:/key/zhibo.jks')
+            storeFile file('../zhibo.jks')
             storePassword '123456'
         }
     }
     compileSdkVersion 26
-    buildToolsVersion "27"
+    buildToolsVersion '28.0.2'
     defaultConfig {
         applicationId "com.jyt.zhibo"
         minSdkVersion 19

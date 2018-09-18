@@ -150,6 +150,14 @@
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
                 android:background="@color/et_hint1"/>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="1dp"
+                android:gravity="right"
+                android:text="性别选取后，不可更改"
+                android:textSize="13dp"
+                android:textColor="@color/white"/>
         </LinearLayout>
 
 

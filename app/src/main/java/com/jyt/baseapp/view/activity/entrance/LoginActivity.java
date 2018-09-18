@@ -113,10 +113,12 @@ public class LoginActivity extends BaseMCVActivity implements PlatformActionList
     };
     // 相机权限、多个权限
     private final String[] PERMISSIONS = new String[]{
-            Manifest.permission.SYSTEM_ALERT_WINDOW,
+
             Manifest.permission.WRITE_EXTERNAL_STORAGE,
-            Manifest.permission.ACCESS_COARSE_LOCATION,
-            Manifest.permission.CAMERA
+            Manifest.permission.CAMERA,
+            Manifest.permission.RECORD_AUDIO,
+            Manifest.permission.READ_PHONE_STATE,
+            Manifest.permission.GET_ACCOUNTS
     };
     // 打开相机请求Code，多个权限请求Code
     private final int REQUEST_CODE_PERMISSIONS = 100;
@@ -311,7 +313,7 @@ public class LoginActivity extends BaseMCVActivity implements PlatformActionList
     private void showMissingPermissionDialog() {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle("帮助");//提示帮助
-        builder.setMessage("当前应用缺少必要权限。\n\n请点击\"设置\"-\"权限\"-打开所需权限。");
+        builder.setMessage("当前应用缺少必要权限。\n\n请点击\"设置\"-\"权限\"-打开所需权限(包括悬浮框权限)。");
 
         //如果是拒绝授权，则退出应用
         //退出

@@ -9,6 +9,7 @@ import com.jyt.baseapp.adapter.FFAdapter;
 import com.jyt.baseapp.api.BeanCallback;
 import com.jyt.baseapp.bean.BaseJson;
 import com.jyt.baseapp.bean.UserBean;
+import com.jyt.baseapp.helper.IntentHelper;
 import com.jyt.baseapp.itemDecoration.RecycleViewDivider;
 import com.jyt.baseapp.model.PersonModel;
 import com.jyt.baseapp.model.impl.PersonModelImpl;
@@ -74,14 +75,15 @@ public class FfFragment extends BaseFragment {
         mAdapter.setDataList(mDataList);
         mAdapter.setOnVideoClickListener(new FFViewHolder.OnVideoClickListener() {
             @Override
-            public void OnClick(int id) {
-
+            public void OnClick(UserBean data) {
+                IntentHelper.OpenLaunchActivity(getActivity(),data.getId(),2,data.getNickname(),data.getHeadImg());
             }
         });
         mAdapter.setOnViewHolderClickListener(new BaseViewHolder.OnViewHolderClickListener() {
             @Override
             public void onClick(BaseViewHolder holder) {
-
+                UserBean bean = (UserBean) holder.getData();
+                IntentHelper.OpenPersonActivity(getActivity(),bean.getId());
             }
         });
         mRvContent.setAdapter(mAdapter);
