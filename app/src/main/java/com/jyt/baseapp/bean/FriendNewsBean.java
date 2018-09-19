@@ -45,8 +45,8 @@ public class FriendNewsBean implements Parcelable {
         parcel.writeInt(id);
         parcel.writeString(headImg);
         parcel.writeString(nickname);
-        parcel.writeString(content);
         parcel.writeLong(time);
+        parcel.writeString(content);
     }
 
     public int getId() {

@@ -12,6 +12,7 @@ import android.widget.ProgressBar;
 import com.bumptech.glide.Glide;
 import com.jyt.baseapp.R;
 import com.jyt.baseapp.bean.PropagationBean;
+import com.jyt.baseapp.helper.IntentHelper;
 
 import java.util.List;
 
@@ -27,6 +28,13 @@ public class PagePropagandaAdapter extends PagerAdapter {
     private ProgressBar mLoadingPar;
     private final View mView;
     private ImageView mIvPlay;
+    private View.OnClickListener mListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View view) {
+            String path = (String) view.getTag();
+            IntentHelper.openBrowseImagesActivity(mContext,path);
+        }
+    };
 
     public PagePropagandaAdapter(Context context , List<PropagationBean> list){
         mContext = context;
@@ -62,6 +70,8 @@ public class PagePropagandaAdapter extends PagerAdapter {
                 ImageView imageView = new ImageView(mContext);
                 imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
                 Glide.with(mContext).load(path).into(imageView);
+                imageView.setTag(path);
+                imageView.setOnClickListener(mListener);
                 container.addView(imageView);
                 return imageView;
             }else{

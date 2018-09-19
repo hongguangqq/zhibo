@@ -46,8 +46,8 @@
                     android:layout_centerVertical="true"
                     android:layout_alignParentRight="true"
                     android:layout_marginRight="16dp"
-                    jyt:sv_darkColor="#FF7799"
-                    jyt:sv_lightColor="#B9B9B9"/>
+                    jyt:sv_darkColor="#B9B9B9"
+                    jyt:sv_lightColor="#FF7799"/>
             </RelativeLayout>
             <RelativeLayout
                 android:layout_width="match_parent"
@@ -66,8 +66,8 @@
                     android:layout_centerVertical="true"
                     android:layout_alignParentRight="true"
                     android:layout_marginRight="16dp"
-                    jyt:sv_darkColor="#FF7799"
-                    jyt:sv_lightColor="#B9B9B9"/>
+                    jyt:sv_darkColor="#B9B9B9"
+                    jyt:sv_lightColor="#FF7799"/>
             </RelativeLayout>
             <RelativeLayout
                 android:layout_width="match_parent"
@@ -86,8 +86,8 @@
                     android:layout_centerVertical="true"
                     android:layout_alignParentRight="true"
                     android:layout_marginRight="16dp"
-                    jyt:sv_darkColor="#FF7799"
-                    jyt:sv_lightColor="#B9B9B9"/>
+                    jyt:sv_darkColor="#B9B9B9"
+                    jyt:sv_lightColor="#FF7799"/>
             </RelativeLayout>
         </LinearLayout>
         <!--文字通讯-->
@@ -125,8 +125,8 @@
                     android:layout_centerVertical="true"
                     android:layout_alignParentRight="true"
                     android:layout_marginRight="16dp"
-                    jyt:sv_darkColor="#FF7799"
-                    jyt:sv_lightColor="#B9B9B9"/>
+                    jyt:sv_darkColor="#B9B9B9"
+                    jyt:sv_lightColor="#FF7799"/>
             </RelativeLayout>
             <RelativeLayout
                 android:layout_width="match_parent"
@@ -145,8 +145,8 @@
                     android:layout_centerVertical="true"
                     android:layout_alignParentRight="true"
                     android:layout_marginRight="16dp"
-                    jyt:sv_darkColor="#FF7799"
-                    jyt:sv_lightColor="#B9B9B9"/>
+                    jyt:sv_darkColor="#B9B9B9"
+                    jyt:sv_lightColor="#FF7799"/>
             </RelativeLayout>
             <RelativeLayout
                 android:layout_width="match_parent"
@@ -165,8 +165,8 @@
                     android:layout_centerVertical="true"
                     android:layout_alignParentRight="true"
                     android:layout_marginRight="16dp"
-                    jyt:sv_darkColor="#FF7799"
-                    jyt:sv_lightColor="#B9B9B9"/>
+                    jyt:sv_darkColor="#B9B9B9"
+                    jyt:sv_lightColor="#FF7799"/>
             </RelativeLayout>
         </LinearLayout>
         <!--语音通话-->
@@ -204,8 +204,8 @@
                     android:layout_centerVertical="true"
                     android:layout_alignParentRight="true"
                     android:layout_marginRight="16dp"
-                    jyt:sv_darkColor="#FF7799"
-                    jyt:sv_lightColor="#B9B9B9"/>
+                    jyt:sv_darkColor="#B9B9B9"
+                    jyt:sv_lightColor="#FF7799"/>
             </RelativeLayout>
             <RelativeLayout
                 android:layout_width="match_parent"
@@ -224,8 +224,8 @@
                     android:layout_centerVertical="true"
                     android:layout_alignParentRight="true"
                     android:layout_marginRight="16dp"
-                    jyt:sv_darkColor="#FF7799"
-                    jyt:sv_lightColor="#B9B9B9"/>
+                    jyt:sv_darkColor="#B9B9B9"
+                    jyt:sv_lightColor="#FF7799"/>
             </RelativeLayout>
             <RelativeLayout
                 android:layout_width="match_parent"
@@ -244,8 +244,8 @@
                     android:layout_centerVertical="true"
                     android:layout_alignParentRight="true"
                     android:layout_marginRight="16dp"
-                    jyt:sv_darkColor="#FF7799"
-                    jyt:sv_lightColor="#B9B9B9"/>
+                    jyt:sv_darkColor="#B9B9B9"
+                    jyt:sv_lightColor="#FF7799"/>
             </RelativeLayout>
         </LinearLayout>
         <!--视频通话-->
@@ -282,8 +282,8 @@
                     android:layout_centerVertical="true"
                     android:layout_alignParentRight="true"
                     android:layout_marginRight="16dp"
-                    jyt:sv_darkColor="#FF7799"
-                    jyt:sv_lightColor="#B9B9B9"/>
+                    jyt:sv_darkColor="#B9B9B9"
+                    jyt:sv_lightColor="#FF7799"/>
             </RelativeLayout>
             <RelativeLayout
                 android:layout_width="match_parent"
@@ -302,8 +302,8 @@
                     android:layout_centerVertical="true"
                     android:layout_alignParentRight="true"
                     android:layout_marginRight="16dp"
-                    jyt:sv_darkColor="#FF7799"
-                    jyt:sv_lightColor="#B9B9B9"/>
+                    jyt:sv_darkColor="#B9B9B9"
+                    jyt:sv_lightColor="#FF7799"/>
             </RelativeLayout>
             <RelativeLayout
                 android:layout_width="match_parent"
@@ -322,8 +322,8 @@
                     android:layout_centerVertical="true"
                     android:layout_alignParentRight="true"
                     android:layout_marginRight="16dp"
-                    jyt:sv_darkColor="#FF7799"
-                    jyt:sv_lightColor="#B9B9B9"/>
+                    jyt:sv_darkColor="#B9B9B9"
+                    jyt:sv_lightColor="#FF7799"/>
             </RelativeLayout>
         </LinearLayout>
 

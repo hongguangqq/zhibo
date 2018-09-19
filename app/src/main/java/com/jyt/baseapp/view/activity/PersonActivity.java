@@ -491,7 +491,16 @@ public class PersonActivity extends BaseMCVActivity {
 
     @OnClick(R.id.ll_person3)
     public void OpenLaunchActivityByVoice(){
-        IntentHelper.OpenLaunchActivity(this,mUser.getId(),3,mUser.getNickname(),mUser.getHeadImg());
+        if (mUser.getAnchorState()!=2){
+            BaseUtil.makeText("当前用户未认证");
+            return;
+        }
+        if (mUser.getOnlineState()==1){
+            IntentHelper.OpenLaunchActivity(this,mUser.getId(),3,mUser.getNickname(),mUser.getHeadImg());
+        }else {
+            BaseUtil.makeText("主播当前不在线");
+        }
+
     }
 
     @OnClick(R.id.ll_person4)
@@ -500,7 +509,12 @@ public class PersonActivity extends BaseMCVActivity {
             BaseUtil.makeText("当前用户未认证");
             return;
         }
-        IntentHelper.OpenLaunchActivity(this,mUser.getId(),2,mUser.getNickname(),mUser.getHeadImg());
+        if (mUser.getOnlineState()==1){
+            IntentHelper.OpenLaunchActivity(this,mUser.getId(),2,mUser.getNickname(),mUser.getHeadImg());
+        }else {
+            BaseUtil.makeText("主播当前不在线");
+        }
+
     }
 
     @OnClick(R.id.iv_person_more)

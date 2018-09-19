@@ -119,7 +119,11 @@ public class NewsActivity extends BaseMCVActivity {
                 mAdapter.setsetOnOpenVideoListener(new NewViewHolder2.OnOpenVideoListener() {
                     @Override
                     public void openVideo(UserBean user) {
-                        IntentHelper.OpenLaunchActivity(NewsActivity.this,user.getId(),2, Const.getUserNick(),Const.getUserHeadImg());
+                        if (user.getOnlineState()==1){
+                            IntentHelper.OpenLaunchActivity(NewsActivity.this,user.getId(),2, Const.getUserNick(),Const.getUserHeadImg());
+                        }else {
+                            BaseUtil.makeText("主播当前不在线");
+                        }
                     }
 
                     @Override

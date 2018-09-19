@@ -201,19 +201,21 @@ public class App  extends MultiDexApplication {
             @Override
             public boolean onReceived(io.rong.imlib.model.Message message, int i) {
                 Log.e("@#","onReceived");
-                if (Const.getTxtSound()){
 
-                }
-                if (Const.getTxtVibrate()){
-                    Vibrator vibrator = (Vibrator)getSystemService(VIBRATOR_SERVICE);
-                    vibrator.vibrate(1000);
-                }
-                if (Const.getTxtToast()){
-
-                }
                 if (message.getContent() instanceof TextMessage
                         ||message.getContent() instanceof ImageMessage
                         ||message.getContent() instanceof VoiceMessage){
+                    if (Const.getTxtSound()){
+
+                    }
+                    if (Const.getTxtVibrate()){
+                        Log.e("@#","震动");
+                        Vibrator vibrator = (Vibrator)getSystemService(VIBRATOR_SERVICE);
+                        vibrator.vibrate(1000);
+                    }
+                    if (Const.getTxtToast()){
+
+                    }
                     //好友消息加入List
                     HawkUtil.addComMessage(message);
 

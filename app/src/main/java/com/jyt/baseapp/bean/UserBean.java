@@ -22,8 +22,8 @@ public class UserBean implements Serializable{
     private int attention;
     private int fans;
     private String token;
-    private int onlineState;
-    private int anchorState;
+    private int onlineState;//线上状态 1在线 2离线
+    private int anchorState;//是否通过验证
     private String headImg;
     private String imgs;
     private float price;

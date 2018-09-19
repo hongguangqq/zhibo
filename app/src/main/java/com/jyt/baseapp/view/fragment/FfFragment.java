@@ -76,7 +76,11 @@ public class FfFragment extends BaseFragment {
         mAdapter.setOnVideoClickListener(new FFViewHolder.OnVideoClickListener() {
             @Override
             public void OnClick(UserBean data) {
-                IntentHelper.OpenLaunchActivity(getActivity(),data.getId(),2,data.getNickname(),data.getHeadImg());
+                if (data.getOnlineState()==1){
+                    IntentHelper.OpenLaunchActivity(getActivity(),data.getId(),2,data.getNickname(),data.getHeadImg());
+                }else {
+                    BaseUtil.makeText("主播当前不在线");
+                }
             }
         });
         mAdapter.setOnViewHolderClickListener(new BaseViewHolder.OnViewHolderClickListener() {

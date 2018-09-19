@@ -12,6 +12,7 @@ public class VisitorAdapter extends BaseRcvAdapter {
     @Override
     BaseViewHolder createCustomViewHolder(ViewGroup parent, int viewType) {
         VisitorViewHolder holder = new VisitorViewHolder(parent);
+        holder.setOnViewHolderClickListener(onViewHolderClickListener);
         return holder;
     }
 }
