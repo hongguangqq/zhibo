@@ -15,6 +15,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.bigkoo.pickerview.OptionsPickerView;
@@ -39,6 +40,7 @@ import com.jyt.baseapp.util.BaseUtil;
 import com.jyt.baseapp.util.HawkUtil;
 import com.jyt.baseapp.view.dialog.IPhoneDialog;
 import com.jyt.baseapp.view.dialog.PersonDialog;
+import com.jyt.baseapp.view.dialog.RecordDialog;
 import com.jyt.baseapp.view.viewholder.BaseViewHolder;
 
 import java.io.IOException;
@@ -85,6 +87,8 @@ public class PersonActivity extends BaseMCVActivity {
     RecyclerView mRvVisitor;
     @BindView(R.id.ll_person_bottom)
     LinearLayout mLlBottom;
+    @BindView(R.id.rl_bottom)
+    RelativeLayout mRlBottom;
     @BindView(R.id.ll_person1)
     LinearLayout mLlPerson1;
     @BindView(R.id.ll_person2)
@@ -98,6 +102,7 @@ public class PersonActivity extends BaseMCVActivity {
 
     private PersonDialog mDialog;
     private IPhoneDialog mReportDialog;
+    private RecordDialog mPlayDialog;
     private VisitorAdapter mVisitorAdapter;
     private MyGiftAdapter mMyGiftAdapter;
     private PagePropagandaAdapter mPropagandaAdapter;
@@ -156,6 +161,7 @@ public class PersonActivity extends BaseMCVActivity {
         mAppointModel.onStart(this);
         mDialog = new PersonDialog(this);
         mReportDialog = new IPhoneDialog(this);
+        mPlayDialog = new RecordDialog(this);
         mReportDialog.setTitle("举报原因");
         mReportDialog.setInputShow(true);
         mReportDialog.setInputLine(4);
@@ -309,16 +315,16 @@ public class PersonActivity extends BaseMCVActivity {
                         mUser = mPersonData.getUser();
                         //异性显示
                         if (Const.getGender()!=mUser.getGender()){
-
-                            if (Const.getGender()==1){
+                            if (Const.getGender()==1 && mUser.getGender()==2){
                                 mLlPerson5.setVisibility(View.GONE);
                                 mLlBottom.setVisibility(View.VISIBLE);
-                            }else {
+                            }else if (Const.getGender()==2 && mUser.getGender()==1){
                                 mLlPerson5.setVisibility(View.VISIBLE);
                                 mLlBottom.setVisibility(View.GONE);
                             }
+                        }else {
+                            mRlBottom.setVisibility(View.GONE);
                         }
-
 
                         if (mUser.getGender()==1){
                             mIvSex.setImageResource(R.mipmap.icon_nan2);
@@ -327,7 +333,6 @@ public class PersonActivity extends BaseMCVActivity {
                         }else {
                             mIvSex.setImageResource(R.mipmap.icon_nv2);
                             mTvGift.setVisibility(View.VISIBLE);
-
                         }
                         Log.e("@#","time"+mPersonData.getTotal()/60);
                         mTvCtime.setText("本周聊天时长"+mPersonData.getWeek()/60+"小时 | 总时长 "+mPersonData.getTotal()/60+"小时");
@@ -339,6 +344,8 @@ public class PersonActivity extends BaseMCVActivity {
                         }
                         if (!TextUtils.isEmpty(mUser.getMark())){
                             mTvSign.setText(mUser.getMark());
+                        }else {
+                            mTvSign.setText("用户暂未留言");
                         }
                         mTvAl.setText(mUser.getAge()+"岁 "+mUser.getCityName());
                         if (mUser.getOnlineState()==1){
@@ -524,8 +531,10 @@ public class PersonActivity extends BaseMCVActivity {
 
     @OnClick(R.id.iv_person_yuyin)
     public void PlayAudio(){
-        if (!TextUtils.isEmpty(mUser.getVoice())){
+        if (mUser!=null && !TextUtils.isEmpty(mUser.getVoice())){
             if (!isPlayAudio){
+                mPlayDialog.show();
+                mPlayDialog.setTitle("播放中");
                 startPlay(mUser.getVoice());
             }
         }else {
@@ -605,6 +614,7 @@ public class PersonActivity extends BaseMCVActivity {
      */
     private void playEndOrFail(boolean isEnd) {
         isPlayAudio = false;
+        mPlayDialog.dismiss();
         if (isEnd) {
             mHandler.sendEmptyMessage(Const.PLAY_COMPLETION);//停止播放
         } else {

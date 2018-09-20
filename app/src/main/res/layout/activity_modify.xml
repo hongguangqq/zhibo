@@ -13,13 +13,25 @@
         android:paddingTop="20dp"
         android:gravity="center_horizontal"
         android:orientation="vertical">
-        <com.jyt.baseapp.view.widget.CircleImageView
-            android:id="@+id/iv_info_hpic"
+        <RelativeLayout
             android:layout_width="82dp"
-            android:layout_height="82dp"
-            app:border_width="0dp"
-            app:border_color="@color/white"
-            android:src="@mipmap/timg"/>
+            android:layout_height="82dp">
+            <com.jyt.baseapp.view.widget.CircleImageView
+                android:id="@+id/iv_info_hpic"
+                android:layout_width="82dp"
+                android:layout_height="82dp"
+                app:border_width="0dp"
+                app:border_color="@color/white"
+                android:src="@mipmap/timg"/>
+            <ImageView
+                android:id="@+id/iv_info_sex"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentBottom="true"
+                android:src="@mipmap/icon_nan2"/>
+        </RelativeLayout>
+
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

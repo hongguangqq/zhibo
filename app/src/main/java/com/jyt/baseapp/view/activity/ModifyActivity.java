@@ -72,6 +72,8 @@ public class ModifyActivity extends BaseMCVActivity {
 
     @BindView(R.id.iv_info_hpic)
     CircleImageView mIvHpic;
+    @BindView(R.id.iv_info_sex)
+    ImageView mIvSex;
     @BindView(R.id.tv_info_name)
     TextView mTvName;
     @BindView(R.id.ll_info_name)
@@ -128,6 +130,8 @@ public class ModifyActivity extends BaseMCVActivity {
 
     /*录音*/
     private RecordDialog mRecordDialog;
+    /*播放录音*/
+    private RecordDialog mPlayDialog;
     //线程操作
     private ExecutorService mExecutorService;
     //录音API
@@ -173,7 +177,7 @@ public class ModifyActivity extends BaseMCVActivity {
 
                                 @Override
                                 public void onFailure(CallRet callRet) {
-                                    BaseUtil.makeText("上传失败");
+                                    BaseUtil.makeText("上传失败,请重试");
                                 }
 
                                 @Override
@@ -252,6 +256,7 @@ public class ModifyActivity extends BaseMCVActivity {
         mWyManager = WyManager.getManager();
         mExecutorService = Executors.newSingleThreadExecutor();
         mRecordDialog = new RecordDialog(this);
+        mPlayDialog = new RecordDialog(this);
         mClickListener = new OnImageClickListener();
         mOnImageLongClickListener = new OnImageLongClickListener();
         PickerHead = new ImagePicker();
@@ -389,6 +394,9 @@ public class ModifyActivity extends BaseMCVActivity {
 
         }
         Glide.with(BaseUtil.getContext()).load(mUserData.getHeadImg()).error(R.mipmap.timg).into(mIvHpic);
+        if (mUserData.getGender()==2){
+            mIvSex.setImageDrawable(getResources().getDrawable(R.mipmap.icon_nv2));
+        }
         mTvName.setText(mUserData.getNickname());
         mTvBirthday.setText(mUserData.getBirthday());
         mTvCity.setText(mUserData.getCityName());
@@ -475,7 +483,7 @@ public class ModifyActivity extends BaseMCVActivity {
 
                         @Override
                         public void onFailure(CallRet callRet) {
-                            BaseUtil.makeText("上传失败");
+                            BaseUtil.makeText("上传失败,请重试");
                         }
 
                         @Override
@@ -548,7 +556,7 @@ public class ModifyActivity extends BaseMCVActivity {
                         @Override
                         public void onFailure(CallRet callRet) {
                             Log.e("@#","fail:"+callRet.getException());
-                            BaseUtil.makeText("上传失败");
+                            BaseUtil.makeText("上传失败,请重试");
                         }
 
                         @Override
@@ -584,6 +592,8 @@ public class ModifyActivity extends BaseMCVActivity {
     public void UploadVideo(){
         if (TextUtils.isEmpty(mUserData.getVideo())){
             IntentHelper.OpenRecordingActivity(this);
+        }else {
+            BaseUtil.makeText("只能上传一段宣传视频");
         }
     }
 
@@ -960,6 +970,8 @@ public class ModifyActivity extends BaseMCVActivity {
      */
     private void startPlay(String path) {
         isPlayAudio=true;
+        mPlayDialog.show();
+        mPlayDialog.setTitle("播放中");
         try {
             //初始化播放器
             mediaPlayer = new MediaPlayer();
@@ -1003,6 +1015,7 @@ public class ModifyActivity extends BaseMCVActivity {
      */
     private void playEndOrFail(boolean isEnd) {
         isPlayAudio = false;
+        mPlayDialog.dismiss();
         if (isEnd) {
             mHandler.sendEmptyMessage(Const.PLAY_COMPLETION);
         } else {
@@ -1084,6 +1097,7 @@ public class ModifyActivity extends BaseMCVActivity {
     protected void onDestroy() {
         super.onDestroy();
         mExecutorService.shutdownNow();
+        mPersonModel.onDestroy();
         if (mFileHPic!=null){
             mFileHPic.delete();
         }

@@ -2,6 +2,7 @@ package com.jyt.baseapp.view.fragment;
 
 import android.os.Handler;
 import android.support.v7.widget.LinearLayoutManager;
+import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -12,6 +13,7 @@ import com.jyt.baseapp.adapter.GiftAdapter;
 import com.jyt.baseapp.api.BeanCallback;
 import com.jyt.baseapp.bean.BaseJson;
 import com.jyt.baseapp.bean.GiftBean;
+import com.jyt.baseapp.helper.IntentHelper;
 import com.jyt.baseapp.itemDecoration.SpacesItemDecoration;
 import com.jyt.baseapp.model.BandModel;
 import com.jyt.baseapp.model.impl.BandModelImpl;
@@ -103,7 +105,7 @@ public class GiftFragment extends BaseFragment {
                             public void run() {
                                 //取出第一条数据
                                 if (mGiftList.size()>1){
-                                    GiftBean firstBean = mGiftList.remove(0);
+                                    final GiftBean firstBean = mGiftList.remove(0);
                                     mAdapter.notifyData(mGiftList);
                                     mTrlLoad.finishRefreshing();
                                     mTvSend.setText(firstBean.getFromNickName());
@@ -111,6 +113,19 @@ public class GiftFragment extends BaseFragment {
                                     Glide.with(App.getContext()).load(firstBean.getFromImg()).error(R.mipmap.timg).into(mIvSend);
                                     Glide.with(App.getContext()).load(firstBean.getHeadImg()).error(R.mipmap.timg).into(mIvReceiver);
                                     mTvMoney.setText(firstBean.getPrice()+"");
+                                    mIvSend.setOnClickListener(new View.OnClickListener() {
+                                        @Override
+                                        public void onClick(View view) {
+                                            IntentHelper.OpenPersonActivity(getActivity(),Integer.valueOf(firstBean.getUserId()));
+
+                                        }
+                                    });
+                                    mIvReceiver.setOnClickListener(new View.OnClickListener() {
+                                        @Override
+                                        public void onClick(View view) {
+                                            IntentHelper.OpenPersonActivity(getActivity(),firstBean.getFromId());
+                                        }
+                                    });
                                 }
 
                             }

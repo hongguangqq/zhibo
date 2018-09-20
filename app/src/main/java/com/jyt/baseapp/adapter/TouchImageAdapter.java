@@ -9,6 +9,7 @@ import android.widget.LinearLayout;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.animation.GlideAnimation;
 import com.bumptech.glide.request.target.SimpleTarget;
+import com.jyt.baseapp.R;
 import com.jyt.baseapp.view.widget.TouchImageView;
 
 import java.util.List;
@@ -40,7 +41,7 @@ public class TouchImageAdapter extends PagerAdapter {
     @Override
     public View instantiateItem(ViewGroup container, final int position) {
         final TouchImageView img = new TouchImageView(container.getContext());
-        Glide.with(container.getContext()).load(images.get(position)).asBitmap().into(new SimpleTarget<Bitmap>() {
+        Glide.with(container.getContext()).load(images.get(position)).asBitmap().placeholder(R.mipmap.loading).into(new SimpleTarget<Bitmap>() {
             @Override
             public void onResourceReady(Bitmap resource, GlideAnimation<? super Bitmap> glideAnimation) {
                 img.setImageBitmap(resource);

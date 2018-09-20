@@ -10,7 +10,9 @@ public class GiftBean {
     private String headImg;
     private String fromImg;
     private String userId;
+    private int fromId;
     private float price;
+    private UserBean user;
 
     public String getId() {
         return id;
@@ -66,5 +68,21 @@ public class GiftBean {
 
     public void setPrice(float price) {
         this.price = price;
+    }
+
+    public int getFromId() {
+        return fromId;
+    }
+
+    public void setFromId(int fromId) {
+        this.fromId = fromId;
+    }
+
+    public UserBean getUser() {
+        return user;
+    }
+
+    public void setUser(UserBean user) {
+        this.user = user;
     }
 }

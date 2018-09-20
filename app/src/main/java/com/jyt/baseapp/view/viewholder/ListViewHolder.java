@@ -54,9 +54,9 @@ public class ListViewHolder extends BaseViewHolder<UserBean> {
 
         List<String> Pimg = data.getImgsArray();
         if (Pimg==null || Pimg.size()==0){
-            Glide.with(BaseUtil.getContext()).load(R.mipmap.timg).into(mIvHpic);
+            Glide.with(BaseUtil.getContext()).load(R.mipmap.timg).placeholder(R.mipmap.loading).into(mIvHpic);
         }else {
-            Glide.with(BaseUtil.getContext()).load(Pimg.get(0)).error(R.mipmap.timg).into(mIvHpic);
+            Glide.with(BaseUtil.getContext()).load(Pimg.get(0)).placeholder(R.mipmap.loading).error(R.mipmap.timg).into(mIvHpic);
         }
         mTvNick.setText(data.getNickname());
         mTvMark.setText(data.getMark());

@@ -15,10 +15,14 @@ import com.jyt.baseapp.bean.BaseJson;
 import com.jyt.baseapp.bean.EventBean;
 import com.jyt.baseapp.bean.FriendNewsBean;
 import com.jyt.baseapp.bean.PushMessageBean;
+import com.jyt.baseapp.bean.UserBean;
 import com.jyt.baseapp.helper.IntentHelper;
 import com.jyt.baseapp.itemDecoration.RecycleViewDivider;
+import com.jyt.baseapp.model.PersonModel;
 import com.jyt.baseapp.model.TabModel;
+import com.jyt.baseapp.model.impl.PersonModelImpl;
 import com.jyt.baseapp.model.impl.TabModelImpl;
+import com.jyt.baseapp.util.BaseUtil;
 import com.jyt.baseapp.util.HawkUtil;
 import com.jyt.baseapp.view.viewholder.StrangerViewHolder;
 import com.jyt.baseapp.view.widget.CircleImageView;
@@ -67,6 +71,7 @@ public class FragmentTab2 extends BaseFragment {
     private StrangerAdapter mAdapter;
     private List<FriendNewsBean> mDataList;
     private TabModel mTabModel;
+    private PersonModel mPersonModel;
     public static int gFriendNewNum;
 
 
@@ -86,6 +91,8 @@ public class FragmentTab2 extends BaseFragment {
         mDataList = HawkUtil.getStrangerList();
         mTabModel = new TabModelImpl();
         mTabModel.onStart(getActivity());
+        mPersonModel = new PersonModelImpl();
+        mPersonModel.onStart(getActivity());
         EventBus.getDefault().register(this);
 
     }
@@ -120,8 +127,22 @@ public class FragmentTab2 extends BaseFragment {
 
         mAdapter.setsetOnOpenVideoListener(new StrangerViewHolder.OnOpenVideoListener() {
             @Override
-            public void openVideo(FriendNewsBean user) {
-                IntentHelper.OpenLaunchActivity(getActivity(),user.getId(),2, Const.getUserNick(),Const.getUserHeadImg());
+            public void openVideo(final FriendNewsBean user) {
+                mPersonModel.getUserData(user.getId(), new BeanCallback<BaseJson<UserBean>>(getActivity(),true,null) {
+                    @Override
+                    public void response(boolean success, BaseJson<UserBean> response, int id) {
+                        if (success && response.isRet()){
+                            if (response.getData()!=null && response.getData().getOnlineState()==1){
+                                IntentHelper.OpenLaunchActivity(getActivity(),user.getId(),2, Const.getUserNick(),Const.getUserHeadImg());
+                            }else {
+                                BaseUtil.makeText("当前用户不在线");
+                            }
+                        }
+                    }
+                });
+
+
+
             }
 
             @Override
@@ -188,6 +209,7 @@ public class FragmentTab2 extends BaseFragment {
     public void onDestroyView() {
         super.onDestroyView();
         mTabModel.onDestroy();
+        mPersonModel.onDestroy();
         EventBus.getDefault().unregister(this);
     }
 

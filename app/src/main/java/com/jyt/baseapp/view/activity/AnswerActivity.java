@@ -1,9 +1,13 @@
 package com.jyt.baseapp.view.activity;
 
+import android.app.Notification;
+import android.app.NotificationManager;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
+import android.os.Vibrator;
+import android.support.v4.app.NotificationCompat;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -44,6 +48,7 @@ public class AnswerActivity extends BaseMCVActivity {
     @BindView(R.id.btn_answer_no)
     Button mBtnNo;
 
+    private Vibrator vibrator;
     private long downTime;
     private boolean mIsVoice;
 
@@ -72,6 +77,17 @@ public class AnswerActivity extends BaseMCVActivity {
         String name = (String) tuple.getItem1();
         String hpic = (String) tuple.getItem2();
         mIsVoice = (boolean) tuple.getItem3();
+        vibrator = (Vibrator)this.getSystemService(this.VIBRATOR_SERVICE);
+        long[] patter = {1000, 1000, 2000, 50};
+        if (Const.getVideoVibrate()){
+            vibrator.vibrate(patter, 0);
+        }
+        if (Const.getVideoSound()){
+
+        }
+        if (Const.getVideoToast()){
+            createNotification("您有新的视频通话请求");
+        }
         downTime = System.currentTimeMillis();
         mTvName.setText(name);
         Glide.with(this).load(hpic).error(R.mipmap.timg).into(mIvHpic);
@@ -116,11 +132,31 @@ public class AnswerActivity extends BaseMCVActivity {
         }
     }
 
+    private void createNotification(String title){
+        NotificationManager notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
+        NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(this);
+        mBuilder.setContentTitle("我是标题")
+                //设置内容
+                .setContentText("我是内容")
+                //设置大图标
+                //                .setLargeIcon(BitmapFactory.decodeResource(getResources(), R.mipmap.ic_launcher))
+                //设置小图标
+                //                .setSmallIcon(R.mipmap.ic_launcher_round)
+                //设置通知时间
+                .setWhen(System.currentTimeMillis())
+                //首次进入时显示效果
+                .setTicker("我是测试内容")
+                //设置通知方式，声音，震动，呼吸灯等效果，这里通知方式为声音
+                .setDefaults(Notification.DEFAULT_SOUND);
+        //发送通知请求
+        notificationManager.notify(10, mBuilder.build());
+    }
     @Override
     protected void onDestroy() {
         super.onDestroy();
         if(EventBus.getDefault().isRegistered(this)) {
             EventBus.getDefault().unregister(this);
         }
+        vibrator.cancel();
     }
 }

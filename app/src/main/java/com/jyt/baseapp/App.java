@@ -1,6 +1,8 @@
 package com.jyt.baseapp;
 
 import android.app.ActivityManager;
+import android.app.Notification;
+import android.app.NotificationManager;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
@@ -10,6 +12,7 @@ import android.os.Message;
 import android.os.Process;
 import android.os.Vibrator;
 import android.support.multidex.MultiDexApplication;
+import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 
 import com.jyt.baseapp.api.Const;
@@ -214,7 +217,14 @@ public class App  extends MultiDexApplication {
                         vibrator.vibrate(1000);
                     }
                     if (Const.getTxtToast()){
-
+                        if (message.getContent() instanceof TextMessage){
+                            TextMessage textMessage = (TextMessage) message.getContent();
+                            createNotification(textMessage.getContent(),"");
+                        }else if (message.getContent() instanceof ImageMessage){
+                            createNotification("图片消息","");
+                        }else if (message.getContent() instanceof VoiceMessage){
+                            createNotification("音频消息","");
+                        }
                     }
                     //好友消息加入List
                     HawkUtil.addComMessage(message);
@@ -353,6 +363,28 @@ public class App  extends MultiDexApplication {
         return false;
     }
 
+    private void createNotification(String title,String id){
+        NotificationManager notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
+        NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(this);
+        mBuilder.setContentTitle("我是标题")
+                //设置内容
+                .setContentText("我是内容")
+                //设置大图标
+//                .setLargeIcon(BitmapFactory.decodeResource(getResources(), R.mipmap.ic_launcher))
+                //设置小图标
+//                .setSmallIcon(R.mipmap.ic_launcher_round)
+                //设置通知时间
+                .setWhen(System.currentTimeMillis())
+                //首次进入时显示效果
+                .setTicker("我是测试内容")
+                //设置通知方式，声音，震动，呼吸灯等效果，这里通知方式为声音
+                .setDefaults(Notification.DEFAULT_SOUND);
+        //发送通知请求
+        notificationManager.notify(10, mBuilder.build());
+//        Intent intent = new Intent(this, SecondeActivity.class);
+//        PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, intent, 0);
+//        mBuilder.setContentIntent(pendingIntent);
+    }
 
 
     private static SSLSocketFactory createSSLSocketFactory() {

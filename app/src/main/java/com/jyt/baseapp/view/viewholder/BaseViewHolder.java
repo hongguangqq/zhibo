@@ -1,5 +1,6 @@
 package com.jyt.baseapp.view.viewholder;
 
+import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 
@@ -70,6 +71,10 @@ public class BaseViewHolder<T> extends RecyclerView.ViewHolder {
 
     public View getItemView(){
         return itemView;
+    }
+
+    public Context getContext(){
+        return itemView.getContext();
     }
 
 

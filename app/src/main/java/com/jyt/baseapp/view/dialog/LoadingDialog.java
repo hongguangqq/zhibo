@@ -44,7 +44,7 @@ public class LoadingDialog extends AlertDialog {
 
     public void setText(String message) {
         this.message = message;
-        tips_loading_msg.setText(this.message);
+
     }
 
     public void setText(int resId) {

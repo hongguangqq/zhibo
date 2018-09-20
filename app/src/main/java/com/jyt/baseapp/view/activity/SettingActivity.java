@@ -1,6 +1,7 @@
 package com.jyt.baseapp.view.activity;
 
 import android.os.Bundle;
+import android.os.Handler;
 import android.os.Vibrator;
 import android.view.View;
 import android.widget.RelativeLayout;
@@ -10,7 +11,10 @@ import com.jyt.baseapp.api.Const;
 import com.jyt.baseapp.helper.IntentHelper;
 import com.jyt.baseapp.model.LoginModel;
 import com.jyt.baseapp.model.impl.LoginModelImpl;
+import com.jyt.baseapp.util.CacheCleanUtil;
+import com.jyt.baseapp.util.T;
 import com.jyt.baseapp.view.dialog.IPhoneDialog;
+import com.jyt.baseapp.view.dialog.LoadingDialog;
 import com.jyt.baseapp.view.widget.SwitchView;
 
 import butterknife.BindView;
@@ -258,6 +262,34 @@ public class SettingActivity extends BaseMCVActivity {
             }
         });
 
+    }
+
+    @OnClick(R.id.rl_setting_clean)
+    public void clickClear(){
+        final IPhoneDialog dialog = new IPhoneDialog(this);
+        final LoadingDialog loadingDialog = new LoadingDialog(this);
+        dialog.setTitle("确定清空缓存");
+        dialog.setOnIPhoneClickListener(new IPhoneDialog.OnIPhoneClickListener() {
+            @Override
+            public void ClickSubmit(boolean isShow, String input) {
+                dialog.dismiss();
+                loadingDialog.show();
+                CacheCleanUtil.clearAllCache(getApplicationContext());
+                new Handler().postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        T.showShort(SettingActivity.this,"清除完毕");
+                        loadingDialog.dismiss();
+                    }
+                }, 4000);
+            }
+
+            @Override
+            public void ClickCancel() {
+
+            }
+        });
+        dialog.show();
     }
 
     @OnClick(R.id.rl_setting_feedback)

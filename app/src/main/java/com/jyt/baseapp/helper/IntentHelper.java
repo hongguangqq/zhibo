@@ -785,6 +785,18 @@ public class IntentHelper {
         intent.putExtra(IntentKey.User_ID,id);
         activity.startActivity(intent);
     }
+
+    /**
+     * 跳转其他用户详情页
+     * @param context
+     * @param id
+     */
+    public static void OpenPersonActivity(Context context,int id){
+        Intent intent =getIntent(context, PersonActivity.class);
+        intent.putExtra(IntentKey.User_ID,id);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        context.startActivity(intent);
+    }
     public static Tuple PersonActivityGetPara(Intent intent){
         int id = intent.getIntExtra(IntentKey.User_ID,0);
         return new Tuple(id);
