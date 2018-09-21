@@ -1,6 +1,7 @@
 package com.jyt.baseapp.view.activity;
 
 import android.Manifest;
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
@@ -11,6 +12,7 @@ import android.media.MediaRecorder;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Environment;
 import android.os.Handler;
 import android.os.Message;
 import android.support.annotation.NonNull;
@@ -40,11 +42,11 @@ import com.jyt.baseapp.model.PersonModel;
 import com.jyt.baseapp.model.impl.PersonModelImpl;
 import com.jyt.baseapp.util.BaseUtil;
 import com.jyt.baseapp.util.WyManager;
+import com.jyt.baseapp.view.dialog.IPhoneDialog;
 import com.jyt.baseapp.view.dialog.LoadingDialog;
 import com.jyt.baseapp.view.dialog.RecordDialog;
 import com.jyt.baseapp.view.widget.CircleImageView;
 import com.jyt.baseapp.view.widget.CityPickerView;
-import com.jyt.baseapp.view.dialog.IPhoneDialog;
 import com.jzxiang.pickerview.TimePickerDialog;
 import com.jzxiang.pickerview.data.Type;
 import com.jzxiang.pickerview.listener.OnDateSetListener;
@@ -55,8 +57,11 @@ import com.netease.cloud.nos.android.core.CallRet;
 
 import java.io.File;
 import java.io.IOException;
+import java.math.BigInteger;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -64,6 +69,10 @@ import butterknife.BindView;
 import butterknife.OnClick;
 import butterknife.OnLongClick;
 import butterknife.OnTouch;
+import top.zibin.luban.CompressionPredicate;
+import top.zibin.luban.Luban;
+import top.zibin.luban.OnCompressListener;
+import top.zibin.luban.OnRenameListener;
 
 import static com.jyt.baseapp.api.Const.PERMISSIONS_REQUEST_FOR_AUDIO;
 
@@ -531,39 +540,64 @@ public class ModifyActivity extends BaseMCVActivity {
             // 选择图片回调
             @Override public void onPickImage(Uri imageUri) {
                 try {
-                    mFilePP = new File(new URI(imageUri.toString()));
+                    File originalFile = new File(new URI(imageUri.toString()));
+                    long fileS = originalFile.length();
+                    if ((fileS/1048576)>4){
+                        BaseUtil.makeText("图片大小不能超过4MB");
+                        return;
+                    }
                     //提交到云
-                    mWyManager.UploadWy(ModifyActivity.this, mFilePP.getAbsolutePath(), new WyManager.OnWyUploadListener() {
+                    compressLuban(ModifyActivity.this, originalFile, new OnCompressListener() {
                         @Override
-                        public void onUploadContextCreate(Object o, String s, String s1) {
+                        public void onStart() {
 
                         }
 
                         @Override
-                        public void onProcess(Object o, long l, long l1) {
+                        public void onSuccess(File file) {
+                            if (mFilePP!=null && mFilePP.exists()){
+                                mFilePP.delete();
+                            }
+                            mFilePP =file;
+                            mWyManager.UploadWy(ModifyActivity.this, mFilePP.getAbsolutePath(), new WyManager.OnWyUploadListener() {
+                                @Override
+                                public void onUploadContextCreate(Object o, String s, String s1) {
 
+                                }
+
+                                @Override
+                                public void onProcess(Object o, long l, long l1) {
+
+                                }
+
+                                @Override
+                                public void onSuccess(CallRet callRet) {
+                                    //添加新数据
+                                    mUserData.getImgsList().add(Const.WyMainFile+mFilePP.getName());
+                                    //刷新数据
+                                    mUserData.setImgs(new Gson().toJson(mUserData.getImgsList()));
+                                    UpDateMyData();
+                                }
+
+                                @Override
+                                public void onFailure(CallRet callRet) {
+                                    Log.e("@#","fail:"+callRet.getException());
+                                    BaseUtil.makeText("上传失败,请重试");
+                                }
+
+                                @Override
+                                public void onCanceled(CallRet callRet) {
+
+                                }
+                            });
                         }
 
                         @Override
-                        public void onSuccess(CallRet callRet) {
-                            //添加新数据
-                            mUserData.getImgsList().add(Const.WyMainFile+mFilePP.getName());
-                            //刷新数据
-                            mUserData.setImgs(new Gson().toJson(mUserData.getImgsList()));
-                            UpDateMyData();
-                        }
-
-                        @Override
-                        public void onFailure(CallRet callRet) {
-                            Log.e("@#","fail:"+callRet.getException());
-                            BaseUtil.makeText("上传失败,请重试");
-                        }
-
-                        @Override
-                        public void onCanceled(CallRet callRet) {
+                        public void onError(Throwable e) {
 
                         }
                     });
+
                 } catch (URISyntaxException e) {
                     e.printStackTrace();
                 }
@@ -742,6 +776,46 @@ public class ModifyActivity extends BaseMCVActivity {
         }
         mCodeDialog.show();
     }
+
+    private void compressLuban(Context context,File file,OnCompressListener listener){
+        Luban.with(context)
+                .load(file)
+                .ignoreBy(100)
+                .setTargetDir(getPath())
+                .setFocusAlpha(false)
+                .filter(new CompressionPredicate() {
+                    @Override
+                    public boolean apply(String path) {
+                        return !(TextUtils.isEmpty(path) || path.toLowerCase().endsWith(".gif"));
+                    }
+                })
+                .setRenameListener(new OnRenameListener() {
+                    @Override
+                    public String rename(String filePath) {
+                        try {
+                            MessageDigest md = MessageDigest.getInstance("MD5");
+                            md.update(filePath.getBytes());
+                            String suffix  = filePath.substring(filePath.lastIndexOf(".") + 1);
+                            return new BigInteger(1, md.digest()).toString(32)+"."+suffix;
+                        } catch (NoSuchAlgorithmException e) {
+                            e.printStackTrace();
+                        }
+                        return "";
+                    }
+                })
+                .setCompressListener(listener).launch();
+    }
+
+    private String getPath() {
+        String path = Environment.getExternalStorageDirectory() + "/Luban/image/";
+        File file = new File(path);
+        if (file.mkdirs()) {
+            return path;
+        }
+        return path;
+    }
+
+
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {

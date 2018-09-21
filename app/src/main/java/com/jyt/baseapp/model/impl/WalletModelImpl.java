@@ -56,4 +56,20 @@ public class WalletModelImpl implements WalletModel {
                 .build()
                 .execute(callback);
     }
+
+    @Override
+    public void putForward(String userId, String money, String bankName, String bankCard, String realName, String phone, Callback callback) {
+        OkHttpUtils.post()
+                .url(Path.PutForward)
+                .tag(mContext)
+                .addHeader("token", Const.getUserToken())
+                .addParams("userId",userId)
+                .addParams("money",money)
+                .addParams("bankName",bankName)
+                .addParams("bankCard",bankCard)
+                .addParams("realName",realName)
+                .addParams("phone",phone)
+                .build()
+                .execute(callback);
+    }
 }

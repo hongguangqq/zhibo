@@ -53,6 +53,10 @@ import butterknife.OnClick;
 
 public class PersonActivity extends BaseMCVActivity {
 
+    @BindView(R.id.ll_person_normal)
+    LinearLayout mLlNormal;
+    @BindView(R.id.rl_person_error)
+    RelativeLayout mRlError;
     @BindView(R.id.vp_person_propaganda)
     ViewPager mVpPropaganda;
     @BindView(R.id.iv_person_more)
@@ -310,6 +314,7 @@ public class PersonActivity extends BaseMCVActivity {
             @Override
             public void response(boolean success, BaseJson<PersonBean> response, int id) {
                 if (success){
+                    mRlError.setVisibility(View.GONE);
                     if (response.getCode()==200){
                         mPersonData = response.getData();
                         mUser = mPersonData.getUser();
@@ -365,6 +370,9 @@ public class PersonActivity extends BaseMCVActivity {
                         if (!TextUtils.isEmpty(mUser.getVideo())){
                             mPropagandaList.add(1,new PropagationBean(true,mUser.getVideo()));
                         }
+                        if (mPropagandaList.size()==0){
+                            mPropagandaList.add(new PropagationBean(false,"http://asset.nos-eastchina1.126.net/Imgs/bg_zero.png"));
+                        }
                         mPropagandaAdapter.notifyData(mPropagandaList);
                         mVpPropaganda.setAdapter(mPropagandaAdapter);
                         mLlBanner.removeAllViews();
@@ -417,6 +425,9 @@ public class PersonActivity extends BaseMCVActivity {
                         mItemList = mPersonData.getGiftCounts();
                         mMyGiftAdapter.notifyData(mItemList);
                     }
+                }else {
+                    mRlError.setVisibility(View.VISIBLE);
+                    mLlNormal.setVisibility(View.GONE);
                 }
             }
         });

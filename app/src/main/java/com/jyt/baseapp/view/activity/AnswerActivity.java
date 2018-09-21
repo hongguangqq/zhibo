@@ -2,6 +2,8 @@ package com.jyt.baseapp.view.activity;
 
 import android.app.Notification;
 import android.app.NotificationManager;
+import android.app.PendingIntent;
+import android.content.Intent;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -132,12 +134,13 @@ public class AnswerActivity extends BaseMCVActivity {
         }
     }
 
-    private void createNotification(String title){
+    private void createNotification(String txt){
         NotificationManager notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
         NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(this);
-        mBuilder.setContentTitle("我是标题")
+        PendingIntent pendingIntent = PendingIntent.getActivity(this,0,new Intent().setAction(Intent.ACTION_VIEW), 0);
+        mBuilder.setContentTitle("直播")
                 //设置内容
-                .setContentText("我是内容")
+                .setContentText(txt)
                 //设置大图标
                 //                .setLargeIcon(BitmapFactory.decodeResource(getResources(), R.mipmap.ic_launcher))
                 //设置小图标
@@ -145,12 +148,15 @@ public class AnswerActivity extends BaseMCVActivity {
                 //设置通知时间
                 .setWhen(System.currentTimeMillis())
                 //首次进入时显示效果
-                .setTicker("我是测试内容")
+                .setTicker(txt)
                 //设置通知方式，声音，震动，呼吸灯等效果，这里通知方式为声音
-                .setDefaults(Notification.DEFAULT_SOUND);
+                .setDefaults(Notification.DEFAULT_SOUND)
+                .setContentIntent(pendingIntent).setNumber(1).build();
         //发送通知请求
         notificationManager.notify(10, mBuilder.build());
+
     }
+
     @Override
     protected void onDestroy() {
         super.onDestroy();

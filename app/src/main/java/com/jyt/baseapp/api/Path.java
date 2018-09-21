@@ -47,8 +47,6 @@ public class Path {
     public static final String JoinActivity = BasePath+"/chat/activity/joinActivity";
     public static final String GetActivityUser = BasePath+"/chat/activity/getActivityUser";
     public static final String AliPay = BasePath+"/chat/user/aliPay";
-
-
     public static final String GetFollowList = BasePath+"/chat/user/meFollowList";
     public static final String GetFansList = BasePath+"/chat/user/followMeList";
     public static final String FeedBack = BasePath+"/chat/user/saveSuggestion";
@@ -78,5 +76,6 @@ public class Path {
     public static final String GetFocusID = BasePath+"/chat/user/friendMsg";//获取好友ID列表
     public static final String ChangeAppointeState = BasePath+"/chat/sub/changeState";//获取好友ID列表
     public static final String GetChargeData = BasePath+"/chat/charge/getPageCharge";//获取充值记录
+    public static final String PutForward = BasePath+"/chat/widthDraw/add";//提现
 
 }

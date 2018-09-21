@@ -13,4 +13,16 @@ public interface WalletModel extends BaseModel {
 
     void aliPay(String amount , Callback callback);
 
+    /**
+     * 提现
+     * @param userId
+     * @param money
+     * @param bankName
+     * @param bankCard
+     * @param realName
+     * @param phone
+     * @param callback
+     */
+    void putForward(String userId,String money,String bankName,String bankCard,String realName,String phone,Callback callback);
+
 }

@@ -48,6 +48,9 @@ public class AccountViewHolder extends BaseViewHolder<WalletBean> {
         }else {
             mTvTp.setText(""+data.getPrePrice());
         }
+        if (data.getPrice()!=0){
+            mTvTp.setText(""+data.getPrice());
+        }
         switch (data.getType()){
             case 1:
                 mTvMark.setText("充值记录");

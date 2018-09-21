@@ -8,6 +8,7 @@ public class WalletBean {
     private String createTime;
     private double totalPrice;
     private double prePrice;
+    private int price;
 
     public int getType() {
         return type;
@@ -39,5 +40,13 @@ public class WalletBean {
 
     public void setPrePrice(double prePrice) {
         this.prePrice = prePrice;
+    }
+
+    public int getPrice() {
+        return price;
+    }
+
+    public void setPrice(int price) {
+        this.price = price;
     }
 }

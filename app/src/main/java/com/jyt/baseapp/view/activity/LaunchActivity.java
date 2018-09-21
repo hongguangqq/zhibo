@@ -123,7 +123,7 @@ public class LaunchActivity extends BaseMCVActivity {
             @Override
             public void onAnimationStart(Animator animation) {
                 //拨打主播，视频聊天
-                mPbProgress.setVisibility(View.VISIBLE);
+
                 mLiveModel.MakeCall(uid, type, new BeanCallback<BaseJson<CallBean>>() {
                     @Override
                     public void response(boolean success, BaseJson<CallBean> response, int id) {
@@ -137,7 +137,7 @@ public class LaunchActivity extends BaseMCVActivity {
                             }else if (type==3){
                                 LiveManager.requsetGreateVoiceRoom(String.valueOf(uid));
                             }
-                        }else if (success && response.getCode()==500){
+                        }else {
                             BaseUtil.makeText(response.getMessage());
                             finish();
                         }

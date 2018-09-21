@@ -1,11 +1,13 @@
 package com.jyt.baseapp.view.activity;
 
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.media.MediaMetadataRetriever;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
 import android.os.Handler;
 import android.os.Message;
 import android.support.annotation.NonNull;
@@ -51,9 +53,11 @@ import com.nineoldandroids.animation.ObjectAnimator;
 import org.json.JSONException;
 
 import java.io.File;
+import java.math.BigInteger;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.security.InvalidKeyException;
+import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.List;
@@ -62,6 +66,10 @@ import butterknife.BindView;
 import butterknife.OnClick;
 import butterknife.OnLongClick;
 import butterknife.OnTextChanged;
+import top.zibin.luban.CompressionPredicate;
+import top.zibin.luban.Luban;
+import top.zibin.luban.OnCompressListener;
+import top.zibin.luban.OnRenameListener;
 
 public class ReleaseActivity extends BaseMCVActivity {
 
@@ -323,114 +331,62 @@ public class ReleaseActivity extends BaseMCVActivity {
                 }
                 //上传图片操作
                 if (mImageList != null && mImageList.size() != 0) {
-                    for (int i = 0; i < mImageList.size(); i++) {
-                        int lastxie = mImageList.get(i).lastIndexOf("/");
-                        mImageNameList.add(Const.WangYi + "test/" + Const.getUserID() + "/" + mImageList.get(i).substring(lastxie + 1));
-                    }
+                    t=0;
                     new Thread(new Runnable() {
                         @Override
                         public void run() {
                             for (int i = 0; i < mImageList.size(); i++) {
-                                UploadWy(mImageList.get(i), new Callback() {
+                                compressLuban(ReleaseActivity.this, new File(mImageList.get(i)), new OnCompressListener() {
                                     @Override
-                                    public void onUploadContextCreate(Object o, String s, String s1) {
+                                    public void onStart() {
 
                                     }
 
                                     @Override
-                                    public void onProcess(Object o, long l, long l1) {
+                                    public void onSuccess(final File file) {
+                                        UploadWy(file.getAbsolutePath(), new Callback() {
+                                            @Override
+                                            public void onUploadContextCreate(Object o, String s, String s1) {
 
+                                            }
+
+                                            @Override
+                                            public void onProcess(Object o, long l, long l1) {
+
+                                            }
+
+                                            @Override
+                                            public void onSuccess(CallRet callRet) {
+                                                int lastxie = file.getAbsolutePath().lastIndexOf("/");
+                                                mImageNameList.add(Const.WangYi + "test/" + Const.getUserID() + "/" +  file.getAbsolutePath().substring(lastxie + 1));
+                                                executor = null;
+                                                t++;
+                                                //上传网易云完毕,之后将地址发给后台保存
+                                                if (t == mImageList.size()) {
+                                                    Message message = new Message();
+                                                    message.obj = inputText;
+                                                    message.what = CODE_UPLOAD;
+                                                    mHandler.sendMessage(message);
+                                                }
+                                            }
+
+                                            @Override
+                                            public void onFailure(CallRet callRet) {
+                                                BaseUtil.makeText("上传失败");
+                                            }
+
+                                            @Override
+                                            public void onCanceled(CallRet callRet) {
+
+                                            }
+                                        });
                                     }
 
                                     @Override
-                                    public void onSuccess(CallRet callRet) {
-                                        executor = null;
-                                        t++;
-                                        //上传网易云完毕,之后将地址发给后台保存
-                                        if (t == mImageList.size()) {
-                                            Message message = new Message();
-                                            message.obj = inputText;
-                                            message.what = CODE_UPLOAD;
-                                            mHandler.sendMessage(message);
-                                        }
-                                    }
-
-                                    @Override
-                                    public void onFailure(CallRet callRet) {
-
-                                    }
-
-                                    @Override
-                                    public void onCanceled(CallRet callRet) {
+                                    public void onError(Throwable e) {
 
                                     }
                                 });
-//                                long expires = System.currentTimeMillis() / 1000 + 3600 * 24 * 30 * 12 * 10;
-//                                String uploadToken = null;
-//                                final File f = new File(mImageList.get(i));
-//                                try {
-//                                    uploadToken = Util.getToken("asset", "test/" + Const.getUserID() + "/" + f.getName(), expires, Const.WyAccessKey, Const.WySecretKey);
-//                                    WanNOSObject wanNOSObject = new WanNOSObject();
-//                                    wanNOSObject.setNosBucketName("asset");
-//                                    wanNOSObject.setNosObjectName("test/" + Const.getUserID() + "/" + f.getName());
-//                                    if (f.getName().contains(".jpg")) {
-//                                        wanNOSObject.setContentType("image/jpeg");
-//                                    } else if (f.getName().contains(".png")) {
-//                                        wanNOSObject.setContentType("image/png");
-//                                    }
-//
-//                                    wanNOSObject.setUploadToken(uploadToken);
-//                                    String uploadContext = Util.getData(ReleaseActivity.this, f.getAbsolutePath());
-//                                    executor = WanAccelerator.putFileByHttp(ReleaseActivity.this, f, f.getAbsoluteFile(), uploadContext, wanNOSObject, new Callback() {
-//                                        @Override
-//                                        public void onUploadContextCreate(Object o, String s, String s1) {
-//
-//                                        }
-//
-//                                        @Override
-//                                        public void onProcess(Object o, long l, long l1) {
-//
-//                                        }
-//
-//                                        @Override
-//                                        public void onSuccess(CallRet ret) {
-//
-//                                            executor = null;
-//                                            Util.setData(ReleaseActivity.this,
-//                                                    f.getAbsolutePath(), "");
-//                                            t++;
-//                                            //上传网易云完毕,之后将地址发给后台保存
-//                                            if (t == mImageList.size()) {
-//                                                Message message = new Message();
-//                                                message.obj = inputText;
-//                                                message.what = CODE_UPLOAD;
-//                                                mHandler.sendMessage(message);
-//                                            }
-//
-//                                        }
-//
-//                                        @Override
-//                                        public void onFailure(CallRet ret) {
-//                                            executor = null;
-//                                        }
-//
-//                                        @Override
-//                                        public void onCanceled(CallRet callRet) {
-//
-//                                        }
-//                                    });
-//
-//                                } catch (NoSuchAlgorithmException e) {
-//                                    e.printStackTrace();
-//                                } catch (InvalidKeyException e) {
-//                                    e.printStackTrace();
-//                                } catch (JSONException e) {
-//                                    e.printStackTrace();
-//                                } catch (InvalidParameterException e) {
-//                                    e.printStackTrace();
-//                                }
-
-
                             }
                         }
                     }).start();
@@ -602,6 +558,44 @@ public class ReleaseActivity extends BaseMCVActivity {
             builder.create().show();
         }
         return false;
+    }
+
+    private void compressLuban(Context context, File file, OnCompressListener listener){
+        Luban.with(context)
+                .load(file)
+                .ignoreBy(100)
+                .setTargetDir(getPath())
+                .setFocusAlpha(false)
+                .filter(new CompressionPredicate() {
+                    @Override
+                    public boolean apply(String path) {
+                        return !(TextUtils.isEmpty(path) || path.toLowerCase().endsWith(".gif"));
+                    }
+                })
+                .setRenameListener(new OnRenameListener() {
+                    @Override
+                    public String rename(String filePath) {
+                        try {
+                            MessageDigest md = MessageDigest.getInstance("MD5");
+                            md.update(filePath.getBytes());
+                            String suffix  = filePath.substring(filePath.lastIndexOf(".") + 1);
+                            return new BigInteger(1, md.digest()).toString(32)+"."+suffix;
+                        } catch (NoSuchAlgorithmException e) {
+                            e.printStackTrace();
+                        }
+                        return "";
+                    }
+                })
+                .setCompressListener(listener).launch();
+    }
+
+    private String getPath() {
+        String path = Environment.getExternalStorageDirectory() + "/Luban/image/";
+        File file = new File(path);
+        if (file.mkdirs()) {
+            return path;
+        }
+        return path;
     }
 
 

@@ -1,8 +1,10 @@
 package com.jyt.baseapp.view.activity;
 
+import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
 import android.support.annotation.NonNull;
 import android.text.TextUtils;
 import android.view.View;
@@ -25,11 +27,18 @@ import com.linchaolong.android.imagepicker.cropper.CropImage;
 import com.netease.cloud.nos.android.core.CallRet;
 
 import java.io.File;
+import java.math.BigInteger;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 
 import butterknife.BindView;
 import butterknife.OnClick;
+import top.zibin.luban.CompressionPredicate;
+import top.zibin.luban.Luban;
+import top.zibin.luban.OnCompressListener;
+import top.zibin.luban.OnRenameListener;
 
 
 public class FeedbackActivity extends BaseMCVActivity {
@@ -105,35 +114,60 @@ public class FeedbackActivity extends BaseMCVActivity {
             // 选择图片回调
             @Override public void onPickImage(Uri imageUri) {
                 try {
-                    mFilePic = new File(new URI(imageUri.toString()));
+                    File originalFile = new File(new URI(imageUri.toString()));
+                    long fileS = originalFile.length();
+                    if ((fileS/1048576)>4){
+                        BaseUtil.makeText("图片大小不能超过4MB");
+                        return;
+                    }
                     mIvUpload.setScaleType(ImageView.ScaleType.CENTER);
                     Glide.with(FeedbackActivity.this).load(imageUri).into(mIvUpload);
-                    mWyManager.UploadWy(FeedbackActivity.this, mFilePic.getAbsolutePath(), new WyManager.OnWyUploadListener() {
+                    compressLuban(FeedbackActivity.this, originalFile, new OnCompressListener() {
                         @Override
-                        public void onUploadContextCreate(Object o, String s, String s1) {
+                        public void onStart() {
 
                         }
 
                         @Override
-                        public void onProcess(Object o, long l, long l1) {
+                        public void onSuccess(File file) {
+                            if (mFilePic!=null && mFilePic.exists()){
+                                mFilePic.delete();
+                            }
+                            mFilePic = file;
+                            mWyManager.UploadWy(FeedbackActivity.this, mFilePic.getAbsolutePath(), new WyManager.OnWyUploadListener() {
+                                @Override
+                                public void onUploadContextCreate(Object o, String s, String s1) {
 
+                                }
+
+                                @Override
+                                public void onProcess(Object o, long l, long l1) {
+
+                                }
+
+                                @Override
+                                public void onSuccess(CallRet callRet) {
+                                    mImgPath = Const.WyMainFile+mFilePic.getName();
+                                }
+
+                                @Override
+                                public void onFailure(CallRet callRet) {
+                                    BaseUtil.makeText("上传失败");
+                                }
+
+                                @Override
+                                public void onCanceled(CallRet callRet) {
+
+                                }
+                            });
                         }
 
                         @Override
-                        public void onSuccess(CallRet callRet) {
-                            mImgPath = Const.WyMainFile+mFilePic.getName();
-                        }
-
-                        @Override
-                        public void onFailure(CallRet callRet) {
-
-                        }
-
-                        @Override
-                        public void onCanceled(CallRet callRet) {
+                        public void onError(Throwable e) {
 
                         }
                     });
+
                 } catch (URISyntaxException e) {
                     e.printStackTrace();
                 }
@@ -156,6 +190,44 @@ public class FeedbackActivity extends BaseMCVActivity {
             }
         });
 
+    }
+
+    private void compressLuban(Context context, File file, OnCompressListener listener){
+        Luban.with(context)
+                .load(file)
+                .ignoreBy(100)
+                .setTargetDir(getPath())
+                .setFocusAlpha(false)
+                .filter(new CompressionPredicate() {
+                    @Override
+                    public boolean apply(String path) {
+                        return !(TextUtils.isEmpty(path) || path.toLowerCase().endsWith(".gif"));
+                    }
+                })
+                .setRenameListener(new OnRenameListener() {
+                    @Override
+                    public String rename(String filePath) {
+                        try {
+                            MessageDigest md = MessageDigest.getInstance("MD5");
+                            md.update(filePath.getBytes());
+                            String suffix  = filePath.substring(filePath.lastIndexOf(".") + 1);
+                            return new BigInteger(1, md.digest()).toString(32)+"."+suffix;
+                        } catch (NoSuchAlgorithmException e) {
+                            e.printStackTrace();
+                        }
+                        return "";
+                    }
+                })
+                .setCompressListener(listener).launch();
+    }
+
+    private String getPath() {
+        String path = Environment.getExternalStorageDirectory() + "/Luban/image/";
+        File file = new File(path);
+        if (file.mkdirs()) {
+            return path;
+        }
+        return path;
     }
 
     @Override

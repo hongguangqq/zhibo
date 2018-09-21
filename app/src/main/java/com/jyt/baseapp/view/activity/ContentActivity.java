@@ -29,6 +29,7 @@ import com.jyt.baseapp.adapter.FragmentViewPagerAdapter;
 import com.jyt.baseapp.api.BeanCallback;
 import com.jyt.baseapp.api.Const;
 import com.jyt.baseapp.bean.BaseJson;
+import com.jyt.baseapp.bean.EventBean;
 import com.jyt.baseapp.bean.UserBean;
 import com.jyt.baseapp.helper.IntentHelper;
 import com.jyt.baseapp.helper.IntentRequestCode;
@@ -39,6 +40,7 @@ import com.jyt.baseapp.model.impl.PersonModelImpl;
 import com.jyt.baseapp.util.BaseUtil;
 import com.jyt.baseapp.util.HawkUtil;
 import com.jyt.baseapp.util.NetworkUtils;
+import com.jyt.baseapp.util.NotificationUtils;
 import com.jyt.baseapp.util.T;
 import com.jyt.baseapp.view.fragment.FragmentTab1;
 import com.jyt.baseapp.view.fragment.FragmentTab2;
@@ -54,6 +56,9 @@ import com.tbruyelle.rxpermissions2.Permission;
 import com.tbruyelle.rxpermissions2.RxPermissions;
 import com.xiaomi.mipush.sdk.MiPushClient;
 
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -144,6 +149,7 @@ public class ContentActivity extends BaseMCVActivity implements View.OnClickList
 
     private void init() {
         HideActionBar();
+        EventBus.getDefault().register(this);
         mAnim_in = AnimationUtils.loadAnimation(this,R.anim.button_alpha_in);
         mAnim_out = AnimationUtils.loadAnimation(this,R.anim.button_alpha_out);
         mPersonModel = new PersonModelImpl();
@@ -236,8 +242,6 @@ public class ContentActivity extends BaseMCVActivity implements View.OnClickList
                                 @Override
                                 public void onSuccess(String s) {
                                     BaseUtil.e("onSuccess---id="+s);
-
-
                                 }
 
                                 @Override
@@ -377,6 +381,10 @@ public class ContentActivity extends BaseMCVActivity implements View.OnClickList
         startActivityForResult(intent, 123);
     }
 
+    private void createNotification(final String txt,final String id){
+        NotificationUtils utils = new NotificationUtils(this);
+        utils.sendNotification(txt,id);
+    }
 
 
 
@@ -499,6 +507,14 @@ public class ContentActivity extends BaseMCVActivity implements View.OnClickList
         }
     }
 
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onMessageEvent(EventBean event) {
+        if (event.getCode() == Const.TXT_TOAST) {
+            String txt = (String) event.getItem1();
+            createNotification("消息",txt);
+        }
+    }
+
     /**
      * 双击退出
      */
@@ -522,5 +538,6 @@ public class ContentActivity extends BaseMCVActivity implements View.OnClickList
         super.onDestroy();
         mPersonModel.onDestroy();
         mLoginModel.onDestroy();
+        EventBus.getDefault().unregister(this);
     }
 }

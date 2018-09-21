@@ -125,4 +125,5 @@ dependencies {
     releaseCompile 'com.squareup.leakcanary:leakcanary-android-no-op:1.5'
     compile files('libs/alipaySdk-20180601.jar')
     compile 'pub.devrel:easypermissions:1.0.1'
+    compile 'top.zibin:Luban:1.1.8'
 }

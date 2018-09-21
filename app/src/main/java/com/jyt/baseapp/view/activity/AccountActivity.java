@@ -8,6 +8,8 @@ import android.view.View;
 import com.jyt.baseapp.R;
 import com.jyt.baseapp.adapter.AccountAdapter;
 import com.jyt.baseapp.api.BeanCallback;
+import com.jyt.baseapp.bean.AccountBean;
+import com.jyt.baseapp.bean.BaseJson;
 import com.jyt.baseapp.itemDecoration.RecycleViewDivider;
 import com.jyt.baseapp.model.WalletModel;
 import com.jyt.baseapp.model.impl.WalletModelImpl;
@@ -24,7 +26,7 @@ public class AccountActivity extends BaseMCVActivity {
     RecyclerView mRvContent;
 
     private AccountAdapter mAccountAdapter;
-    private List<String> mDataList;
+    private List mDataList;
     private WalletModel mWalletModel;
 
 
@@ -59,11 +61,12 @@ public class AccountActivity extends BaseMCVActivity {
         mRvContent.addItemDecoration(new RecycleViewDivider(getActivity(),LinearLayoutManager.VERTICAL,1,getResources().getColor(R.color.line_color2)));
         mAccountAdapter.setDataList(mDataList);
         mRvContent.setAdapter(mAccountAdapter);
-        mWalletModel.getWalletAccount(0, 6, new BeanCallback() {
+        mWalletModel.getWalletAccount(0, 6, new BeanCallback<BaseJson<AccountBean>>() {
             @Override
-            public void response(boolean success, Object response, int id) {
-                if (success){
-
+            public void response(boolean success, BaseJson<AccountBean> response, int id) {
+                if (success && response.getCode()==200){
+                    mDataList.addAll(response.getData().getContent());
+                    mAccountAdapter.notifyDataSetChanged();
                 }
             }
         });
