@@ -77,5 +77,6 @@ public class Path {
     public static final String ChangeAppointeState = BasePath+"/chat/sub/changeState";//获取好友ID列表
     public static final String GetChargeData = BasePath+"/chat/charge/getPageCharge";//获取充值记录
     public static final String PutForward = BasePath+"/chat/widthDraw/add";//提现
+    public static final String GetWebView = BasePath+"/chat/setting/getSettingDetail";//获取WebView
 
 }

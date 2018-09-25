@@ -1,15 +1,10 @@
 package com.jyt.baseapp.view.activity;
 
-import android.app.Notification;
-import android.app.NotificationManager;
-import android.app.PendingIntent;
-import android.content.Intent;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.os.Vibrator;
-import android.support.v4.app.NotificationCompat;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -23,6 +18,7 @@ import com.jyt.baseapp.helper.IntentHelper;
 import com.jyt.baseapp.manager.LiveManager;
 import com.jyt.baseapp.util.BaseUtil;
 import com.jyt.baseapp.util.FastBlurUtil;
+import com.jyt.baseapp.util.NotificationUtils;
 import com.jyt.baseapp.view.widget.CircleImageView;
 
 import org.greenrobot.eventbus.EventBus;
@@ -52,6 +48,7 @@ public class AnswerAudienceActivity extends BaseMCVActivity {
     private long downTime;
     private boolean mIsVoice;
     private String uid;
+    private NotificationUtils mNotificationUtils;
 
     @Override
     protected int getLayoutId() {
@@ -73,7 +70,7 @@ public class AnswerAudienceActivity extends BaseMCVActivity {
     private void init() {
         HideActionBar();
         setvMainBackground(R.mipmap.bg_entrance);
-
+        mNotificationUtils = new NotificationUtils(this);
         Tuple tuple = IntentHelper.AnswerActivityAudienceGetPara(getIntent());
         String name = (String) tuple.getItem1();
         String hpic = (String) tuple.getItem2();
@@ -89,10 +86,10 @@ public class AnswerAudienceActivity extends BaseMCVActivity {
             vibrator.vibrate(patter, 0);
         }
         if (Const.getSoundSound()){
-
+            mNotificationUtils.tipsMusicPlay();
         }
         if (Const.getSoundToast()){
-            createNotification("您有新的音频通话请求");
+            mNotificationUtils.sendNotification("直播","您有新的音频通话请求");
         }
 
     }
@@ -125,29 +122,6 @@ public class AnswerAudienceActivity extends BaseMCVActivity {
     public void AnswerNo(){
         LiveManager.audienceHangUp(uid);
         finish();
-    }
-
-    private void createNotification(String txt){
-        NotificationManager notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
-        NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(this);
-        PendingIntent pendingIntent = PendingIntent.getActivity(this,0,new Intent().setAction(Intent.ACTION_VIEW), 0);
-        mBuilder.setContentTitle("直播")
-                //设置内容
-                .setContentText(txt)
-                //设置大图标
-                //                .setLargeIcon(BitmapFactory.decodeResource(getResources(), R.mipmap.ic_launcher))
-                //设置小图标
-                //                .setSmallIcon(R.mipmap.ic_launcher_round)
-                //设置通知时间
-                .setWhen(System.currentTimeMillis())
-                //首次进入时显示效果
-                .setTicker(txt)
-                //设置通知方式，声音，震动，呼吸灯等效果，这里通知方式为声音
-                .setDefaults(Notification.DEFAULT_SOUND)
-                .setContentIntent(pendingIntent).setNumber(1).build();
-        //发送通知请求
-        notificationManager.notify(10, mBuilder.build());
-
     }
 
     @Override

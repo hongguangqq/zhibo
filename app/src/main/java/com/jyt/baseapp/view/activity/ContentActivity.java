@@ -29,7 +29,6 @@ import com.jyt.baseapp.adapter.FragmentViewPagerAdapter;
 import com.jyt.baseapp.api.BeanCallback;
 import com.jyt.baseapp.api.Const;
 import com.jyt.baseapp.bean.BaseJson;
-import com.jyt.baseapp.bean.EventBean;
 import com.jyt.baseapp.bean.UserBean;
 import com.jyt.baseapp.helper.IntentHelper;
 import com.jyt.baseapp.helper.IntentRequestCode;
@@ -40,7 +39,6 @@ import com.jyt.baseapp.model.impl.PersonModelImpl;
 import com.jyt.baseapp.util.BaseUtil;
 import com.jyt.baseapp.util.HawkUtil;
 import com.jyt.baseapp.util.NetworkUtils;
-import com.jyt.baseapp.util.NotificationUtils;
 import com.jyt.baseapp.util.T;
 import com.jyt.baseapp.view.fragment.FragmentTab1;
 import com.jyt.baseapp.view.fragment.FragmentTab2;
@@ -52,13 +50,8 @@ import com.netease.nimlib.sdk.NIMClient;
 import com.netease.nimlib.sdk.RequestCallback;
 import com.netease.nimlib.sdk.auth.AuthService;
 import com.netease.nimlib.sdk.auth.LoginInfo;
-import com.tbruyelle.rxpermissions2.Permission;
-import com.tbruyelle.rxpermissions2.RxPermissions;
 import com.xiaomi.mipush.sdk.MiPushClient;
 
-import org.greenrobot.eventbus.EventBus;
-import org.greenrobot.eventbus.Subscribe;
-import org.greenrobot.eventbus.ThreadMode;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -66,8 +59,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
-import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.functions.Consumer;
 import io.rong.imlib.RongIMClient;
 
 public class ContentActivity extends BaseMCVActivity implements View.OnClickListener {
@@ -122,7 +113,6 @@ public class ContentActivity extends BaseMCVActivity implements View.OnClickList
     private AlertDialog dialog;
 
 
-
     @Override
     protected int getLayoutId() {
         return R.layout.activity_content;
@@ -149,7 +139,6 @@ public class ContentActivity extends BaseMCVActivity implements View.OnClickList
 
     private void init() {
         HideActionBar();
-        EventBus.getDefault().register(this);
         mAnim_in = AnimationUtils.loadAnimation(this,R.anim.button_alpha_in);
         mAnim_out = AnimationUtils.loadAnimation(this,R.anim.button_alpha_out);
         mPersonModel = new PersonModelImpl();
@@ -274,32 +263,6 @@ public class ContentActivity extends BaseMCVActivity implements View.OnClickList
 
 
     private String permissions[] ={Manifest.permission.CAMERA,Manifest.permission.RECORD_AUDIO,Manifest.permission.SYSTEM_ALERT_WINDOW};
-    private void requestPermission(){
-        RxPermissions rxPermission = new RxPermissions(this);
-
-
-        rxPermission
-                .requestEach(Manifest.permission.CAMERA,Manifest.permission.RECORD_AUDIO,Manifest.permission.SYSTEM_ALERT_WINDOW,
-                        Manifest.permission.WRITE_EXTERNAL_STORAGE,
-                        Manifest.permission.READ_EXTERNAL_STORAGE).observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Consumer<Permission>() {
-                    @Override
-                    public void accept(Permission permission) throws Exception {
-                        if (permission.granted) {
-                            // 用户已经同意该权限
-                            Log.d("@#", permission.name + " is granted.");
-                        } else if (permission.shouldShowRequestPermissionRationale) {
-                            // 用户拒绝了该权限，没有选中『不再询问』（Never ask again）,那么下次再次启动时，还会提示请求权限的对话框
-                            Log.d("@#", permission.name + " is denied. More info should be provided.");
-                        } else {
-                            // 用户拒绝了该权限，并且选中『不再询问』
-                            Log.d("@#", permission.name + " is denied.");
-                        }
-                    }
-
-                });
-    }
-
     // 提示用户该请求权限的弹出框
     private void showDialogTipUserRequestPermission() {
 
@@ -380,14 +343,6 @@ public class ContentActivity extends BaseMCVActivity implements View.OnClickList
 
         startActivityForResult(intent, 123);
     }
-
-    private void createNotification(final String txt,final String id){
-        NotificationUtils utils = new NotificationUtils(this);
-        utils.sendNotification(txt,id);
-    }
-
-
-
 
 
     @Override
@@ -507,13 +462,7 @@ public class ContentActivity extends BaseMCVActivity implements View.OnClickList
         }
     }
 
-    @Subscribe(threadMode = ThreadMode.MAIN)
-    public void onMessageEvent(EventBean event) {
-        if (event.getCode() == Const.TXT_TOAST) {
-            String txt = (String) event.getItem1();
-            createNotification("消息",txt);
-        }
-    }
+
 
     /**
      * 双击退出
@@ -538,6 +487,6 @@ public class ContentActivity extends BaseMCVActivity implements View.OnClickList
         super.onDestroy();
         mPersonModel.onDestroy();
         mLoginModel.onDestroy();
-        EventBus.getDefault().unregister(this);
+
     }
 }

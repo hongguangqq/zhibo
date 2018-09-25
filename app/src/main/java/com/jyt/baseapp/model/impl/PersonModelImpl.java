@@ -272,5 +272,21 @@ public class PersonModelImpl implements PersonModel {
                 .execute(callback);
     }
 
+    /**
+     * 获取webView信息
+     * @param code
+     * @param callback
+     */
+    @Override
+    public void getWebData(String code, Callback callback) {
+        OkHttpUtils.get()
+                .tag(mContext)
+                .url(Path.GetWebView)
+                .addHeader("token",Const.getUserToken())
+                .addParams("code",code)
+                .build()
+                .execute(callback);
+    }
+
 
 }

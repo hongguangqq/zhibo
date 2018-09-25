@@ -32,6 +32,7 @@ import com.jyt.baseapp.bean.Tuple;
 import com.jyt.baseapp.bean.UserBean;
 import com.jyt.baseapp.helper.IntentHelper;
 import com.jyt.baseapp.itemDecoration.SpacesItemDecoration;
+import com.jyt.baseapp.manager.LiveManager;
 import com.jyt.baseapp.model.AppointModel;
 import com.jyt.baseapp.model.PersonModel;
 import com.jyt.baseapp.model.impl.AppointModelImpl;
@@ -224,7 +225,6 @@ public class PersonActivity extends BaseMCVActivity {
                 .setLinkage(true)//设置是否联动，默认true
                 .build();
         mTimePickerView.setPicker(mHourList,mMinuteList);
-
     }
 
     private void initSetting() {
@@ -315,9 +315,12 @@ public class PersonActivity extends BaseMCVActivity {
             public void response(boolean success, BaseJson<PersonBean> response, int id) {
                 if (success){
                     mRlError.setVisibility(View.GONE);
+                    mLlNormal.setVisibility(View.VISIBLE);
                     if (response.getCode()==200){
                         mPersonData = response.getData();
                         mUser = mPersonData.getUser();
+                        //发送参观信息
+                        LiveManager.sendVisitorMessage(String.valueOf(mUser.getId()));
                         //异性显示
                         if (Const.getGender()!=mUser.getGender()){
                             if (Const.getGender()==1 && mUser.getGender()==2){
@@ -431,6 +434,11 @@ public class PersonActivity extends BaseMCVActivity {
                 }
             }
         });
+    }
+
+    @OnClick(R.id.rl_person_error)
+    public void onClickError(){
+        getUserData();
     }
 
 

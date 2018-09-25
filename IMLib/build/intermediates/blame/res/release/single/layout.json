@@ -16,6 +16,10 @@
         "source": "C:\\Users\\lw\\.android\\build-cache\\36f1c80a206d033aab8d561e0e30bfc79f95a3be\\output\\res\\layout\\notification_template_part_chronometer.xml"
     },
     {
+        "merged": "G:\\Android\\Projects\\Projects\\zhibo\\IMLib\\build\\intermediates\\res\\merged\\release\\layout\\notification_template_custom_big.xml",
+        "source": "C:\\Users\\lw\\.android\\build-cache\\36f1c80a206d033aab8d561e0e30bfc79f95a3be\\output\\res\\layout\\notification_template_custom_big.xml"
+    },
+    {
         "merged": "G:\\Android\\Projects\\Projects\\zhibo\\IMLib\\build\\intermediates\\res\\merged\\release\\layout\\notification_template_part_time.xml",
         "source": "C:\\Users\\lw\\.android\\build-cache\\36f1c80a206d033aab8d561e0e30bfc79f95a3be\\output\\res\\layout\\notification_template_part_time.xml"
     }

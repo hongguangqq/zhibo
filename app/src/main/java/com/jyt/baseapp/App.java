@@ -20,13 +20,14 @@ import com.jyt.baseapp.util.BaseUtil;
 import com.jyt.baseapp.util.FinishActivityManager;
 import com.jyt.baseapp.util.HawkUtil;
 import com.jyt.baseapp.util.L;
+import com.jyt.baseapp.util.NotificationUtils;
 import com.jyt.baseapp.view.activity.AnswerActivity;
 import com.jyt.baseapp.view.activity.AnswerAudienceActivity;
 import com.jyt.baseapp.view.activity.AudienceActivity;
 import com.jyt.baseapp.view.activity.LaunchActivity;
 import com.jyt.baseapp.view.activity.LivePlayActivity;
 import com.jyt.baseapp.view.widget.BarrageMessage;
-import com.jyt.baseapp.view.widget.NMRCCallMessage;
+import com.jyt.baseapp.bean.NMRCCallMessage;
 import com.netease.nimlib.sdk.NIMClient;
 import com.netease.nimlib.sdk.SDKOptions;
 import com.netease.nimlib.sdk.StatusBarNotificationConfig;
@@ -75,6 +76,7 @@ public class App  extends MultiDexApplication {
     private static Context mcontext;
     private static Handler mhandler;
     private static int mainThreadid;
+    private NotificationUtils mNotificationUtils;
     private RefWatcher refWatcher;
 
     public boolean isDebug() {
@@ -108,6 +110,7 @@ public class App  extends MultiDexApplication {
         mcontext=getApplicationContext();
         mhandler=new Handler();
         mainThreadid=android.os.Process.myTid();//主线程ID
+        mNotificationUtils = new NotificationUtils(this);
         typeface = Typeface.createFromAsset(mcontext.getAssets(), "font/jyt.ttf");
         //判断目录是否存在
         File files = new File(Const.mMainFile);
@@ -206,21 +209,20 @@ public class App  extends MultiDexApplication {
                         ||message.getContent() instanceof ImageMessage
                         ||message.getContent() instanceof VoiceMessage){
                     if (Const.getTxtSound()){
-
+                        mNotificationUtils.tipsMusicPlay();
                     }
                     if (Const.getTxtVibrate()){
-                        Log.e("@#","震动");
                         Vibrator vibrator = (Vibrator)getSystemService(VIBRATOR_SERVICE);
                         vibrator.vibrate(1000);
                     }
                     if (Const.getTxtToast()){
                         if (message.getContent() instanceof TextMessage){
                             TextMessage textMessage = (TextMessage) message.getContent();
-                            EventBus.getDefault().post(new EventBean(Const.TXT_TOAST,textMessage.getContent()));
+                            mNotificationUtils.sendNotification("直播",textMessage.getContent());
                         }else if (message.getContent() instanceof ImageMessage){
-                            EventBus.getDefault().post(new EventBean(Const.TXT_TOAST,"图片消息"));
+                            mNotificationUtils.sendNotification("直播","图片消息");
                         }else if (message.getContent() instanceof VoiceMessage){
-                            EventBus.getDefault().post(new EventBean(Const.TXT_TOAST,"音频消息"));
+                            mNotificationUtils.sendNotification("直播","音频消息");
                         }
                     }
                     //好友消息加入List
@@ -300,6 +302,24 @@ public class App  extends MultiDexApplication {
                             ScannerManager.mMeetingName  = msg.getRoomName();
                             ScannerManager.uId = uId;
                             IntentHelper.OpenAnswerAudienceActivity(mcontext,name,hpic,uId,false);
+                            break;
+                        case 8:
+                            BaseUtil.e("观众挂断主播回拨请求");
+                            break;
+                        case 9:
+                            String fromId = msg.getuId();
+                            String fromUser = msg.getNickname();
+                            BaseUtil.e("有人进入我的首页");
+                            if (Const.getVisitorSound()){
+                                mNotificationUtils.tipsMusicPlay();
+                            }
+                            if (Const.getVisitorVibrate()){
+                                Vibrator vibrator = (Vibrator)getSystemService(VIBRATOR_SERVICE);
+                                vibrator.vibrate(1000);
+                            }
+                            if (Const.getVisitorToast()){
+                                mNotificationUtils.sendNotification("直播",fromUser+"进入了你的首页");
+                            }
                             break;
 
                     }

@@ -291,6 +291,10 @@ public class SettingActivity extends BaseMCVActivity {
         });
         dialog.show();
     }
+    @OnClick(R.id.rl_setting_help)
+    public void openServiceWebActivity(){
+        IntentHelper.openServiceWebActivity(this,"50001");
+    }
 
     @OnClick(R.id.rl_setting_feedback)
     public void OpenFeedBackActivity(){

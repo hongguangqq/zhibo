@@ -14,7 +14,7 @@ android {
     buildToolsVersion '28.0.2'
     defaultConfig {
         applicationId "com.jyt.zhibo"
-        minSdkVersion 19
+        minSdkVersion 16
         targetSdkVersion 23
         versionCode 1
         versionName "1.0"
@@ -24,6 +24,15 @@ android {
         ndk {
             abiFilters 'armeabi', 'armeabi-v7a', 'arm64-v8a', 'x86'
 
+        }
+
+        allprojects {
+            repositories {
+                maven { url "https://maven.google.com" }
+                maven { url "http://mvn.mob.com/android" }
+                maven { url 'https://jitpack.io' }
+                jcenter()
+            }
         }
 
 //region            jpush
@@ -82,16 +91,15 @@ dependencies {
     //    compile 'cn.jiguang.sdk:jpush:3.0.9'  // 此处以JPush 3.0.9 版本为例。
 
     //    compile 'cn.jiguang.sdk:jcore:1.1.7'  // 此处以JCore 1.1.7 版本为例。
-    compile files('libs/nos-android-sdk-1.0.0.jar')
     compile project(':IMLib')
-    compile files('libs/MiPush_SDK_Client_3_5_1.jar')
-    compile files('libs/nim-avchat-5.2.0.jar')
-    compile files('libs/nim-basesdk-5.2.0.jar')
-    compile files('libs/nrtc-sdk.jar')
-    compile files('libs/video_effect.jar')
-    compile files('libs/MiPush_SDK_Client_3_6_9.jar')
-    compile files('libs/nim-basesdk-5.4.0.jar')
-    compile files('libs/nim-avchat-5.4.0.jar')
+//    compile files('libs/nos-android-sdk-1.0.0.jar')
+//    compile files('libs/MiPush_SDK_Client_3_5_1.jar')
+//    compile files('libs/nrtc-sdk.jar')
+//    compile files('libs/video_effect.jar')
+//    compile files('libs/MiPush_SDK_Client_3_6_9.jar')
+//    compile files('libs/nim-basesdk-5.4.0.jar')
+//    compile files('libs/nim-avchat-5.4.0.jar')
+//    compile files('libs/alipaySdk-20180601.jar')
     compile 'com.android.support:multidex:1.0.1'
     compile 'com.linchaolong.android:imagepicker:1.5'
     compile 'com.orhanobut:hawk:2.0.1'
@@ -99,7 +107,7 @@ dependencies {
     compile 'ch.ielse:switchbutton:1.0.0'
     compile 'com.android.support:appcompat-v7:26.0.0'
     compile 'cn.yc:YCVideoPlayerLib:2.2'
-    compile 'com.android.support:design:26.1.0'
+    compile 'com.android.support:design:26.0.0'
     compile 'com.google.code.gson:gson:2.2.4'
     compile 'com.android.support:recyclerview-v7:26.0.0'
     compile 'com.zhy:okhttputils:2.6.2'
@@ -110,20 +118,19 @@ dependencies {
     compile 'cn.bingoogolapple:bga-banner:2.1.7@aar'
     compile 'com.lcodecorex:tkrefreshlayout:1.0.4'
     compile 'com.tencent.mm.opensdk:wechat-sdk-android-without-mta:+'
-    compile 'com.upyun:upyun-android-sdk:2.0.5'
+//    compile 'com.upyun:upyun-android-sdk:2.0.5'
     compile 'com.android.support.constraint:constraint-layout:1.0.2'
     compile 'com.jzxiang.pickerview:TimePickerDialog:1.0.1'
     compile 'com.contrarywind:Android-PickerView:3.2.6'
     compile 'org.greenrobot:eventbus:3.0.0'
     compile 'io.reactivex.rxjava2:rxandroid:2.0.1'
     compile 'io.reactivex.rxjava2:rxjava:2.0.5'
-    compile 'com.tbruyelle.rxpermissions2:rxpermissions:0.9.3@aar'
+//    compile 'com.tbruyelle.rxpermissions2:rxpermissions:0.9.3@aar'
     testCompile 'com.squareup.leakcanary:leakcanary-android-no-op:1.5'
     testCompile 'junit:junit:4.12'
     annotationProcessor 'com.jakewharton:butterknife-compiler:8.5.1'
     debugCompile 'com.squareup.leakcanary:leakcanary-android:1.5'
     releaseCompile 'com.squareup.leakcanary:leakcanary-android-no-op:1.5'
-    compile files('libs/alipaySdk-20180601.jar')
     compile 'pub.devrel:easypermissions:1.0.1'
     compile 'top.zibin:Luban:1.1.8'
 }

@@ -41,6 +41,7 @@ import com.jyt.baseapp.view.activity.ReleaseActivity;
 import com.jyt.baseapp.view.activity.SearchActivity;
 import com.jyt.baseapp.view.activity.SearchResultActivity;
 import com.jyt.baseapp.view.activity.SelImageActivity;
+import com.jyt.baseapp.view.activity.ServiceWebActivity;
 import com.jyt.baseapp.view.activity.SettingActivity;
 import com.jyt.baseapp.view.activity.ThemeActivity;
 import com.jyt.baseapp.view.activity.ThemeListActivity;
@@ -231,7 +232,11 @@ public class IntentHelper {
 
     }
 
-
+    public static void openServiceWebActivity(Activity activity,String code){
+        Intent intent = getIntent(activity, ServiceWebActivity.class);
+        intent.putExtra("code",code);
+        activity.startActivity(intent);
+    }
 
 
 

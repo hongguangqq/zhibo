@@ -1,9 +1,0 @@
-<component name="libraryTable">
-  <library name="video_effect">
-    <CLASSES>
-      <root url="jar://$PROJECT_DIR$/app/libs/video_effect.jar!/" />
-    </CLASSES>
-    <JAVADOC />
-    <SOURCES />
-  </library>
-</component>

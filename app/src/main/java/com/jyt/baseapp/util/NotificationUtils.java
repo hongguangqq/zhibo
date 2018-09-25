@@ -6,6 +6,9 @@ import android.app.NotificationManager;
 import android.content.Context;
 import android.content.ContextWrapper;
 import android.graphics.Color;
+import android.media.Ringtone;
+import android.media.RingtoneManager;
+import android.net.Uri;
 import android.os.Build;
 import android.support.v4.app.NotificationCompat;
 
@@ -82,6 +85,12 @@ public class NotificationUtils extends ContextWrapper {
     public void sendNotification(int notifyId, String title, String content) {
         NotificationCompat.Builder builder = getNotification(title, content);
         getManager().notify(notifyId, builder.build());
+    }
+
+    public void tipsMusicPlay(){
+        Uri uri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
+        Ringtone rt = RingtoneManager.getRingtone(getApplicationContext(), uri);
+        rt.play();
     }
 }
 

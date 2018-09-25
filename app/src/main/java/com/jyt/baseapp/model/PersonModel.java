@@ -48,7 +48,7 @@ public interface PersonModel extends BaseModel{
 
     void mofidyTel(String phone ,String code ,Callback callback);
 
-
+    void getWebData(String code,Callback callback);
 
 
 

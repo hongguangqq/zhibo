@@ -3,8 +3,8 @@ package com.jyt.baseapp.manager;
 import android.util.Log;
 
 import com.jyt.baseapp.api.Const;
+import com.jyt.baseapp.bean.NMRCCallMessage;
 import com.jyt.baseapp.service.ScannerManager;
-import com.jyt.baseapp.view.widget.NMRCCallMessage;
 
 import io.rong.imlib.IRongCallback;
 import io.rong.imlib.RongIMClient;
@@ -23,6 +23,7 @@ public class LiveManager {
     private static final String MSG_AudienceVoice = "6";//观众收到邀请加入房间-音频
     private static final String MSG_RingBack = "7";//主播回拨
     private static final String MSG_AudienceHangUp = "8";//观众收到主播的回拨，选择挂断
+    private static final String MSG_Visitor = "9";//发送参观提示
 
 
     /**
@@ -136,6 +137,29 @@ public class LiveManager {
             @Override
             public void onError(Message message, RongIMClient.ErrorCode errorCode) {
                 Log.e("@#","ASD"+"onError-requsetGreateVoiceRoom "+ errorCode.getMessage());
+            }
+        });
+    }
+
+    /**
+     * 进入用户界面，向用户发送参观信息
+     * @param uid
+     */
+    public static void sendVisitorMessage(String uid){
+        NMRCCallMessage msg = new NMRCCallMessage(MSG_Visitor , null , Const.getUserNick() , Const.getUserHeadImg() , Const.getUserID() ,null,null);
+        RongIMClient.getInstance().sendMessage(Conversation.ConversationType.PRIVATE, uid, msg, null, null, new IRongCallback.ISendMessageCallback() {
+            @Override
+            public void onAttached(Message message) {
+            }
+
+            @Override
+            public void onSuccess(Message message) {
+                Log.e("@#","ASD"+"onSuccess-audienceHangUp");
+            }
+
+            @Override
+            public void onError(Message message, RongIMClient.ErrorCode errorCode) {
+                Log.e("@#","ASD"+"onError-audienceHangUp "+ errorCode.getMessage());
             }
         });
     }

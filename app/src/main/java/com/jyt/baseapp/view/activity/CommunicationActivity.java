@@ -39,7 +39,7 @@ import com.jyt.baseapp.view.dialog.RecordDialog;
 import com.jyt.baseapp.view.viewholder.ComMeViewHolder;
 import com.jyt.baseapp.view.viewholder.ComOtherViewHolder;
 import com.jyt.baseapp.view.widget.BarrageMessage;
-import com.jyt.baseapp.view.widget.NMRCCallMessage;
+import com.jyt.baseapp.bean.NMRCCallMessage;
 import com.linchaolong.android.imagepicker.ImagePicker;
 
 import java.io.File;
