@@ -299,7 +299,9 @@ public class Const {
     }
 
 
-
+    public static String getWyMainFile(){
+        return WangYi + "test/" + Const.getUserID() + "/";
+    }
 
 
 

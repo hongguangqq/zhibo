@@ -65,6 +65,36 @@ public class ExplainActivity extends BaseMCVActivity {
         IntentHelper.OpenAuthenticationActivity(ExplainActivity.this,rid,0);
     }
 
+    @OnClick(R.id.rl_explain_b1)
+    public void onClickB1(){
+        IntentHelper.openServiceWebActivity(this,"10001");
+    }
+
+    @OnClick(R.id.rl_explain_b2)
+    public void onClickB2(){
+        IntentHelper.openServiceWebActivity(this,"10002");
+    }
+
+    @OnClick(R.id.rl_explain_b3)
+    public void onClickB3(){
+        IntentHelper.openServiceWebActivity(this,"10003");
+    }
+
+    @OnClick(R.id.rl_explain_b4)
+    public void onClickB4(){
+        IntentHelper.openServiceWebActivity(this,"10004");
+    }
+
+    @OnClick(R.id.rl_explain_b5)
+    public void onClickB5(){
+        IntentHelper.openServiceWebActivity(this,"10005");
+    }
+
+    @OnClick(R.id.rl_explain_b6)
+    public void onClickB6(){
+        IntentHelper.openServiceWebActivity(this,"10006");
+    }
+
 //    /**
 //     * 双击退出
 //     */

@@ -4,6 +4,7 @@ import android.Manifest;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -295,18 +296,30 @@ public class LoginActivity extends BaseMCVActivity implements PlatformActionList
 
     // 自定义申请多个权限
     private void checkPermission() {
-        if (EasyPermissions.hasPermissions(this, PERMISSIONS)) {
+        if (Build.VERSION.SDK_INT>=Build.VERSION_CODES.M){
+            if (EasyPermissions.hasPermissions(this, PERMISSIONS)) {
+                if(!Settings.canDrawOverlays(this)){
+                    //没有悬浮窗权限,跳转申请
+                    startAppSettings();
+                    return;
+                }
+                if (!TextUtils.isEmpty(Const.getUserID())){
+                    IntentHelper.OpenContentActivity(this);
+                }
+            } else {
+                List<String> permissionList = new ArrayList<>();
+                for (int i = 0; i < PERMISSIONS.length; i++)
+                    if (!EasyPermissions.hasPermissions(this, PERMISSIONS[i])){
+                        permissionList.add(PERMISSIONS[i]);
+                    }
+                EasyPermissions.requestPermissions(this, "App应用需要您赋予权限", REQUEST_CODE_PERMISSIONS, permissionList.toArray(new String[permissionList.size()]));
+            }
+        }else {
             if (!TextUtils.isEmpty(Const.getUserID())){
                 IntentHelper.OpenContentActivity(this);
             }
-        } else {
-            List<String> permissionList = new ArrayList<>();
-            for (int i = 0; i < PERMISSIONS.length; i++)
-                if (!EasyPermissions.hasPermissions(this, PERMISSIONS[i])){
-                    permissionList.add(PERMISSIONS[i]);
-                }
-            EasyPermissions.requestPermissions(this, "App应用需要您赋予权限", REQUEST_CODE_PERMISSIONS, permissionList.toArray(new String[permissionList.size()]));
         }
+
     }
 
     //显示对话框提示用户缺少权限
@@ -365,7 +378,14 @@ public class LoginActivity extends BaseMCVActivity implements PlatformActionList
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (EasyPermissions.hasPermissions(this, PERMISSIONS)) {
-            IntentHelper.OpenContentActivity(this);
+            if(!Settings.canDrawOverlays(this)){
+                //没有悬浮窗权限,跳转申请
+                startAppSettings();
+                return;
+            }
+            if (!TextUtils.isEmpty(Const.getUserID())){
+                IntentHelper.OpenContentActivity(this);
+            }
         } else {
             showMissingPermissionDialog();
         }

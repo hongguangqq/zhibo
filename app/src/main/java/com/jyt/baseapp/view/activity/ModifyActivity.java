@@ -180,7 +180,7 @@ public class ModifyActivity extends BaseMCVActivity {
                                 @Override
                                 public void onSuccess(CallRet callRet) {
                                     mIvSound2.setVisibility(View.VISIBLE);
-                                    mUserData.setVoice(Const.WyMainFile+mAudioFile.getName());
+                                    mUserData.setVoice(Const.getWyMainFile()+mAudioFile.getName());
                                     UpDateMyData();
                                 }
 
@@ -486,7 +486,7 @@ public class ModifyActivity extends BaseMCVActivity {
 
                         @Override
                         public void onSuccess(CallRet callRet) {
-                            mUserData.setHeadImg(Const.WyMainFile+mFileHPic.getName());
+                            mUserData.setHeadImg(Const.getWyMainFile()+mFileHPic.getName());
                             UpDateMyData();
                         }
 
@@ -573,7 +573,7 @@ public class ModifyActivity extends BaseMCVActivity {
                                 @Override
                                 public void onSuccess(CallRet callRet) {
                                     //添加新数据
-                                    mUserData.getImgsList().add(Const.WyMainFile+mFilePP.getName());
+                                    mUserData.getImgsList().add(Const.getWyMainFile()+mFilePP.getName());
                                     //刷新数据
                                     mUserData.setImgs(new Gson().toJson(mUserData.getImgsList()));
                                     UpDateMyData();
@@ -846,7 +846,7 @@ public class ModifyActivity extends BaseMCVActivity {
                         media.setDataSource(mFileVideo.getAbsolutePath());
                         Bitmap bitmap = media.getFrameAtTime();
                         mFileFeng = BaseUtil.saveBitmap(ModifyActivity.this,bitmap);
-                        mUserData.setVideo(Const.WyMainFile+mFileVideo.getName());
+                        mUserData.setVideo(Const.getWyMainFile()+mFileVideo.getName());
                         mWyManager.UploadWy(ModifyActivity.this, mFileFeng.getAbsolutePath(), new WyManager.OnWyUploadListener() {
                             @Override
                             public void onUploadContextCreate(Object o, String s, String s1) {
@@ -860,7 +860,7 @@ public class ModifyActivity extends BaseMCVActivity {
 
                             @Override
                             public void onSuccess(CallRet callRet) {
-                                mUserData.setVedioImg(Const.WyMainFile+mFileFeng.getName());
+                                mUserData.setVedioImg(Const.getWyMainFile()+mFileFeng.getName());
                                 UpDateMyData();
                             }
 

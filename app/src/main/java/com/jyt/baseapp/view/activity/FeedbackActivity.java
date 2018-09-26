@@ -147,7 +147,7 @@ public class FeedbackActivity extends BaseMCVActivity {
 
                                 @Override
                                 public void onSuccess(CallRet callRet) {
-                                    mImgPath = Const.WyMainFile+mFilePic.getName();
+                                    mImgPath = Const.getWyMainFile()+mFilePic.getName();
                                 }
 
                                 @Override

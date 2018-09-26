@@ -108,7 +108,7 @@ public class AuthenticationActivity extends BaseMCVActivity {
                     return;
                 }
                 canNext=true;
-                mAuthModel.AuthInfo(rid,name, infoCard, Const.WyMainFile + mCardFile.getName(), new BeanCallback<BaseJson>(AuthenticationActivity.this,true,null) {
+                mAuthModel.AuthInfo(rid,name, infoCard, Const.getWyMainFile() + mCardFile.getName(), new BeanCallback<BaseJson>(AuthenticationActivity.this,true,null) {
                     @Override
                     public void response(boolean success, BaseJson response, int id) {
                         if (success){
