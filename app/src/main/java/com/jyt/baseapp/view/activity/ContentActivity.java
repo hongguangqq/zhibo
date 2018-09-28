@@ -177,7 +177,7 @@ public class ContentActivity extends BaseMCVActivity implements View.OnClickList
         });
         mViewPagerAdapter.setFragments(mFragmentList);
         mVpContent.setAdapter(mViewPagerAdapter);
-        mVpContent.setOffscreenPageLimit(4);
+//        mVpContent.setOffscreenPageLimit(4);
 
 
         if(!NetworkUtils.isNetworkAvailable(getContext())) {

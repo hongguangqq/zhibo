@@ -16,6 +16,7 @@ import com.jyt.baseapp.model.WalletModel;
 import com.jyt.baseapp.model.impl.PersonModelImpl;
 import com.jyt.baseapp.model.impl.WalletModelImpl;
 import com.jyt.baseapp.util.BaseUtil;
+import com.jyt.baseapp.view.dialog.InvitationDialog;
 import com.jyt.baseapp.view.dialog.PriceDialog;
 import com.jyt.baseapp.view.widget.CircleImageView;
 
@@ -156,6 +157,12 @@ public class FragmentTab4 extends BaseFragment {
     @OnClick(R.id.tv_tab4_setting)
     public void OpenSettingActivity(){
         IntentHelper.OpenSettingActivity(getActivity());
+    }
+
+    @OnClick(R.id.ll_tab4_l1)
+    public void OpenInvitationDialog(){
+        InvitationDialog dialog = new InvitationDialog(getActivity());
+        dialog.show();
     }
 
     @OnClick(R.id.ll_tab4_l2)

@@ -139,23 +139,18 @@ public class LoginActivity extends BaseMCVActivity implements PlatformActionList
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         init();
-        initSetting();
-
+        checkPermission();
     }
 
     private void init() {
         HideActionBar();
         setvMainBackground(R.mipmap.bg_entrance);
         mLoginModel = new LoginModelImpl();
-        checkPermission();
-
+        mLoginModel.onStart(this);
     }
 
-    private void initSetting(){
 
-    }
 
     @OnClick(R.id.btn_login_submit)
     public void ToSubmit(){
@@ -300,6 +295,7 @@ public class LoginActivity extends BaseMCVActivity implements PlatformActionList
             if (EasyPermissions.hasPermissions(this, PERMISSIONS)) {
                 if(!Settings.canDrawOverlays(this)){
                     //没有悬浮窗权限,跳转申请
+                    BaseUtil.makeText("请打开悬浮窗权限");
                     startAppSettings();
                     return;
                 }
@@ -357,7 +353,9 @@ public class LoginActivity extends BaseMCVActivity implements PlatformActionList
     @Override
     public void onPermissionsGranted(int requestCode, List<String> perms) {
         if (EasyPermissions.hasPermissions(this, PERMISSIONS)) {
-            IntentHelper.OpenContentActivity(this);
+            if (!TextUtils.isEmpty(Const.getUserID())){
+                IntentHelper.OpenContentActivity(this);
+            }
         }
     }
 
@@ -380,6 +378,7 @@ public class LoginActivity extends BaseMCVActivity implements PlatformActionList
         if (EasyPermissions.hasPermissions(this, PERMISSIONS)) {
             if(!Settings.canDrawOverlays(this)){
                 //没有悬浮窗权限,跳转申请
+                BaseUtil.makeText("请打开悬浮窗权限");
                 startAppSettings();
                 return;
             }
@@ -406,5 +405,11 @@ public class LoginActivity extends BaseMCVActivity implements PlatformActionList
             this.finish();
             System.exit(0);
         }
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        mLoginModel.onDestroy();
     }
 }

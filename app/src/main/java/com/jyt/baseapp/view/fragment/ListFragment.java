@@ -151,7 +151,7 @@ public class ListFragment extends BaseFragment implements View.OnClickListener {
         mRlNo1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (mGiftList!=null && mGiftList.get(0)!=null){
+                if (mGiftList!=null && mGiftList.size()>0 && mGiftList.get(0)!=null){
                     IntentHelper.OpenPersonActivity(getActivity(),Integer.valueOf(mGiftList.get(0).getUserId()));
                 }
             }
@@ -159,7 +159,7 @@ public class ListFragment extends BaseFragment implements View.OnClickListener {
         mRlNo1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (mGiftList!=null && mGiftList.get(1)!=null){
+                if (mGiftList!=null && mGiftList.size()>1 && mGiftList.get(1)!=null){
                     IntentHelper.OpenPersonActivity(getActivity(),Integer.valueOf(mGiftList.get(1).getUserId()));
                 }
             }
@@ -167,7 +167,7 @@ public class ListFragment extends BaseFragment implements View.OnClickListener {
         mRlNo1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (mGiftList!=null && mGiftList.get(2)!=null){
+                if (mGiftList!=null && mGiftList.size()>2 && mGiftList.get(2)!=null){
                     IntentHelper.OpenPersonActivity(getActivity(),Integer.valueOf(mGiftList.get(2).getUserId()));
                 }
             }
@@ -224,7 +224,7 @@ public class ListFragment extends BaseFragment implements View.OnClickListener {
                         if (response.getData()!=null && response.getData().size()!=0){
                             mGiftList = response.getData();
                             if (mGiftList.size()<1){
-                                BaseUtil.makeText("暂无数据");
+//                                BaseUtil.makeText("暂无数据");
                                 mRlNo1.setVisibility(View.GONE);
                                 mRlNo2.setVisibility(View.GONE);
                                 mRlNo3.setVisibility(View.GONE);
@@ -249,7 +249,16 @@ public class ListFragment extends BaseFragment implements View.OnClickListener {
                                 setRankingData(mGiftList);
                             }
 
+                        }else {
+//                            BaseUtil.makeText("暂无数据");
+                            mRlNo1.setVisibility(View.GONE);
+                            mRlNo2.setVisibility(View.GONE);
+                            mRlNo3.setVisibility(View.GONE);
                         }
+                    }else {
+                        mRlNo1.setVisibility(View.GONE);
+                        mRlNo2.setVisibility(View.GONE);
+                        mRlNo3.setVisibility(View.GONE);
                     }
                 }
 
